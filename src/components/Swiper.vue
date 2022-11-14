@@ -1,0 +1,78 @@
+<script setup>
+// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
+import { ref } from 'vue'
+
+const arr = ref([
+    'https://dummyimage.com/600.png/',
+    'https://dummyimage.com/700.png/',
+    'https://dummyimage.com/800.png/',
+    'https://dummyimage.com/900.png/',
+    'https://dummyimage.com/1000.png/',
+    'https://dummyimage.com/1100.png/',
+])
+
+const next = (index) => {
+    if (index != 0) {
+        const first = arr.value.shift()
+        //
+        arr.value = arr.value.concat(first)
+    }
+}
+</script>
+
+<template>
+    <picture class="swiper">
+        <img v-for="(item, index) in arr" :key="index" :src="index < 4 ? item : ''" @click="next(index)" alt="" />
+    </picture>
+</template>
+
+<style lang="scss" scoped>
+picture {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 20px;
+    height: min-content;
+
+    img {
+        width: 110px;
+
+        &:first-child {
+            grid-area: 1 / 2 / 4 / 4;
+            height: 100%;
+            max-width: 376px;
+            object-fit: cover;
+            width: 100%;
+        }
+        &:nth-child(2) {
+            grid-area: 1 / 1 / 2 / 2;
+        }
+        &:nth-child(3) {
+            grid-area: 2 / 1 / 3 / 2;
+        }
+        &:nth-child(4) {
+            grid-area: 3 / 1 / 4 / 2;
+        }
+        &:nth-child(n + 5) {
+            display: none;
+        }
+    }
+
+    @media all and (max-width: 60em) {
+        display: flex;
+        flex-wrap: wrap;
+
+        img {
+            &:first-child {
+                flex: 100%;
+                max-width: 100%;
+            }
+        }
+    }
+
+    @media all and (max-width: 48em) {
+        img {
+            width: 80px;
+        }
+    }
+}
+</style>
