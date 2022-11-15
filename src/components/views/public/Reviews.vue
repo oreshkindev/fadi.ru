@@ -10,7 +10,7 @@ import NamedButton from '@/components/ui/NamedButton.vue'
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnaLorem ipsum dolor sit amet</p>
 
             <figure>
-                <img src="https://dummyimage.com/450x450/" alt="" />
+                <img src="@/assets/images/Ellipse24.jpg" alt="Ольга Наташкина" loading="lazy" />
                 <figcaption>
                     <span> ОЛЬГА НАТАШКИНА </span>
                     Очень хорошие выкройкиpor incididuntpor incididunt

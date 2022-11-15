@@ -1,21 +1,37 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import ProductCard from '@/components/ProductCard.vue'
+import PatternItem from '@/components/PatternItem.vue'
+//
+import { computed } from 'vue'
+
+const props = defineProps({
+    // схема
+    array: {
+        type: Array,
+        default: () => [],
+    },
+    // заголовок
+    text: {
+        type: String,
+    },
+    // категория
+    category: {
+        type: Number,
+    },
+})
+
+// выводим списки товаров по категории
+const patterns = computed(() => {
+    return props.array.filter((a) => a.category == props.category)
+})
 </script>
 
 <template>
     <section>
-        <h4>Популярные выкройки</h4>
+        <h4 v-if="text" v-text="text"></h4>
 
-        <ProductCard image="https://dummyimage.com/431x552/" text="Как сшить балаклаву из флиса" download="/" />
-        <ProductCard image="https://dummyimage.com/431x552/" text="Как сшить балаклаву из флиса" download="/" />
-        <ProductCard image="https://dummyimage.com/431x552/" text="Как сшить балаклаву из флиса" download="/" />
-
-        <!--  -->
-
-        <ProductCard image="https://dummyimage.com/431x552/" text="Как сшить балаклаву из флиса" download="/" />
-        <ProductCard image="https://dummyimage.com/431x552/" text="Как сшить балаклаву из флиса" download="/" />
-        <ProductCard image="https://dummyimage.com/431x552/" text="Как сшить балаклаву из флиса" download="/" />
+        <!-- выводим категорию или полный список -->
+        <PatternItem v-for="item in patterns.length != 0 ? patterns : props.array" :key="item.id" :image="item.image" :text="item.text" :doc="item.doc" />
     </section>
 </template>
 
@@ -29,7 +45,8 @@ section {
         grid-column: 1 / 4;
     }
 
-    @media all and (max-width: 60em) {
+    // базовый breakpoint 1152px
+    @media all and (max-width: 72em) {
         grid-template-columns: repeat(2, 1fr);
 
         h4 {
@@ -37,15 +54,12 @@ section {
         }
     }
 
-    @media all and (max-width: 48em) {
+    // последний breakpoint для Samsung S10 360x760px
+    @media all and (max-width: 42em) {
         grid-template-columns: 1fr;
 
         h4 {
             grid-column: 1 / 2;
-        }
-
-        article {
-            max-width: 100%;
         }
     }
 }

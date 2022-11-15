@@ -72,12 +72,11 @@ nav {
 
             a {
                 border-bottom: 2px solid transparent;
-                line-height: 1.2;
                 white-space: nowrap;
 
                 &.router-link-exact-active,
                 &:hover {
-                    border-bottom: 2px solid var(--scheme-v2);
+                    border-color: var(--scheme-v2);
                 }
 
                 &.prepared {
@@ -100,7 +99,7 @@ nav {
         font-size: 44px;
     }
 
-    @media all and (max-width: 74em) {
+    @media all and (max-width: 72em) {
         ul {
             background: #fafafa;
             display: none;

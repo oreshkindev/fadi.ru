@@ -39,7 +39,7 @@ const visible = ref(false)
             <tbody>
                 <tr>
                     <td>
-                        <img src="https://dummyimage.com/431x552/" alt="" />
+                        <img src="@/assets/images/Rectangle90.jpg" alt="" />
                     </td>
                     <td>
                         Константин Констанинопольский
@@ -78,7 +78,7 @@ const visible = ref(false)
                 </tr>
                 <tr>
                     <td>
-                        <img src="https://dummyimage.com/431x552/" alt="" />
+                        <img src="@/assets/images/Rectangle90.jpg" alt="" />
                     </td>
                     <td>Иван Ковтунов <span>konstant@mail.ru</span></td>
                     <td>21 марта. 2022 года</td>
@@ -90,7 +90,7 @@ const visible = ref(false)
                 </tr>
                 <tr>
                     <td>
-                        <img src="https://dummyimage.com/431x552/" alt="" />
+                        <img src="@/assets/images/Rectangle90.jpg" alt="" />
                     </td>
                     <td>
                         Анастасия Венецкая

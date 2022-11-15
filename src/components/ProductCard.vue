@@ -5,7 +5,14 @@ const props = defineProps(['image', 'sizes', 'url', 'text', 'download'])
 
 <template>
     <article>
-        <img :src="image || 'https://dummyimage.com/16:9x432/'" alt="" />
+        <!-- не забываем сжать изображения перед подключением https://avif.io -->
+        <!-- смотрим как https://avif.io/blog/tutorials/html/ -->
+        <!-- здесь сжимаем все остальное кроме .avif https://squoosh.app/ -->
+        <picture>
+            <source :srcset="`src/assets/images/${image}.avif`" type="image/avif" />
+            <source :srcset="`src/assets/images/${image}.webp`" type="image/webp" />
+            <img :src="`src/assets/images/${image}.jpg`" decoding="async" :alt="text" loading="lazy" />
+        </picture>
 
         <ul v-if="sizes">
             <span>Размер</span>
@@ -25,8 +32,10 @@ article {
     // max-width: min-content;
     max-width: 431px;
 
-    img {
-        width: 100%;
+    picture {
+        img {
+            width: 100%;
+        }
     }
 
     ul {
@@ -53,10 +62,11 @@ article {
 
     a {
         display: inline-block;
-        color: var(--scheme-v5);
+        color: var(--scheme-v2);
     }
 
-    @media all and (max-width: 60em) {
+    // базовый breakpoint 1152px
+    @media all and (max-width: 72em) {
         ul {
             grid-template-columns: repeat(3, 1fr);
         }

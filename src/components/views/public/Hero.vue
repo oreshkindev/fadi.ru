@@ -52,6 +52,7 @@ section {
         margin: 0 auto 0 0;
         max-width: 482px;
         padding: 0 0 0 20px;
+        text-transform: none;
     }
 
     span {
@@ -96,7 +97,8 @@ section {
         }
     }
 
-    @media all and (max-width: 60em) {
+    // базовый breakpoint 1152px
+    @media all and (max-width: 72em) {
         gap: 20px;
 
         h1 {
@@ -127,14 +129,8 @@ section {
 
         button {
             grid-column: 1 / 8;
-            margin: auto;
+            margin: 40px auto;
             order: 1;
-        }
-    }
-
-    @media all and (max-width: 48em) {
-        span {
-            font: 700 var(--scheme-m) / 1 var(--scheme-font);
         }
     }
 }

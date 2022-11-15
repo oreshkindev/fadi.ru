@@ -10,7 +10,15 @@ import NamedButton from '@/components/ui/NamedButton.vue'
         </div>
 
         <article>
-            <img src="https://dummyimage.com/16:9x1080/" alt="" />
+            <!-- не забываем сжать изображения перед подключением https://avif.io -->
+            <!-- смотрим как https://avif.io/blog/tutorials/html/ -->
+            <!-- здесь сжимаем все остальное кроме .avif https://squoosh.app/ -->
+            <picture>
+                <source srcset="@/assets/images/Rectangle115.avif" type="image/avif" />
+                <source srcset="@/assets/images/Rectangle115.webp" type="image/webp" />
+                <img src="@/assets/images/Rectangle115.jpg" decoding="async" alt="Детские выкройки" loading="lazy" />
+            </picture>
+
             <NamedButton icon="icon-arrow-top-right" text="Посмотреть каталог" />
             <p>
                 Умеренноый объём, прямой силуэт, длина — до линии бёдер. Плечо спущено на 7 см от естественной точки плеча. Перед и спинка с рельефами, образующими V-образную
@@ -44,7 +52,7 @@ section {
         grid-template-columns: 1fr 1fr;
         padding: 0 var(--scheme-gap) 0 0;
 
-        img {
+        picture {
             grid-row: 1 / 4;
             border-right: 1px solid var(--scheme-v3);
             padding: 40px 40px 0 0;
@@ -62,11 +70,12 @@ section {
         }
     }
 
-    @media all and (max-width: 60em) {
+    // базовый breakpoint 1152px
+    @media all and (max-width: 72em) {
         article {
             padding: var(--scheme-gap);
 
-            img {
+            picture {
                 border: none;
                 grid-column: 1 / 3;
                 padding: 0;

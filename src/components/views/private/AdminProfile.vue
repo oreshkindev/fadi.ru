@@ -35,7 +35,7 @@
             <tbody>
                 <tr>
                     <td>
-                        <img src="https://dummyimage.com/431x552/" alt="" />
+                        <img src="@/assets/images/Rectangle90.jpg" alt="" />
                     </td>
                     <td>
                         Константин Констанинопольский
@@ -49,7 +49,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <img src="https://dummyimage.com/431x552/" alt="" />
+                        <img src="@/assets/images/Rectangle90.jpg" alt="" />
                     </td>
                     <td>Иван Ковтунов <span>konstant@mail.ru</span></td>
                     <td>+ 7 902 332 55 33</td>
@@ -60,7 +60,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <img src="https://dummyimage.com/431x552/" alt="" />
+                        <img src="@/assets/images/Rectangle90.jpg" alt="" />
                     </td>
                     <td>
                         Анастасия Венецкая

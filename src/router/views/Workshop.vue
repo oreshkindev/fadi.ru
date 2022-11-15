@@ -1,13 +1,77 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import Backward from '@/components/ui/Backward.vue'
-import PopularPatterns from '@/components/PopularPatterns.vue'
-import Requirment from '@/components/Requirment.vue'
+// components/ui
+import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
+import Checkbox from '@/components/ui/Checkbox.vue'
+// components/forms
+import FormGroup from '@/components/forms/FormGroup.vue'
+//
+import { defineAsyncComponent, ref } from 'vue'
+
+const PopularPatterns = defineAsyncComponent(() => import('@/components/PopularPatterns.vue'))
+
+// TODO: доставать из состояния
+// получаем массив с выкройками
+const array = [
+    {
+        id: 1,
+        image: 'Rectangle120',
+        text: 'Выкройка фади № 1',
+        doc: '#',
+        category: 1,
+    },
+    {
+        id: 2,
+        image: 'Rectangle121',
+        text: 'Выкройка фади № 2',
+        doc: '#',
+        category: 2,
+    },
+    {
+        id: 3,
+        image: 'Rectangle450',
+        text: 'Выкройка фади № 3',
+        doc: '#',
+        category: 4,
+    },
+    {
+        id: 4,
+        image: 'Rectangle451',
+        text: 'Выкройка фади № 4',
+        doc: '#',
+        category: 3,
+    },
+    {
+        id: 5,
+        image: 'Rectangle452',
+        text: 'Выкройка фади № 5',
+        doc: '#',
+        category: 4,
+    },
+    {
+        id: 6,
+        image: 'Rectangle453',
+        text: 'Выкройка фади № 6',
+        doc: '#',
+        category: 1,
+    },
+]
+
+const form = ref({
+    name: '',
+    phone: '',
+})
+
+const checked = ref(false)
+
+const send = (r) => {
+    console.log(r)
+}
 </script>
 
 <template>
     <section>
-        <Backward />
+        <Breadcrumbs />
 
         <h1>Услуги швейного цеха</h1>
 
@@ -27,52 +91,76 @@ import Requirment from '@/components/Requirment.vue'
                 собирает объем спинки.
             </p>
 
-            <Requirment />
+            <h5>Оставьте заявку</h5>
+
+            <p>И мы подробно расскажем Вам о преимуществах работы с компанией «FАDI06»</p>
+
+            <Form-group :data="form" button="Отправить заявку" :checkbox="checked" @prepared="send">
+                <slot>
+                    <input v-model="form.name" type="text" placeholder="Ваше имя" required />
+                    <input v-model="form.phone" type="text" placeholder="Ваш телефон" required />
+
+                    <Checkbox text="Я согласен с политикой конфиденциальности и даю согласие на обработку моих персональных данных" @checked="checked = !checked" />
+                </slot>
+            </Form-group>
         </article>
-        <img src="https://dummyimage.com/1200x2880/" alt="" />
+
+        <!-- не забываем сжать изображения перед подключением https://avif.io -->
+        <!-- смотрим как https://avif.io/blog/tutorials/html/ -->
+        <!-- здесь сжимаем все остальное кроме .avif https://squoosh.app/ -->
+        <picture>
+            <source srcset="@/assets/images/sewing-machines.avif" type="image/avif" />
+            <source srcset="@/assets/images/sewing-machines.webp" type="image/webp" />
+            <img src="@/assets/images/sewing-machines.jpg" decoding="async" alt="Услуги швейного цеха" loading="lazy" />
+        </picture>
     </section>
 
-    <PopularPatterns />
+    <PopularPatterns :array="array" text="Популярные выкройки" />
 </template>
 
 <style lang="scss" scoped>
 section {
     display: grid;
-    gap: var(--scheme-gap);
+    gap: var(--scheme-offset);
 
     h1 {
         grid-column: 1 / 3;
-        margin: 0 auto 100px;
-        text-transform: uppercase;
     }
 
     article {
         grid-column: 1 / 2;
-        padding: 0 60px 0 0;
 
-        p {
-            margin: 20px 0;
+        // ограничиваем ширину контейнера
+        // p {
+        //     max-width: 660px;
+        // }
+
+        h5 {
+            margin: 50px 0 0;
         }
     }
 
-    img {
+    picture {
         grid-column: 2 / 3;
-        width: 100%;
-    }
-
-    @media all and (max-width: 60em) {
-        h1 {
-            font-size: var(--scheme-m);
-            margin: 0;
-        }
-
-        article {
-            grid-column: 1 / 3;
-            padding: 0;
-        }
 
         img {
+            max-width: 400px;
+        }
+    }
+
+    // базовый breakpoint 1152px
+    @media all and (max-width: 72em) {
+        article {
             grid-column: 1 / 3;
+
+            // если ограничили ширину выше
+            // p {
+            //     max-width: 100%;
+            // }
+        }
+
+        picture {
+            display: none;
         }
     }
 }

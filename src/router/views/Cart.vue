@@ -1,13 +1,13 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import Backward from '@/components/ui/Backward.vue'
+import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
 import CardItem from '@/components/CardItem.vue'
 import Checkout from '@/components/Checkout.vue'
 </script>
 
 <template>
     <section>
-        <Backward />
+        <Breadcrumbs />
 
         <h1>Корзина</h1>
 

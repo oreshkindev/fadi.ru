@@ -5,20 +5,20 @@
 <template>
     <ul>
         <li>
-            <img src="@/assets/images/sberbank.svg" alt="Поддерживается оплата через Сбербанк-онлайн" />
+            <img src="@/assets/images/mir.svg" alt="Поддерживается оплата картой Мир" />
         </li>
 
         <li>
-            <img src="@/assets/images/visa.svg" alt="Поддерживается карта Visa" />
+            <img src="@/assets/images/mastercard.svg" alt="Поддерживается оплата картой Mastercard" />
         </li>
 
         <li>
-            <img src="@/assets/images/mastercard-text.svg" alt="Поддерживается карта Mastercard" />
+            <img src="@/assets/images/visa.svg" alt="Поддерживается оплата картой Visa" />
         </li>
     </ul>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 ul {
     display: flex;
     flex-wrap: wrap;
@@ -29,8 +29,8 @@ ul {
         img {
             background-color: var(--scheme-v4);
             border-radius: 6px;
-            height: 60px;
-            max-width: 180px;
+            height: 50px;
+            max-width: 160px;
             padding: 10px 40px;
         }
     }

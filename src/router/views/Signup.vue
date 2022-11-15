@@ -1,16 +1,41 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import Backward from '@/components/ui/Backward.vue'
-import FormSignup from '@/components/forms/FormSignup.vue'
+// components/ui
+import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
+import Checkbox from '@/components/ui/Checkbox.vue'
+// components/forms
+import FormGroup from '@/components/forms/FormGroup.vue'
+//
+import { ref } from 'vue'
+
+const form = ref({
+    email: '',
+    password: '',
+    confirm: '',
+})
+
+const checked = ref(false)
+
+const send = (r) => {
+    console.log(r)
+}
 </script>
 
 <template>
     <section>
-        <Backward :crumbs="['Регистрация', 'Вход']" />
+        <Breadcrumbs :crumbs="['Регистрация', 'Вход']" />
 
-        <h1>Регистрация личног кабинета</h1>
+        <h1>Регистрация личного кабинета</h1>
 
-        <FormSignup />
+        <Form-group :data="form" button="Продолжить" :checkbox="checked" @prepared="send">
+            <slot>
+                <input v-model="form.email" type="text" placeholder="Ваше email" required />
+                <input v-model="form.password" type="text" placeholder="Пароль" required />
+                <input v-model="form.confirm" type="text" placeholder="Повторите пароль" required />
+
+                <Checkbox text="Я согласен с политикой конфиденциальности и даю согласие на обработку моих персональных данных" @checked="checked = !checked" />
+            </slot>
+        </Form-group>
     </section>
 </template>
 
@@ -20,7 +45,7 @@ section {
     gap: var(--scheme-gap);
 
     h1 {
-        font-size: 18px;
+        font-size: var(--scheme-s);
         font-weight: 400;
         grid-column: 1 / 3;
         // text-transform: uppercase;
@@ -32,7 +57,8 @@ section {
         margin: 0 auto 100px;
     }
 
-    @media all and (max-width: 60em) {
+    // базовый breakpoint 1152px
+    @media all and (max-width: 72em) {
     }
 }
 </style>

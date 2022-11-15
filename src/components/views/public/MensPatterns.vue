@@ -7,9 +7,9 @@ import ProductCard from '@/components/ProductCard.vue'
 <template>
     <section>
         <h3>Мужские выкройки</h3>
-        <ProductCard :sizes="[38, 40, 42, 44]" />
+        <ProductCard image="Rectangle90" :sizes="[38, 40, 42, 44]" />
         <hr />
-        <ProductCard :sizes="[38, 40, 42, 44]" />
+        <ProductCard image="Rectangle90" :sizes="[38, 40, 42, 44]" />
         <hr />
         <NamedButton icon="icon-arrow-top-right" text="Посмотреть каталог" />
     </section>
@@ -33,8 +33,10 @@ section {
     }
 
     :deep(article) {
-        img {
-            padding: var(--scheme-gap) 0 0;
+        picture {
+            img {
+                padding: var(--scheme-gap) 0 0;
+            }
         }
         a {
             margin: var(--scheme-gap) 0 20px;
@@ -47,9 +49,14 @@ section {
         margin: var(--scheme-gap) auto auto 0;
     }
 
-    @media all and (max-width: 74em) {
+    // базовый breakpoint 1152px
+    @media all and (max-width: 72em) {
         gap: 0;
-        grid-template-columns: repeat(3, auto);
+        grid-template-columns: 1fr auto 1fr;
+
+        article {
+            max-width: 100%;
+        }
 
         hr {
             margin: 0 var(--scheme-gap) 0 0;
@@ -62,11 +69,14 @@ section {
 
         button {
             grid-column: 1 / 3;
-            margin: var(--scheme-gap) auto 0 0;
+            margin: var(--scheme-gap) auto;
         }
     }
 
-    @media all and (max-width: 60em) {
+    // последний breakpoint для Samsung S10 360x760px
+    @media all and (max-width: 42em) {
+        grid-template-columns: 1fr;
+
         hr {
             border-bottom: 1px solid var(--scheme-v3);
             grid-column: 1 / 3;
@@ -75,6 +85,17 @@ section {
 
         article {
             grid-column: 1 / 3;
+        }
+
+        :deep(article) {
+            picture {
+                img {
+                    padding: 0;
+                }
+            }
+            a {
+                margin: 20px 0;
+            }
         }
     }
 }

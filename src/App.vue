@@ -142,9 +142,9 @@ import NavbarProfile from '@/components/views/NavbarProfile.vue'
 
     // project font-family
     --scheme-font: 'Roboto', 'Helvetica', Arial, sans-serif;
-    --scheme-h: 82px;
-    --scheme-m: 64px;
-    --scheme-xm: 45px;
+    --scheme-h: clamp(52px, 4vw, 92px);
+    --scheme-m: clamp(36px, 4vw, 82px);
+    --scheme-xm: clamp(26px, 4vw, 42px);
     --scheme-s: 16px;
 
     // project default template width
@@ -158,7 +158,7 @@ import NavbarProfile from '@/components/views/NavbarProfile.vue'
     --scheme-gap: 40px;
 
     // project ex. header & footer height
-    --scheme-offset: 100px;
+    --scheme-offset: 80px;
 
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -168,10 +168,13 @@ import NavbarProfile from '@/components/views/NavbarProfile.vue'
     -webkit-text-size-adjust: 100%;
 }
 
-@media all and (max-width: 60em) {
+@media all and (max-width: 42em) {
     :root {
-        --scheme-m: 42px;
-        --scheme-xm: 32px;
+        // project default template gap
+        --scheme-gap: 40px 20px;
+
+        // project ex. header & footer height
+        --scheme-offset: 40px;
     }
 }
 
@@ -183,6 +186,8 @@ import NavbarProfile from '@/components/views/NavbarProfile.vue'
 html,
 body {
     height: 100%;
+    margin: auto;
+    max-width: 2560px;
 }
 
 body {
@@ -210,11 +215,13 @@ h2,
 h3,
 h4,
 h5 {
-    font-weight: 400;
+    padding: 0 0 20px;
 }
 
 h1 {
-    font: 700 var(--scheme-h) / 1 var(--scheme-font);
+    font: 700 var(--scheme-h) / 1.22 var(--scheme-font);
+
+    text-transform: uppercase;
 }
 
 h2 {
@@ -231,7 +238,7 @@ h4 {
 }
 
 h5 {
-    font: 400 20px / 1.42 var(--scheme-font);
+    font: 400 var(--scheme-xm) / 1.42 var(--scheme-font);
 }
 
 a {
@@ -241,6 +248,10 @@ a {
 
 b {
     font-weight: 400;
+}
+
+p {
+    padding: 0 0 20px;
 }
 
 strong {
@@ -253,6 +264,10 @@ ul {
     li {
         list-style: none;
     }
+}
+
+img {
+    width: 100%;
 }
 
 svg {
@@ -275,21 +290,25 @@ body:not(:-moz-handler-blocked) fieldset {
     display: table-cell;
 }
 
+input {
+    border: 1px solid var(--scheme-v2);
+    border-radius: 10px;
+    padding: 4px 40px;
+}
+
 input,
 button {
     background: none;
-    border: none;
     box-shadow: none;
 
     font: 100 var(--scheme-s) / 3 var(--scheme-font);
 
     margin: 0;
     outline: none;
-    padding: 0;
 }
 
 button {
-    border-radius: 50px;
+    border: none;
     cursor: pointer;
     text-transform: uppercase;
     white-space: nowrap;

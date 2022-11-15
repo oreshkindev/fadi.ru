@@ -3,12 +3,12 @@
 import { ref } from 'vue'
 
 const arr = ref([
-    'https://dummyimage.com/600.png/',
-    'https://dummyimage.com/700.png/',
-    'https://dummyimage.com/800.png/',
-    'https://dummyimage.com/900.png/',
-    'https://dummyimage.com/1000.png/',
-    'https://dummyimage.com/1100.png/',
+    '../../src/assets/images/Rectangle452.jpg',
+    '../../src/assets/images/Rectangle121.jpg',
+    '../../src/assets/images/Rectangle451.jpg',
+    '../../src/assets/images/Rectangle453.jpg',
+    '../../src/assets/images/Rectangle90.jpg',
+    '../../src/assets/images/Rectangle89.jpg',
 ])
 
 const next = (index) => {

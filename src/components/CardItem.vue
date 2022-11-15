@@ -5,7 +5,7 @@ const props = defineProps(['image', 'size', 'height', 'price', 'text'])
 
 <template>
     <article>
-        <img :src="image || 'https://dummyimage.com/431x552/'" alt="" />
+        <img src="@/assets/images/Rectangle450.jpg" alt="" />
 
         <h4>{{ text || 'Заголовок' }}</h4>
 

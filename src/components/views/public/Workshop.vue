@@ -10,7 +10,15 @@ import NamedButton from '@/components/ui/NamedButton.vue'
         </div>
 
         <article>
-            <img src="https://dummyimage.com/16:9x1080/" alt="" />
+            <!-- не забываем сжать изображения перед подключением https://avif.io -->
+            <!-- смотрим как https://avif.io/blog/tutorials/html/ -->
+            <!-- здесь сжимаем все остальное кроме .avif https://squoosh.app/ -->
+            <picture>
+                <source srcset="src/assets/images/sewing-machines-h.avif" type="image/avif" />
+                <source srcset="src/assets/images/sewing-machines-h.webp" type="image/webp" />
+                <img src="src/assets/images/sewing-machines-h.jpg" decoding="async" alt="Цех" loading="lazy" />
+            </picture>
+
             <NamedButton icon="icon-arrow-top-right" text="Работа цеха" />
             <p>
                 Умеренноый объём, прямой силуэт, длина — до линии бёдер. Плечо спущено на 7 см от естественной точки плеча. Перед и спинка с рельефами, образующими V-образную
@@ -44,7 +52,7 @@ section {
         grid-template-columns: 1fr 1fr;
         padding: 0 var(--scheme-gap) 0 0;
 
-        img {
+        picture {
             grid-row: 1 / 4;
             border-right: 1px solid var(--scheme-v3);
             padding: 40px 40px 0 0;
@@ -62,11 +70,12 @@ section {
         }
     }
 
-    @media all and (max-width: 60em) {
+    // базовый breakpoint 1152px
+    @media all and (max-width: 72em) {
         article {
             padding: var(--scheme-gap);
 
-            img {
+            picture {
                 border: none;
                 grid-column: 1 / 3;
                 padding: 0;
@@ -84,7 +93,8 @@ section {
         }
     }
 
-    @media all and (max-width: 46em) {
+    // последний breakpoint для Samsung S10 360x760px
+    @media all and (max-width: 42em) {
         article {
             button,
             p {

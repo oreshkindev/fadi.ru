@@ -21,7 +21,7 @@ import { ref } from 'vue'
             </li>
 
             <li>
-                <img src="https://dummyimage.com/431x552/" alt="" />
+                <img src="@/assets/images/Rectangle452.jpg" alt="" />
             </li>
         </ul>
     </nav>

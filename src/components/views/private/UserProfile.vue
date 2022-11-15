@@ -32,7 +32,7 @@
             <tbody>
                 <tr>
                     <td>
-                        <img src="https://dummyimage.com/431x552/" alt="" />
+                        <img src="@/assets/images/Rectangle451.jpg" alt="" />
                     </td>
                     <td>Свитер, выкройка Fadi №1</td>
                     <td>11.11.2022</td>
@@ -43,7 +43,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <img src="https://dummyimage.com/431x552/" alt="" />
+                        <img src="@/assets/images/Rectangle451.jpg" alt="" />
                     </td>
                     <td>Свитер, выкройка Fadi №1</td>
                     <td>11.11.2022</td>
@@ -54,7 +54,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <img src="https://dummyimage.com/431x552/" alt="" />
+                        <img src="@/assets/images/Rectangle451.jpg" alt="" />
                     </td>
                     <td>Свитер, выкройка Fadi №1</td>
                     <td>11.11.2022</td>

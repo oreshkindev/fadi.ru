@@ -1,7 +1,7 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 // UI
-import Backward from '@/components/ui/Backward.vue'
+import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
 import Size from '@/components/ui/Size.vue'
 import Included from '@/components/ui/Included.vue'
 import NamedButton from '@/components/ui/NamedButton.vue'
@@ -12,7 +12,7 @@ import Swiper from '@/components/Swiper.vue'
 
 <template>
     <section>
-        <Backward :crumbs="['выкройки', 'для женщин', 'свитер']" />
+        <Breadcrumbs :crumbs="['выкройки', 'для женщин', 'свитер']" />
 
         <Swiper />
 

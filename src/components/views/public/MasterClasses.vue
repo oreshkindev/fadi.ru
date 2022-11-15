@@ -7,7 +7,14 @@ import NamedButton from '@/components/ui/NamedButton.vue'
     <section>
         <h3>Мастер классы</h3>
         <article>
-            <img src="https://dummyimage.com/16:9x1080/" alt="" />
+            <!-- не забываем сжать изображения перед подключением https://avif.io -->
+            <!-- смотрим как https://avif.io/blog/tutorials/html/ -->
+            <!-- здесь сжимаем все остальное кроме .avif https://squoosh.app/ -->
+            <picture>
+                <source srcset="@/assets/images/nobody-cloth.avif" type="image/avif" />
+                <source srcset="@/assets/images/nobody-cloth.webp" type="image/webp" />
+                <img src="@/assets/images/nobody-cloth.jpg" decoding="async" alt="Мастер классы" loading="lazy" />
+            </picture>
             <p>
                 На мастер-классах в режиме онлайн обучаю, как строить выкройки и создавать по ним одежду. Жду всех, кто хочет воплощать свои идеи в жизнь под чутким руководством
                 опытного наставника
