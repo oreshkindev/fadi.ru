@@ -24,7 +24,7 @@ ul {
     place-items: center;
 
     li {
-        background-color: var(--scheme-v3);
+        background-color: var(--scheme-v6);
         display: none;
         padding: 2px 6px;
 

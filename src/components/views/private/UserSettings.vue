@@ -1,6 +1,6 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import NamedButton from '@/components/ui/NamedButton.vue'
+import ButtonContext from '@/components/ui/ButtonContext.vue'
 import { ref } from 'vue'
 
 const visible = ref(false)
@@ -19,7 +19,7 @@ const visible = ref(false)
             <input type="text" placeholder="Новый пароль" />
             <input type="text" placeholder="Повторите пароль" />
 
-            <NamedButton text="Изменить пароль" />
+            <ButtonContext text="Изменить пароль" />
         </form>
 
         <table>

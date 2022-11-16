@@ -1,6 +1,14 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-const props = defineProps(['crumbs'])
+
+const props = defineProps({
+    // TODO:
+    // массив
+    crumbs: {
+        type: Array,
+        default: () => [],
+    },
+})
 </script>
 
 <template>

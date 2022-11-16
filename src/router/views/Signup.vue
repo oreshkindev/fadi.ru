@@ -29,7 +29,7 @@ const send = (r) => {
 
         <Form-group :data="form" button="Продолжить" :checkbox="checked" @prepared="send">
             <slot>
-                <input v-model="form.email" type="text" placeholder="Ваше email" required />
+                <input v-model="form.email" type="text" placeholder="Ваш email" required />
                 <input v-model="form.password" type="text" placeholder="Пароль" required />
                 <input v-model="form.confirm" type="text" placeholder="Повторите пароль" required />
 

@@ -1,50 +1,51 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import NamedButton from '@/components/ui/NamedButton.vue'
+import ButtonContext from '@/components/ui/ButtonContext.vue'
 </script>
 
 <template>
     <section>
         <h3>Бесплатные выкройки</h3>
-        <article>
-            <i class="icon-arrow-top-right"></i>
-            <h4>120+</h4>
-            <p>Бесплатных выкройки</p>
-        </article>
+        <router-link to="/patterns" custom v-slot="{ navigate }">
+            <article @click="navigate" @keypress.enter="navigate" role="link">
+                <i class="icon-arrow-top-right"></i>
+                <h4>120+</h4>
+                Бесплатных выкройки
+            </article>
+        </router-link>
 
-        <hr />
+        <router-link to="/patterns" custom v-slot="{ navigate }">
+            <article @click="navigate" @keypress.enter="navigate" role="link">
+                <i class="icon-arrow-top-right"></i>
+                <h4>3</h4>
+                Услуги для выкройки
+            </article>
+        </router-link>
 
-        <article>
-            <i class="icon-arrow-top-right"></i>
-            <h4>3</h4>
-            <p>Услуги для выкройки</p>
-        </article>
-
-        <hr />
-
-        <NamedButton icon="icon-arrow-top-right" text="Посмотреть каталог" />
+        <ButtonContext icon="icon-arrow-top-right" text="Посмотреть каталог" />
     </section>
 </template>
 
 <style scoped lang="scss">
 section {
     display: grid;
-    grid-template-columns: 1fr auto 1fr auto 1fr;
-
-    hr {
-        border: none;
-        border-right: 1px solid var(--scheme-v3);
-    }
+    grid-template-columns: repeat(3, 1fr);
 
     article {
+        border: 1px solid var(--scheme-v3);
+        border-top: none;
         display: inherit;
-        place-items: center;
         padding: 40px;
+        place-items: center;
         position: relative;
-        border-bottom: 1px solid var(--scheme-v3);
+
+        &:nth-child(3) {
+            border-left: none;
+        }
 
         &:hover {
             background-color: antiquewhite;
+
             cursor: pointer;
         }
     }
@@ -68,18 +69,34 @@ section {
         margin: var(--scheme-gap) auto auto var(--scheme-gap);
     }
 
-    @media all and (max-width: 60em) {
-        grid-template-columns: 1fr;
+    // базовый breakpoint 1152px
+    @media all and (max-width: 72em) {
+        grid-template-columns: 1fr 1fr;
 
         article {
-            grid-column: 1 / 6;
+            border-left: none;
+
+            &:nth-child(3) {
+                border-right: none;
+            }
         }
         hr {
             display: none;
         }
 
         button {
+            grid-column: 1 / 3;
             margin: var(--scheme-gap) auto;
+        }
+    }
+
+    // последний breakpoint для Samsung S10 360x760px
+    @media all and (max-width: 42em) {
+        grid-template-columns: 1fr;
+
+        article {
+            border-right: none;
+            grid-column: 1 / 2;
         }
     }
 }

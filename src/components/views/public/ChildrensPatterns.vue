@@ -1,6 +1,6 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import NamedButton from '@/components/ui/NamedButton.vue'
+import ButtonContext from '@/components/ui/ButtonContext.vue'
 </script>
 
 <template>
@@ -14,12 +14,12 @@ import NamedButton from '@/components/ui/NamedButton.vue'
             <!-- смотрим как https://avif.io/blog/tutorials/html/ -->
             <!-- здесь сжимаем все остальное кроме .avif https://squoosh.app/ -->
             <picture>
-                <source srcset="@/assets/images/Rectangle115.avif" type="image/avif" />
-                <source srcset="@/assets/images/Rectangle115.webp" type="image/webp" />
-                <img src="@/assets/images/Rectangle115.jpg" decoding="async" alt="Детские выкройки" loading="lazy" />
+                <source srcset="src/assets/images/Rectangle115.avif" type="image/avif" />
+                <source srcset="src/assets/images/Rectangle115.webp" type="image/webp" />
+                <img src="src/assets/images/Rectangle115.jpg" decoding="async" alt="Цех" loading="lazy" />
             </picture>
 
-            <NamedButton icon="icon-arrow-top-right" text="Посмотреть каталог" />
+            <ButtonContext icon="icon-arrow-top-right" text="Посмотреть каталог" />
             <p>
                 Умеренноый объём, прямой силуэт, длина — до линии бёдер. Плечо спущено на 7 см от естественной точки плеча. Перед и спинка с рельефами, образующими V-образную
                 линию.
@@ -41,22 +41,17 @@ section {
 
     h3 {
         border-bottom: 1px solid var(--scheme-v3);
-        margin: auto;
-        padding: 20px 0;
-        max-width: var(--scheme-max-width);
     }
 
     article {
         display: grid;
-        gap: 40px;
+        gap: var(--scheme-gap);
         grid-template-columns: 1fr 1fr;
-        padding: 0 var(--scheme-gap) 0 0;
 
         picture {
             grid-row: 1 / 4;
             border-right: 1px solid var(--scheme-v3);
             padding: 40px 40px 0 0;
-            width: 100%;
         }
 
         button {
@@ -93,7 +88,8 @@ section {
         }
     }
 
-    @media all and (max-width: 46em) {
+    // последний breakpoint для Samsung S10 360x760px
+    @media all and (max-width: 42em) {
         article {
             button,
             p {

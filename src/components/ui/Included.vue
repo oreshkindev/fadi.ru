@@ -18,7 +18,7 @@ ul {
     place-items: center;
 
     li {
-        background-color: var(--scheme-v3);
+        background-color: var(--scheme-v6);
         border-radius: 25px;
         padding: 6px 20px;
     }

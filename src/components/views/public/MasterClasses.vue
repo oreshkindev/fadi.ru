@@ -1,6 +1,6 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import NamedButton from '@/components/ui/NamedButton.vue'
+import ButtonContext from '@/components/ui/ButtonContext.vue'
 </script>
 
 <template>
@@ -20,8 +20,8 @@ import NamedButton from '@/components/ui/NamedButton.vue'
                 опытного наставника
             </p>
         </article>
-        <hr />
-        <NamedButton icon="icon-arrow-top-right" text="Смотреть мастерклассы" />
+
+        <ButtonContext icon="icon-arrow-top-right" text="Мастер-классы" />
     </section>
 </template>
 
@@ -29,17 +29,17 @@ import NamedButton from '@/components/ui/NamedButton.vue'
 section {
     display: grid;
     grid-template-columns: 1fr auto;
-    gap: 0 40px;
-
-    hr {
-        border: none;
-        border-right: 1px solid var(--scheme-v3);
-    }
+    gap: 0 var(--scheme-gap);
 
     h3 {
         border-bottom: 1px solid var(--scheme-v3);
         grid-column: 1 / 6;
         padding: 20px 0;
+    }
+
+    article {
+        border-right: 1px solid var(--scheme-v3);
+        padding-right: var(--scheme-gap);
     }
 
     img {
@@ -48,7 +48,7 @@ section {
     }
 
     p {
-        font-size: 42px;
+        font-size: min(4vw, 42px);
         grid-row: 3 / 3;
         margin: var(--scheme-gap) 0 0;
     }
@@ -59,19 +59,15 @@ section {
         margin: var(--scheme-gap) auto auto 0;
     }
 
-    @media all and (max-width: 60em) {
+    // базовый breakpoint 1152px
+    @media all and (max-width: 72em) {
         gap: 0;
 
         article {
+            border-bottom: 1px solid var(--scheme-v3);
+            border-right: none;
             grid-column: 1 / 3;
-
-            p {
-                font-size: var(--scheme-s);
-            }
-        }
-
-        hr {
-            display: none;
+            padding: 0 0 var(--scheme-gap);
         }
 
         button {

@@ -96,17 +96,18 @@ nav {
     button {
         color: var(--scheme-v2);
         display: none;
-        font-size: 44px;
+        font-size: 42px;
     }
 
+    // базовый breakpoint 1152px
     @media all and (max-width: 72em) {
         ul {
-            background: #fafafa;
+            background: var(--scheme-v6);
             display: none;
             grid-column: 1 / 3;
             grid-template-columns: 1fr;
             order: 1;
-            padding: 20px;
+            padding: 20px 0;
             width: 100%;
         }
 

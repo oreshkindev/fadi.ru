@@ -1,7 +1,7 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import { ref } from 'vue'
-import ProductCard from '@/components/ProductCard.vue'
+import ProductItem from '@/components/ProductItem.vue'
 
 const visible = ref(false)
 </script>
@@ -17,15 +17,15 @@ const visible = ref(false)
         </ul>
 
         <div class="showcases">
-            <ProductCard image="https://dummyimage.com/431x552/" text="Как сшить балаклаву из флиса" download="/" />
-            <ProductCard image="https://dummyimage.com/431x552/" text="Как сшить балаклаву из флиса" download="/" />
-            <ProductCard image="https://dummyimage.com/431x552/" text="Как сшить балаклаву из флиса" download="/" />
+            <ProductItem image="https://dummyimage.com/431x552/" text="Как сшить балаклаву из флиса" download="/" />
+            <ProductItem image="https://dummyimage.com/431x552/" text="Как сшить балаклаву из флиса" download="/" />
+            <ProductItem image="https://dummyimage.com/431x552/" text="Как сшить балаклаву из флиса" download="/" />
 
             <!--  -->
 
-            <ProductCard image="https://dummyimage.com/431x552/" text="Как сшить балаклаву из флиса" download="/" />
-            <ProductCard image="https://dummyimage.com/431x552/" text="Как сшить балаклаву из флиса" download="/" />
-            <ProductCard image="https://dummyimage.com/431x552/" text="Как сшить балаклаву из флиса" download="/" />
+            <ProductItem image="https://dummyimage.com/431x552/" text="Как сшить балаклаву из флиса" download="/" />
+            <ProductItem image="https://dummyimage.com/431x552/" text="Как сшить балаклаву из флиса" download="/" />
+            <ProductItem image="https://dummyimage.com/431x552/" text="Как сшить балаклаву из флиса" download="/" />
         </div>
     </section>
 </template>

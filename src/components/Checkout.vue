@@ -1,6 +1,6 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import NamedButton from '@/components/ui/NamedButton.vue'
+import ButtonContext from '@/components/ui/ButtonContext.vue'
 </script>
 
 <template>
@@ -15,7 +15,7 @@ import NamedButton from '@/components/ui/NamedButton.vue'
             Оплата
             <span>Картой</span>
         </p>
-        <NamedButton icon="icon-arrow-top-right" text="Оплатить заказ" size="20px" />
+        <ButtonContext icon="icon-arrow-top-right" text="Оплатить заказ" size="20px" />
     </ul>
 </template>
 

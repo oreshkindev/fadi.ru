@@ -62,7 +62,7 @@ form {
         border-radius: 50px;
         color: var(--scheme-v2);
         margin: 20px 0;
-        padding: 4px 60px;
+        padding: 4px 40px;
         text-transform: uppercase;
         white-space: nowrap;
 

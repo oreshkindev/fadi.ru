@@ -1,6 +1,6 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import NamedButton from '@/components/ui/NamedButton.vue'
+import ButtonContext from '@/components/ui/ButtonContext.vue'
 </script>
 
 <template>
@@ -26,7 +26,7 @@ import NamedButton from '@/components/ui/NamedButton.vue'
                 <input type="text" placeholder="С чем она связанна" />
                 <input type="text" placeholder="Укажите ваш номер" />
 
-                <NamedButton text="Отправить" />
+                <ButtonContext text="Отправить" />
             </form>
         </div>
 

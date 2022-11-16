@@ -1,10 +1,10 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-// UI
+// ui
 import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
 import Size from '@/components/ui/Size.vue'
 import Included from '@/components/ui/Included.vue'
-import NamedButton from '@/components/ui/NamedButton.vue'
+import ButtonContext from '@/components/ui/ButtonContext.vue'
 // Список популярных товаров
 import PopularPatterns from '@/components/PopularPatterns.vue'
 import Swiper from '@/components/Swiper.vue'
@@ -25,7 +25,7 @@ import Swiper from '@/components/Swiper.vue'
 
             <h4>150 р</h4>
 
-            <NamedButton icon="icon-arrow-top-right" text="Добавить в корзину" />
+            <ButtonContext icon="icon-arrow-top-right" text="Добавить в корзину" />
 
             <p>
                 <small>Ссылки на скачивание купленной выкройки будут отправлены на ваш электронный адрес, а также скачать выкройки можно в личном кабинете</small>

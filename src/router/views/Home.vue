@@ -8,8 +8,8 @@ import ChildrensPatterns from '@/components/views/public/ChildrensPatterns.vue'
 import MasterClasses from '@/components/views/public/MasterClasses.vue'
 import FreePatterns from '@/components/views/public/FreePatterns.vue'
 import Reviews from '@/components/views/public/Reviews.vue'
-// import NamedButton from '@/components/NamedButton.vue'
-// import ProductCard from '@/components/ProductCard.vue'
+// import ButtonContext from '@/components/ButtonContext.vue'
+// import ProductItem from '@/components/ProductItem.vue'
 </script>
 
 <template>

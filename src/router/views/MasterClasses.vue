@@ -60,18 +60,24 @@ const array = [
         category: 1,
     },
 ]
+
+// подготавливаем поисковой запрос
+const query = ref('')
+
+const prepareQuery = (r) => {
+    query.value = r.toLowerCase()
+}
 </script>
 
 <template>
     <section>
         <Breadcrumbs />
-
         <h1>
             Мастер-классы <br />
             от опытного наставника
         </h1>
 
-        <SearchBar />
+        <SearchBar @query="prepareQuery" />
 
         <p>
             Плащ свободного объема, немного расклешенного силуэта, длиной ниже линии колен, без подкладки. Перед с центральной бортовой застежкой на кнопки или пришивные пуговицы и
@@ -84,7 +90,7 @@ const array = [
             </ul>
         </nav>
 
-        <PopularPatterns :array="array" :category="index" />
+        <PopularPatterns :array="array" :category="index" :query="query" />
     </section>
 </template>
 

@@ -136,7 +136,8 @@ section {
         width: 45%;
     }
 
-    @media all and (max-width: 60em) {
+    // базовый breakpoint 1152px
+    @media all and (max-width: 72em) {
         display: grid;
         .container {
             grid-template-columns: 1fr;
@@ -155,7 +156,8 @@ section {
         }
     }
 
-    @media all and (max-width: 48em) {
+    // последний breakpoint для Samsung S10 360x760px
+    @media all and (max-width: 42em) {
         .container {
             article {
                 p {
