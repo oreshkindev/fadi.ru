@@ -22,7 +22,7 @@ const props = defineProps({
 
         <ul v-if="crumbs">
             <li v-for="item in crumbs" :key="item">
-                <router-link :to="item == 'Регистрация' ? '/signup' : '/'">{{ item }}</router-link>
+                <router-link :to="item == 'Регистрация' ? '/register' : '/'">{{ item }}</router-link>
             </li>
         </ul>
     </nav>

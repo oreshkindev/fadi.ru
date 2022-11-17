@@ -11,9 +11,9 @@ import Checkout from '@/components/Checkout.vue'
 
         <h1>Корзина</h1>
 
-        <CardItem text="Выкройка балаклава" :price="150" :size="46" height="170-176" />
-        <CardItem text="Выкройка балаклава" :price="150" :size="46" height="170-176" />
-        <CardItem text="Выкройка балаклава" :price="150" :size="46" height="170-176" />
+        <CardItem text="Выкройка балаклава" image="Rectangle450" :price="150" :size="46" height="170-176" />
+        <CardItem text="Выкройка балаклава" image="Rectangle452" :price="250" :size="36" height="140-146" />
+        <CardItem text="Выкройка балаклава" image="Rectangle451" :price="350" :size="42" height="150-156" />
 
         <Checkout />
     </section>
@@ -47,7 +47,8 @@ section {
         grid-column: 1 / 3;
     }
 
-    @media all and (max-width: 60em) {
+    // базовый breakpoint 1152px
+    @media all and (max-width: 72em) {
         h1 {
             font-size: var(--scheme-m);
             margin: 0;

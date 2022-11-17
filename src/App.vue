@@ -4,11 +4,19 @@
 import HeaderNavbar from '@/components/views/HeaderNavbar.vue'
 import FooterNavbar from '@/components/views/FooterNavbar.vue'
 import NavbarProfile from '@/components/views/NavbarProfile.vue'
+//
+import { useStore } from 'vuex'
+import { computed } from 'vue'
+
+const store = useStore()
+
+const auth = computed(() => store.getters['auth/auth_token'])
 </script>
 
 <template>
+    {{ store.state.auth.auth_token }}
     <header>
-        <HeaderNavbar v-if="!$route.meta.requireAuth" />
+        <HeaderNavbar v-if="!auth" />
         <NavbarProfile v-else />
     </header>
 

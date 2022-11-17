@@ -10,13 +10,9 @@ import ButtonContext from '@/components/ui/ButtonContext.vue'
         </div>
 
         <article>
-            <!-- не забываем сжать изображения перед подключением https://avif.io -->
-            <!-- смотрим как https://avif.io/blog/tutorials/html/ -->
-            <!-- здесь сжимаем все остальное кроме .avif https://squoosh.app/ -->
             <picture>
-                <source srcset="src/assets/images/Rectangle115.avif" type="image/avif" />
-                <source srcset="src/assets/images/Rectangle115.webp" type="image/webp" />
-                <img src="src/assets/images/Rectangle115.jpg" decoding="async" alt="Цех" loading="lazy" />
+                <!-- <source srcset="@/assets/images/Rectangle115.webp" type="image/webp" /> -->
+                <img src="@/assets/images/Rectangle115.avif" decoding="async" alt="Цех" loading="lazy" />
             </picture>
 
             <ButtonContext icon="icon-arrow-top-right" text="Посмотреть каталог" />

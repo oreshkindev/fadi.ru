@@ -6,8 +6,13 @@ import Checkbox from '@/components/ui/Checkbox.vue'
 // components/forms
 import FormGroup from '@/components/forms/FormGroup.vue'
 //
-import { ref } from 'vue'
+import { useStore } from 'vuex'
+import { ref, computed } from 'vue'
 
+// Определяем наше хранилище
+const store = useStore()
+
+// Подготавливаем форму
 const form = ref({
     email: '',
     password: '',
@@ -16,8 +21,15 @@ const form = ref({
 
 const checked = ref(false)
 
-const send = (r) => {
-    console.log(r)
+// выводим ошибку
+const error = computed(() => store.getters['user/error'])
+
+// проверяем пояля и отправляем форму
+const send = () => {
+    if (form.value.confirm === form.value.password) {
+        store.dispatch('user/create', form.value)
+        return
+    }
 }
 </script>
 
@@ -27,11 +39,13 @@ const send = (r) => {
 
         <h1>Регистрация личного кабинета</h1>
 
+        <p>{{ error?.email }}</p>
+
         <Form-group :data="form" button="Продолжить" :checkbox="checked" @prepared="send">
             <slot>
-                <input v-model="form.email" type="text" placeholder="Ваш email" required />
+                <input v-model="form.email" type="text" placeholder="Ваш email" required :class="{ error: error?.email }" />
                 <input v-model="form.password" type="text" placeholder="Пароль" required />
-                <input v-model="form.confirm" type="text" placeholder="Повторите пароль" required />
+                <input v-model="form.confirm" type="text" placeholder="Повторите пароль" required :class="{ error: form.confirm !== form.password }" />
 
                 <Checkbox text="Я согласен с политикой конфиденциальности и даю согласие на обработку моих персональных данных" @checked="checked = !checked" />
             </slot>
@@ -52,6 +66,11 @@ section {
         margin: 100px auto 0;
     }
 
+    p {
+        grid-column: 1 / 3;
+        margin: auto;
+    }
+
     :deep(form) {
         grid-column: 1 / 3;
         margin: 0 auto 100px;
@@ -60,5 +79,9 @@ section {
     // базовый breakpoint 1152px
     @media all and (max-width: 72em) {
     }
+}
+
+.error {
+    border-color: red;
 }
 </style>

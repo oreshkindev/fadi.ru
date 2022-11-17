@@ -105,13 +105,9 @@ const send = (r) => {
             </Form-group>
         </article>
 
-        <!-- не забываем сжать изображения перед подключением https://avif.io -->
-        <!-- смотрим как https://avif.io/blog/tutorials/html/ -->
-        <!-- здесь сжимаем все остальное кроме .avif https://squoosh.app/ -->
         <picture>
-            <source srcset="@/assets/images/sewing-machines.avif" type="image/avif" />
-            <source srcset="@/assets/images/sewing-machines.webp" type="image/webp" />
-            <img src="@/assets/images/sewing-machines.jpg" decoding="async" alt="Услуги швейного цеха" loading="lazy" />
+            <!-- <source srcset="@/assets/images/sewing-machines.webp" type="image/webp" /> -->
+            <img src="@/assets/images/sewing-machines.avif" decoding="async" alt="Услуги швейного цеха" loading="lazy" />
         </picture>
     </section>
 

@@ -15,3 +15,20 @@ const route = useRoute()
 </script>
 
 <style lang="scss" scoped></style>
+
+<!-- <script setup>
+import { useStore } from 'vuex'
+import { computed } from 'vue'
+
+const route = useRoute()
+
+// Use the useActions as you would use mapActions
+const store = useStore()
+
+let category = computed(() => store.getters['session/get'])
+
+const getCategory = () => {
+    store.dispatch('session/getCategory')
+}
+</script>
+ -->

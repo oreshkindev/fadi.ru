@@ -10,13 +10,9 @@ import ButtonContext from '@/components/ui/ButtonContext.vue'
         </div>
 
         <article>
-            <!-- не забываем сжать изображения перед подключением https://avif.io -->
-            <!-- смотрим как https://avif.io/blog/tutorials/html/ -->
-            <!-- здесь сжимаем все остальное кроме .avif https://squoosh.app/ -->
             <picture>
-                <source srcset="src/assets/images/sewing-machines-h.avif" type="image/avif" />
-                <source srcset="src/assets/images/sewing-machines-h.webp" type="image/webp" />
-                <img src="src/assets/images/sewing-machines-h.jpg" decoding="async" alt="Цех" loading="lazy" />
+                <!-- <source srcset="@/assets/images/sewing-machines-h.webp" type="image/webp" /> -->
+                <img src="@/assets/images/sewing-machines-h.avif" decoding="async" alt="Цех" loading="lazy" />
             </picture>
 
             <ButtonContext icon="icon-arrow-top-right" text="Работа цеха" />

@@ -54,13 +54,9 @@ import Badge from '@/components/Badge.vue'
             </article>
         </div>
 
-        <!-- не забываем сжать изображения перед подключением https://avif.io -->
-        <!-- смотрим как https://avif.io/blog/tutorials/html/ -->
-        <!-- здесь сжимаем все остальное кроме .avif https://squoosh.app/ -->
         <picture>
-            <source srcset="@/assets/images/Rectangle118.avif" type="image/avif" />
-            <source srcset="@/assets/images/Rectangle118.webp" type="image/webp" />
-            <img src="@/assets/images/Rectangle118.jpg" decoding="async" alt="" loading="lazy" />
+            <!-- <source srcset="@/assets/images/Rectangle118.webp" type="image/webp" /> -->
+            <img src="@/assets/images/Rectangle118.avif" decoding="async" alt="" loading="lazy" />
         </picture>
 
         <Badge />

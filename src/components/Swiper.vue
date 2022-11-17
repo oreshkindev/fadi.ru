@@ -2,38 +2,33 @@
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import { ref } from 'vue'
 
-const arr = ref([
-    '../../src/assets/images/Rectangle452.jpg',
-    '../../src/assets/images/Rectangle121.jpg',
-    '../../src/assets/images/Rectangle451.jpg',
-    '../../src/assets/images/Rectangle453.jpg',
-    '../../src/assets/images/Rectangle90.jpg',
-    '../../src/assets/images/Rectangle89.jpg',
-])
+import Image from '@/components/image.vue'
+
+const images = ref(['Rectangle452', 'Rectangle121', 'Rectangle451', 'Rectangle453', 'Rectangle90', 'Rectangle89'])
 
 const next = (index) => {
     if (index != 0) {
-        const first = arr.value.shift()
+        const first = images.value.shift()
         //
-        arr.value = arr.value.concat(first)
+        images.value = images.value.concat(first)
     }
 }
 </script>
 
 <template>
-    <picture class="swiper">
-        <img v-for="(item, index) in arr" :key="index" :src="index < 4 ? item : ''" @click="next(index)" alt="" />
-    </picture>
+    <div class="swiper">
+        <Image v-for="(item, index) in images" :key="index" :text="item" @click="next(index)" />
+    </div>
 </template>
 
 <style lang="scss" scoped>
-picture {
+.swiper {
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 20px;
     height: min-content;
 
-    img {
+    picture {
         width: 110px;
 
         &:first-child {
@@ -61,7 +56,7 @@ picture {
         display: flex;
         flex-wrap: wrap;
 
-        img {
+        picture {
             &:first-child {
                 flex: 100%;
                 max-width: 100%;
@@ -70,7 +65,7 @@ picture {
     }
 
     @media all and (max-width: 48em) {
-        img {
+        picture {
             width: 80px;
         }
     }

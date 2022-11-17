@@ -2,7 +2,7 @@
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import PatternItem from '@/components/PatternItem.vue'
 //
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps({
     // схема

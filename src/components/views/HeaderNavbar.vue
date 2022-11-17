@@ -11,7 +11,9 @@ const visible = ref(false)
 
 <template>
     <nav>
-        <img src="@/assets/images/fadi-VI-logo.svg" alt="Fadi — онлайн-магазин готовых выкроек." />
+        <router-link to="/" custom v-slot="{ navigate }">
+            <img src="@/assets/images/fadi-VI-logo.svg" @click="navigate" @keypress.enter="navigate" alt="Fadi — онлайн-магазин готовых выкроек." />
+        </router-link>
 
         <ul :class="{ visible: visible }">
             <li>
@@ -31,7 +33,7 @@ const visible = ref(false)
             </li>
 
             <li>
-                <router-link to="/signin" class="prepared">Войти</router-link>
+                <router-link to="/login" class="prepared">Войти</router-link>
 
                 <BadgeButton class="icon-user" size="22px" />
             </li>
@@ -57,6 +59,10 @@ nav {
     justify-content: space-between;
     gap: var(--scheme-gap);
     place-items: center;
+
+    img {
+        cursor: pointer;
+    }
 
     ul {
         display: inherit;

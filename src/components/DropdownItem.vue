@@ -10,22 +10,26 @@ const open = () => {
 </script>
 
 <template>
-    <ol :class="{ visible: visible }">
+    <article :class="{ visible: visible }">
         <span @click="open">
-            <slot name="accordion-trigger"></slot>
+            <slot name="dropdown-trigger" @click="open"></slot>
         </span>
 
         <div v-show="visible">
             <!-- Этот слот будет обрабатывать все содержимое, которое передается в него -->
-            <slot name="accordion-content"></slot>
+            <slot name="dropdown-content"></slot>
         </div>
-    </ol>
+    </article>
 </template>
 
 <style lang="scss" scoped>
-ol {
+article {
     span {
+        border-bottom: 1px solid var(--scheme-v3);
         cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        position: relative;
 
         &::after {
             color: var(--scheme-v2);
@@ -33,9 +37,16 @@ ol {
             display: inline-block;
             font-family: 'fadi';
             font-size: 24px;
-            margin: 0 0 0 20px;
+            margin: 0 20px 0 20px;
             transform: rotate(90deg);
+            position: absolute;
+            right: 0;
+            top: 25%;
         }
+    }
+
+    div {
+        padding: var(--scheme-gap) 0;
     }
 
     &.visible {

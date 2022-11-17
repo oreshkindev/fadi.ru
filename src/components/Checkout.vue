@@ -52,7 +52,8 @@ ul {
         margin: var(--scheme-gap) auto auto 0;
     }
 
-    @media all and (max-width: 60em) {
+    // базовый breakpoint 1152px
+    @media all and (max-width: 72em) {
         grid-template-columns: inherit;
         grid-column: 1 / 3;
     }

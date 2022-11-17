@@ -4,20 +4,20 @@ import routes from './views'
 const router = createRouter({
     history: createWebHistory(),
     routes,
+    scrollBehavior() {
+        window.scrollTo(0, 0)
+    },
 })
 
-// router.beforeEach((to, from, next) => {
-//   const publicPages = ['/login', '/register', '/home'];
-//   const authRequired = !publicPages.includes(to.path);
-//   const loggedIn = localStorage.getItem('user');
+router.beforeEach((to, from, next) => {
+    const isGuest = localStorage.getItem('fadi.auth_token')
 
-//   // trying to access a restricted page + not logged in
-//   // redirect to login page
-//   if (authRequired && !loggedIn) {
-//     next('/login');
-//   } else {
-//     next();
-//   }
-// });
+    // перенаправляем на авторизацию если еще гость
+    if (to.meta.requireAuth && !isGuest) {
+        next('/login')
+    } else {
+        next()
+    }
+})
 
 export default router

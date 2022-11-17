@@ -146,7 +146,7 @@ section {
         padding: var(--scheme-gap) 0;
     }
 
-    picture {
+    div {
         grid-column: 1 / 2;
     }
 
@@ -197,7 +197,7 @@ section {
 
     @media all and (max-width: 60em) {
         article,
-        picture {
+        div {
             grid-column: 1 / 3;
         }
     }

@@ -32,6 +32,10 @@ const routes = [
         component: Patterns,
     },
     {
+        path: '/patterns/:category/:id',
+        component: PatternsView,
+    },
+    {
         path: '/master-classes',
         component: MasterClasses,
     },
@@ -42,21 +46,17 @@ const routes = [
         component: Cart,
     },
     {
-        path: '/signin',
+        path: '/login',
         component: Signin,
     },
     {
-        path: '/signup',
+        path: '/register',
         component: Signup,
-    },
-    {
-        path: '/patterns/:category/:id',
-        component: PatternsView,
     },
     {
         path: '/admin',
         name: 'admin',
-        // only authenticated users can create posts
+        // только для авторизованных пользователей
         meta: { requireAuth: true },
         // lazy-loaded
         component: AdminProfile,
@@ -64,7 +64,7 @@ const routes = [
     {
         path: '/admin/history',
         name: 'admin-history',
-        // only authenticated users can create posts
+        // только для авторизованных пользователей
         meta: { requireAuth: true },
         // lazy-loaded
         component: AdminHistory,
@@ -72,7 +72,7 @@ const routes = [
     {
         path: '/admin/issues',
         name: 'admin-issues',
-        // only authenticated users can create posts
+        // только для авторизованных пользователей
         meta: { requireAuth: true },
         // lazy-loaded
         component: AdminIssues,
@@ -86,7 +86,7 @@ const routes = [
     {
         path: '/user',
         name: 'user',
-        // only authenticated users can create posts
+        // только для авторизованных пользователей
         meta: { requireAuth: true },
         // lazy-loaded
         component: UserProfile,
@@ -94,7 +94,7 @@ const routes = [
     {
         path: '/user/settings',
         name: 'user-settings',
-        // only authenticated users can create posts
+        // только для авторизованных пользователей
         meta: { requireAuth: true },
         // lazy-loaded
         component: UserSettings,
@@ -102,7 +102,7 @@ const routes = [
     {
         path: '/user/issues',
         name: 'user-issues',
-        // only authenticated users can create posts
+        // только для авторизованных пользователей
         meta: { requireAuth: true },
         // lazy-loaded
         component: UserIssues,

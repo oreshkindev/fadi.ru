@@ -1,5 +1,7 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
+import Image from '@/components/image.vue'
+
 const props = defineProps({
     // идентификатор товара
     id: {
@@ -26,14 +28,7 @@ const props = defineProps({
 
 <template>
     <article>
-        <!-- не забываем сжать изображения перед подключением https://avif.io -->
-        <!-- смотрим как https://avif.io/blog/tutorials/html/ -->
-        <!-- здесь сжимаем все остальное кроме .avif https://squoosh.app/ -->
-        <picture>
-            <source :srcset="`src/assets/images/${image}.avif`" type="image/avif" />
-            <source :srcset="`src/assets/images/${image}.webp`" type="image/webp" />
-            <img :src="`src/assets/images/${image}.jpg`" decoding="async" :alt="text" loading="lazy" />
-        </picture>
+        <Image :text="image" />
 
         <p>
             {{ text }}

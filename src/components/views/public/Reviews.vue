@@ -9,13 +9,9 @@ import ButtonContext from '@/components/ui/ButtonContext.vue'
         <article>
             <h5>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnaLorem ipsum dolor sit amet</h5>
 
-            <!-- не забываем сжать изображения перед подключением https://avif.io -->
-            <!-- смотрим как https://avif.io/blog/tutorials/html/ -->
-            <!-- здесь сжимаем все остальное кроме .avif https://squoosh.app/ -->
             <picture>
-                <source srcset="@/assets/images/Ellipse24.avif" type="image/avif" />
-                <source srcset="@/assets/images/Ellipse24.webp" type="image/webp" />
-                <img src="@/assets/images/Ellipse24.jpg" decoding="async" alt="Ольга Наташкина" loading="lazy" />
+                <!-- <source srcset="@/assets/images/Ellipse24.webp" type="image/webp" /> -->
+                <img src="@/assets/images/Ellipse24.avif" decoding="async" alt="Ольга Наташкина" loading="lazy" />
             </picture>
             <p>
                 <span>Ольга Наташкина</span>

@@ -1,13 +1,36 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-const props = defineProps(['image', 'size', 'height', 'price', 'text'])
+import Image from '@/components/image.vue'
+
+const props = defineProps({
+    // имя файла без расширения
+    image: {
+        type: String,
+    },
+    // выбранный размер
+    size: {
+        type: Number,
+    },
+    // рост
+    height: {
+        type: String,
+    },
+    // стоимость макета
+    price: {
+        type: Number,
+    },
+    // заголовок
+    text: {
+        type: String,
+    },
+})
 </script>
 
 <template>
     <article>
-        <img src="@/assets/images/Rectangle450.jpg" alt="" />
+        <Image :text="image" />
 
-        <h4>{{ text || 'Заголовок' }}</h4>
+        <h4>{{ text || 'Без заголовока' }}</h4>
 
         <span>{{ price || 0 }} <small>₽</small></span>
 
@@ -23,24 +46,23 @@ article {
     border-top: 1px solid var(--scheme-v3);
     display: grid;
     grid-template-columns: 178px 1fr max-content;
-    gap: 10px 80px;
-    padding: 40px 0 0;
+    gap: 10px var(--scheme-gap);
+    padding: var(--scheme-gap) 0 0;
 
-    img {
+    picture {
         grid-row: 1 / 4;
         max-width: 178px;
-        width: 100%;
     }
 
     h4,
     span {
         font-size: 32px;
+        padding: 0;
     }
 
     ul {
-        display: grid;
-        grid-template-columns: repeat(3, auto);
-        gap: 40px;
+        display: flex;
+        gap: var(--scheme-gap);
         color: var(--scheme-v2);
 
         li {
@@ -48,24 +70,23 @@ article {
         }
     }
 
-    @media all and (max-width: 78em) {
-        gap: 40px;
-    }
+    // @media all and (max-width: 74em) {
+    //     grid-template-columns: 128px auto max-content;
+    //     gap: 20px;
+    // }
 
-    @media all and (max-width: 68em) {
+    // базовый breakpoint 1152px
+    @media all and (max-width: 72em) {
         grid-template-columns: 128px auto max-content;
-        gap: 20px;
     }
 
-    @media all and (max-width: 60em) {
+    // последний breakpoint для Samsung S10 360x760px
+    @media all and (max-width: 42em) {
         grid-template-columns: 1fr;
 
-        img {
+        picture {
+            // grid-row: 1 / 4;
             max-width: 100%;
-        }
-
-        ul {
-            order: -1;
         }
     }
 }

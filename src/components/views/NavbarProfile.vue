@@ -1,6 +1,13 @@
 <script setup>
+// Check out https://vuejs.org/api/sfc-script-setup.html#script-setupimport { useStore } from 'vuex'
 import { ref } from 'vue'
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
+import { useStore } from 'vuex'
+
+const store = useStore()
+
+const logout = () => {
+    store.commit('auth/remove')
+}
 </script>
 
 <template>
@@ -19,6 +26,8 @@ import { ref } from 'vue'
             <li>
                 <router-link to="/user/settings">Настройки</router-link>
             </li>
+
+            <li @click="logout">Выход</li>
 
             <li>
                 <img src="@/assets/images/Rectangle452.jpg" alt="" />
