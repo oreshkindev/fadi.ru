@@ -1,12 +1,12 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setupimport { useStore } from 'vuex'
-import { ref } from 'vue'
 import { useStore } from 'vuex'
 
 const store = useStore()
 
+// выходим
 const logout = () => {
-    store.commit('auth/remove')
+    store.dispatch('auth/logout')
 }
 </script>
 

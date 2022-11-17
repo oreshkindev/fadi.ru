@@ -10,11 +10,11 @@ import { computed } from 'vue'
 
 const store = useStore()
 
+// забираем токен
 const auth = computed(() => store.getters['auth/auth_token'])
 </script>
 
 <template>
-    {{ store.state.auth.auth_token }}
     <header>
         <HeaderNavbar v-if="!auth" />
         <NavbarProfile v-else />

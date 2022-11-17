@@ -16,4 +16,4 @@
 
 Документация и [примеры](https://avif.io/blog/tutorials/html/).
 
-Останые форматы как webp / jpeg / jpg / png [сжимаем здесь](https://squoosh.app/).
+Остальные форматы как webp / jpeg / jpg / png [сжимаем здесь](https://squoosh.app/).

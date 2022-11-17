@@ -13,7 +13,7 @@ const store = useStore()
 
 // Подготавливаем форму
 const form = ref({
-    username: 'uknowme@mail.ru',
+    username: '',
     password: '',
 })
 

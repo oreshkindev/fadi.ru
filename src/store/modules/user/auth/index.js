@@ -23,9 +23,6 @@ const actions = {
             .post('/auth/token/login/', data)
             .then((response) => {
                 commit('set', response.data)
-
-                // пишем токен в хранилище
-                storage.set('fadi.auth_token', response.data.auth_token)
             })
             .catch((error) => {
                 if (error.response) {
@@ -39,6 +36,11 @@ const actions = {
                 }
             })
     },
+    async logout({ commit }) {
+        await axios.post('/auth/token/logout/').then((response) => {
+            commit('remove', response.data)
+        })
+    },
 }
 
 // определяем мутации
@@ -48,19 +50,19 @@ const mutations = {
     },
     set: (state, data) => {
         state.data = data
-
         // помещаем токен в стейт
         state.auth_token = data.auth_token
+
+        // пишем токен в хранилище
+        storage.set('fadi.auth_token', data.auth_token)
 
         // перенаправляем на главную
         router.push('/')
     },
     remove: (state) => {
         storage.remove('fadi.auth_token')
-
         // меняем состояние
         state.auth_token = null
-
         // перенаправляем на авторизацию
         router.push('/login')
     },
