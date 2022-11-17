@@ -213,6 +213,10 @@ section {
     padding: var(--scheme-gap);
 }
 
+header {
+    padding: 0 var(--scheme-gap);
+}
+
 footer {
     background-color: #fafafa;
 }

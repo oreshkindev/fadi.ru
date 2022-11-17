@@ -1,6 +1,6 @@
 <script setup>
-import { ref } from 'vue'
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
+import { ref } from 'vue'
 import BadgeButton from '@/components/ui/BadgeButton.vue'
 
 // если корзина пуста, нет смысла ее показывать
@@ -59,9 +59,12 @@ nav {
     justify-content: space-between;
     gap: var(--scheme-gap);
     place-items: center;
+    padding: 28px 0;
 
     img {
         cursor: pointer;
+
+        width: 100px;
     }
 
     ul {

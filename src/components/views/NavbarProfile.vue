@@ -1,8 +1,12 @@
 <script setup>
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setupimport { useStore } from 'vuex'
+// Check out https://vuejs.org/api/sfc-script-setup.html#script-setupimport
+import Image from '@/components/image.vue'
 import { useStore } from 'vuex'
+import { ref } from 'vue'
 
 const store = useStore()
+
+const visible = ref(false)
 
 // выходим
 const logout = () => {
@@ -12,9 +16,11 @@ const logout = () => {
 
 <template>
     <nav>
-        <img src="@/assets/images/fadi-VI-logo.svg" alt="Fadi — онлайн-магазин готовых выкроек." />
+        <router-link to="/" custom v-slot="{ navigate }">
+            <img src="@/assets/images/fadi-VI-logo.svg" @click="navigate" @keypress.enter="navigate" alt="Fadi — онлайн-магазин готовых выкроек." />
+        </router-link>
 
-        <ul>
+        <ul :class="{ visible: visible }">
             <li>
                 <i class="icon-dots"></i>
             </li>
@@ -27,61 +33,77 @@ const logout = () => {
                 <router-link to="/user/settings">Настройки</router-link>
             </li>
 
-            <li @click="logout">Выход</li>
-
             <li>
-                <img src="@/assets/images/Rectangle452.jpg" alt="" />
+                <a @click="logout">Выход</a>
             </li>
         </ul>
+
+        <!-- подключаем аватарку -->
+        <Image text="Rectangle452" />
+
+        <button class="icon-menu" @click="visible = !visible"></button>
     </nav>
 </template>
 
 <style lang="scss" scoped>
 nav {
     display: grid;
-    grid-template-columns: auto 1fr;
-    justify-content: space-between;
     gap: var(--scheme-gap);
+    grid-template-columns: 100px 1fr auto;
+    padding: 20px 0;
     place-items: center;
+
+    img {
+        cursor: pointer;
+    }
 
     ul {
         display: flex;
-        gap: inherit;
-        place-items: inherit;
+        gap: var(--scheme-gap);
         width: 100%;
 
         li {
-            display: inherit;
-
             a {
                 border-bottom: 2px solid transparent;
-                line-height: 1.2;
-                white-space: nowrap;
+                cursor: pointer;
 
                 &.router-link-exact-active,
                 &:hover {
-                    border-bottom: 2px solid var(--scheme-v2);
+                    border-color: var(--scheme-v2);
                 }
             }
 
-            img {
-                border-radius: 100%;
-                width: 43px;
-                height: 43px;
-            }
-
-            i {
-                color: var(--scheme-v1);
-                font-size: 22px;
-            }
-
-            &:nth-child(4) {
+            &:last-child {
                 margin: 0 0 0 auto;
             }
         }
     }
 
-    @media all and (max-width: 74em) {
+    picture {
+        :deep(img) {
+            border-radius: 100px;
+            height: 55px;
+            vertical-align: middle;
+            width: 55px;
+        }
+    }
+
+    button {
+        color: var(--scheme-v2);
+        display: none;
+        font-size: 42px;
+    }
+
+    // базовый breakpoint 1152px
+    @media all and (max-width: 72em) {
+        ul {
+            li {
+                &:nth-child(2),
+                &:nth-child(3) {
+                    display: none;
+                }
+            }
+        }
     }
 }
 </style>
