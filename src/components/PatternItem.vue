@@ -4,15 +4,11 @@ import Image from '@/components/image.vue'
 
 const props = defineProps({
     // заголовок изображения
-    image: {
+    images: {
         type: String,
     },
     // заголовок карточки
-    text: {
-        type: String,
-    },
-    // ссылка скачивание файла
-    doc: {
+    name: {
         type: String,
     },
 })
@@ -20,11 +16,11 @@ const props = defineProps({
 
 <template>
     <article>
-        <Image :text="image" />
+        <Image :text="images" />
 
         <p>
-            {{ text }}
-            <a :href="doc" download>Скачать выкройку</a>
+            {{ name }}
+            <a href="/">Смотреть выкройку</a>
         </p>
     </article>
 </template>

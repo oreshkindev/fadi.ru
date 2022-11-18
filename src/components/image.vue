@@ -8,7 +8,9 @@ const props = defineProps({
 const avif = ref()
 
 watchEffect(async () => {
-    avif.value = (await import(/* @vite-ignore */ `@/assets/images/${props.text}.avif`)).default
+    if (props.text) {
+        avif.value = (await import(/* @vite-ignore */ `@/assets/images/${props.text}.avif`)).default
+    }
 })
 </script>
 

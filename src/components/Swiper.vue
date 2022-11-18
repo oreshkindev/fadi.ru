@@ -1,23 +1,32 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import { ref } from 'vue'
-
 import Image from '@/components/image.vue'
 
-const images = ref(['Rectangle452', 'Rectangle121', 'Rectangle451', 'Rectangle453', 'Rectangle90', 'Rectangle89'])
+import { ref } from 'vue'
+
+const props = defineProps({
+    // заголовок изображения
+    images: {
+        type: Array,
+        default: () => [],
+    },
+})
+
+// создаем реактивный экземпляр массива
+const swiper = ref(props.images)
 
 const next = (index) => {
     if (index != 0) {
-        const first = images.value.shift()
+        const first = swiper.value.shift()
         //
-        images.value = images.value.concat(first)
+        swiper.value = swiper.value.concat(first)
     }
 }
 </script>
 
 <template>
     <div class="swiper">
-        <Image v-for="(item, index) in images" :key="index" :text="item" @click="next(index)" />
+        <Image v-for="(item, index) in swiper" :key="index" :text="item" @click="next(index)" />
     </div>
 </template>
 

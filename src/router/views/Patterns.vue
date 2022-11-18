@@ -13,53 +13,6 @@ let index = ref(0)
 // TODO: доставать из состояния
 // получаем массив с категориями
 const category = ['Все', 'Женщинам', 'Мужчинам', 'Детям', 'Бесплатные выкройки']
-
-// TODO: доставать из состояния
-// получаем массив с выкройками
-const array = [
-    {
-        id: 1,
-        image: 'Rectangle120',
-        text: 'Выкройка фади № 1',
-        doc: '#',
-        category: 1,
-    },
-    {
-        id: 2,
-        image: 'Rectangle121',
-        text: 'Выкройка фади № 2',
-        doc: '#',
-        category: 2,
-    },
-    {
-        id: 3,
-        image: 'Rectangle450',
-        text: 'Выкройка фади № 3',
-        doc: '#',
-        category: 4,
-    },
-    {
-        id: 4,
-        image: 'Rectangle451',
-        text: 'Выкройка фади № 4',
-        doc: '#',
-        category: 3,
-    },
-    {
-        id: 5,
-        image: 'Rectangle452',
-        text: 'Выкройка фади № 5',
-        doc: '#',
-        category: 4,
-    },
-    {
-        id: 6,
-        image: 'Rectangle453',
-        text: 'Выкройка фади № 6',
-        doc: '#',
-        category: 1,
-    },
-]
 </script>
 
 <template>
@@ -81,7 +34,7 @@ const array = [
             </ul>
         </nav>
 
-        <PopularPatterns :array="array" :category="index" />
+        <PopularPatterns :category="index" />
     </section>
 </template>
 

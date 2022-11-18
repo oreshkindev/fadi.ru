@@ -8,11 +8,11 @@ const props = defineProps({
         type: Number,
     },
     // заголовок изображения
-    image: {
+    images: {
         type: String,
     },
     // заголовок карточки
-    text: {
+    name: {
         type: String,
     },
     // идентификатор категории
@@ -28,10 +28,9 @@ const props = defineProps({
 
 <template>
     <article>
-        <Image :text="image" />
-
+        <Image :text="images" />
         <p>
-            {{ text }}
+            {{ name }}
         </p>
 
         <ul v-if="sizes">

@@ -5,31 +5,36 @@ import ButtonContext from '@/components/ui/ButtonContext.vue'
 //
 import ProductItem from '@/components/ProductItem.vue'
 
-// TODO: доставать из состояния
+import { useStore } from 'vuex'
+import { onMounted, computed } from 'vue'
+// Определяем наше хранилище
+const store = useStore()
+
+// выводим ошибку
+// const error = computed(() => store.getters['products/error'])
+
+// TODO:
+// загрузить фотки на сервер
+const images = ['Rectangle89', 'Rectangle121', 'Rectangle451', 'Rectangle453', 'Rectangle90', 'Rectangle89']
+
 // получаем массив с товаром
-const array = [
-    {
-        id: 1,
-        image: 'Rectangle89',
-        text: 'Выкройка фади № 1',
-        category: 1,
-        sizes: [38, 40, 42, 44],
-    },
-    {
-        id: 2,
-        image: 'Rectangle89',
-        text: 'Выкройка фади № 2',
-        category: 2,
-        sizes: [38, 40, 42, 44],
-    },
-]
+const products = computed(() => store.getters['products/data'])
+
+// отправляем форму
+const get = () => {
+    store.dispatch('products/get')
+}
+
+onMounted(() => {
+    get()
+})
 </script>
 
 <template>
     <section>
         <h3>Женские выкройки</h3>
 
-        <ProductItem v-for="item in array" :id="item.id" :image="item.image" :text="item.text" :category="item.category" :sizes="item.sizes" />
+        <ProductItem v-for="item in products.slice(0, 2)" :id="item.id" :images="images[0]" :name="item.name" :category="item.category[0]" :sizes="item.sizes" />
 
         <ButtonContext icon="icon-arrow-top-right" text="Посмотреть каталог" />
     </section>
