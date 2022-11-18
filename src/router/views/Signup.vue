@@ -24,6 +24,8 @@ const checked = ref(false)
 // выводим ошибку
 const error = computed(() => store.getters['user/error'])
 
+const succesed = computed(() => store.getters['user/data'])
+
 // проверяем пояля и отправляем форму
 const send = () => {
     if (form.value.confirm === form.value.password) {
@@ -39,17 +41,23 @@ const send = () => {
 
         <h1>Регистрация личного кабинета</h1>
 
-        <p>{{ error?.email }}</p>
+        <p v-if="error?.email">{{ error.email }}</p>
 
-        <Form-group :data="form" button="Продолжить" :checkbox="checked" @prepared="send">
+        <Form-group :data="form" button="Продолжить" :checkbox="checked" @prepared="send" v-if="succesed.length == 0">
             <slot>
                 <input v-model="form.email" type="text" placeholder="Ваш email" required :class="{ error: error?.email }" />
-                <input v-model="form.password" type="text" placeholder="Пароль" required />
-                <input v-model="form.confirm" type="text" placeholder="Повторите пароль" required :class="{ error: form.confirm !== form.password }" />
+                <input v-model="form.password" type="password" placeholder="Пароль" required />
+                <input v-model="form.confirm" type="password" placeholder="Повторите пароль" required :class="{ error: form.confirm !== form.password }" />
 
                 <Checkbox text="Я согласен с политикой конфиденциальности и даю согласие на обработку моих персональных данных" @checked="checked = !checked" />
             </slot>
         </Form-group>
+
+        <article v-else>
+            <h5>Проверьте вашу почту</h5>
+            <p>{{ succesed.email }}</p>
+            <p>На ваш адрес эл.почты отправлено письмо с ссылкой активации вашего аккаунта.</p>
+        </article>
     </section>
 </template>
 
@@ -74,6 +82,15 @@ section {
     :deep(form) {
         grid-column: 1 / 3;
         margin: 0 auto 100px;
+    }
+
+    article {
+        border: 1px solid var(--scheme-v3);
+        border-radius: 25px;
+        grid-column: 1 / 3;
+        margin: 0 auto 100px;
+        padding: var(--scheme-gap);
+        text-align: center;
     }
 
     // базовый breakpoint 1152px

@@ -6,6 +6,10 @@
         |-- user
             |-- auth
             |
+        |-- es
+            |-- products
+                |-- category
+            |
         |-- products
             |-- category
             |

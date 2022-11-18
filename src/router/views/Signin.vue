@@ -37,7 +37,7 @@ const send = () => {
         <Form-group :data="form" button="Продолжить" checkbox @prepared="send">
             <slot>
                 <input v-model="form.username" type="text" placeholder="Ваш email" :class="{ error: error?.non_field_errors }" />
-                <input v-model="form.password" type="text" placeholder="Пароль" :class="{ error: error?.non_field_errors }" />
+                <input v-model="form.password" type="password" placeholder="Пароль" :class="{ error: error?.non_field_errors }" />
             </slot>
         </Form-group>
     </section>

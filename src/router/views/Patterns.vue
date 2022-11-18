@@ -41,7 +41,7 @@ const category = ['Все', 'Женщинам', 'Мужчинам', 'Детям'
 <style lang="scss" scoped>
 section {
     display: grid;
-    gap: var(--scheme-gap);
+    gap: var(--scheme-gap) 0;
     grid-auto-columns: 1fr auto;
 
     h1 {
