@@ -47,6 +47,10 @@ const visible = ref(false)
 </template>
 
 <style lang="scss" scoped>
+section {
+    padding: var(--scheme-gap);
+    width: 100%;
+}
 nav {
     background-color: #fafafa;
     border-radius: 20px;

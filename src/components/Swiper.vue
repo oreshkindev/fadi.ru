@@ -52,9 +52,11 @@ const next = (index) => {
         }
         &:nth-child(3) {
             grid-area: 2 / 1 / 3 / 2;
+            opacity: 0.2;
         }
         &:nth-child(4) {
             grid-area: 3 / 1 / 4 / 2;
+            opacity: 0.2;
         }
         &:nth-child(n + 5) {
             display: none;

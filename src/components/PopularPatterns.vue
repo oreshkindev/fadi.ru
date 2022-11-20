@@ -61,7 +61,9 @@ section {
     width: 100%;
 
     h4 {
+        border-top: 1px solid var(--scheme-v3);
         grid-column: 1 / 4;
+        padding: var(--scheme-gap) 0 0;
     }
 
     // базовый breakpoint 1152px

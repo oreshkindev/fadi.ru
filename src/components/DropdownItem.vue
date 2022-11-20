@@ -24,24 +24,29 @@ const open = () => {
 
 <style lang="scss" scoped>
 article {
+    width: 100%;
+
     span {
         border-bottom: 1px solid var(--scheme-v3);
         cursor: pointer;
         display: flex;
+        font-size: 24px;
         justify-content: space-between;
+        padding: 20px 60px 20px 0;
         position: relative;
 
         &::after {
-            color: var(--scheme-v2);
-            content: '\e008';
-            display: inline-block;
-            font-family: 'fadi';
-            font-size: 24px;
-            margin: 0 20px 0 20px;
+            background-color: var(--scheme-v2);
+            color: var(--scheme-v4);
+            content: '\e007';
+            font-family: fadi;
+            font-size: 20px;
             transform: rotate(90deg);
             position: absolute;
             right: 0;
-            top: 25%;
+            bottom: 26px;
+            padding: 6px;
+            line-height: 1;
         }
     }
 

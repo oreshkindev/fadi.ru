@@ -3,6 +3,7 @@ import Tailoring from './Tailoring.vue'
 import Patterns from './Patterns.vue'
 import Workshops from './Workshops.vue'
 import PatternsView from './PatternsView.vue'
+import Faq from './Faq.vue'
 import Signin from './Signin.vue'
 import Signup from './Signup.vue'
 import NotFound from './404.vue'
@@ -52,6 +53,14 @@ const routes = [
         component: Workshops,
         meta: {
             breadcrumbs: { name: 'Мастер-классы' },
+        },
+    },
+    {
+        path: '/faq',
+        name: 'faq',
+        component: Faq,
+        meta: {
+            breadcrumbs: { name: 'Частые вопросы' },
         },
     },
     {

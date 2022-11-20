@@ -94,7 +94,8 @@ import ButtonContext from '@/components/ui/ButtonContext.vue'
 section {
     display: grid;
     gap: 40px;
-
+    padding: var(--scheme-gap);
+    width: 100%;
     nav {
         grid-column: 1 / 3;
         margin: 0 0 100px;

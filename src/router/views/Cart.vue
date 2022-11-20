@@ -5,7 +5,9 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
 import CartItem from '@/components/CartItem.vue'
 import Checkout from '@/components/Checkout.vue'
 import { useStore } from 'vuex'
-import { computed } from 'vue'
+import { defineAsyncComponent, computed } from 'vue'
+
+const PopularPatterns = defineAsyncComponent(() => import('@/components/PopularPatterns.vue'))
 
 // Определяем наше хранилище
 const store = useStore()
@@ -34,6 +36,8 @@ const cart = computed(() => store.getters['cart/data'])
             <Checkout v-if="!!cart.length" :array="cart" />
         </aside>
     </section>
+
+    <PopularPatterns text="Похожие товары" />
 </template>
 
 <style lang="scss" scoped>

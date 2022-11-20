@@ -1,6 +1,7 @@
 <p align="center">
   <br>
-  <img width="800" src="./src/assets/images/fadi.svg" alt="Fadi — онлайн-магазин готовых выкроек.">
+  <br>
+  <img width="400" src="./src/assets/images/fadi.svg" alt="Fadi — онлайн-магазин готовых выкроек.">
   <br>
   <br>
 </p>

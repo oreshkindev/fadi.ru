@@ -123,9 +123,14 @@ nav {
 
         img {
             border-radius: 50%;
+            cursor: pointer;
             height: 50px;
             vertical-align: middle;
             width: 50px;
+
+            &:hover {
+                opacity: 0.6;
+            }
         }
     }
 
