@@ -23,11 +23,11 @@ const send = (r) => {
 </script>
 
 <template>
+    <Breadcrumbs :array="['home']" />
+
+    <h1>Услуги швейного цеха</h1>
+
     <section>
-        <Breadcrumbs />
-
-        <h1>Услуги швейного цеха</h1>
-
         <article>
             <h4>У нас самый лучший цех!</h4>
 
@@ -68,44 +68,42 @@ const send = (r) => {
 </template>
 
 <style lang="scss" scoped>
+nav,
+h1 {
+    max-width: var(--scheme-max-width);
+    padding: 0 var(--scheme-gap);
+    width: 100%;
+}
+
+h5 {
+    padding: var(--scheme-gap) 0 0;
+}
+
 section {
     display: grid;
-    gap: var(--scheme-offset);
-
-    h1 {
-        grid-column: 1 / 3;
-    }
+    // gap: var(--scheme-gap);
+    width: 100%;
 
     article {
         grid-column: 1 / 2;
-
-        // ограничиваем ширину контейнера
-        // p {
-        //     max-width: 660px;
-        // }
-
-        h5 {
-            margin: 50px 0 0;
-        }
+        padding: var(--scheme-gap);
     }
 
     picture {
         grid-column: 2 / 3;
+        padding: var(--scheme-gap);
 
         img {
-            max-width: 400px;
+            max-height: 920px;
         }
     }
+}
 
-    // базовый breakpoint 1152px
-    @media all and (max-width: 72em) {
+// базовый breakpoint 1152px
+@media all and (max-width: 72em) {
+    section {
         article {
             grid-column: 1 / 3;
-
-            // если ограничили ширину выше
-            // p {
-            //     max-width: 100%;
-            // }
         }
 
         picture {

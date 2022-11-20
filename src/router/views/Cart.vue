@@ -1,61 +1,73 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
+// components/ui
 import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
-import CardItem from '@/components/CardItem.vue'
+import CartItem from '@/components/CartItem.vue'
 import Checkout from '@/components/Checkout.vue'
+import { useStore } from 'vuex'
+import { computed } from 'vue'
+
+// Определяем наше хранилище
+const store = useStore()
+
+// получаем массив с товаром
+const cart = computed(() => store.getters['cart/data'])
 </script>
 
 <template>
+    <Breadcrumbs :array="['home']" />
+
+    <h1>Корзина</h1>
+
     <section>
-        <Breadcrumbs />
+        <div>
+            <template v-if="!cart.length">
+                <p>В корзине нет товаров</p>
+            </template>
 
-        <h1>Корзина</h1>
+            <template v-else>
+                <CartItem v-for="item in cart" :data="item" />
+            </template>
+        </div>
 
-        <CardItem text="Выкройка балаклава" image="Rectangle450" :price="150" :size="46" height="170-176" />
-        <CardItem text="Выкройка балаклава" image="Rectangle452" :price="250" :size="36" height="140-146" />
-        <CardItem text="Выкройка балаклава" image="Rectangle451" :price="350" :size="42" height="150-156" />
-
-        <Checkout />
+        <aside>
+            <Checkout v-if="!!cart.length" :array="cart" />
+        </aside>
     </section>
 </template>
 
 <style lang="scss" scoped>
+nav,
+h1 {
+    max-width: var(--scheme-max-width);
+    padding: 0 var(--scheme-gap);
+    width: 100%;
+}
+
 section {
     display: grid;
-    gap: var(--scheme-gap);
-    grid-template-columns: 1fr auto;
+    // gap: var(--scheme-gap);
+    width: 100%;
 
-    ul {
-        grid-column: 2 / 3;
-        grid-row: 3 / 4;
-    }
-
-    h1 {
-        grid-column: 1 / 3;
-        text-transform: uppercase;
-    }
-
-    article {
+    div {
         grid-column: 1 / 2;
+        padding: 0 var(--scheme-gap);
     }
 
-    p {
-        grid-column: 1 / 3;
+    aside {
+        grid-column: 2 / 3;
+        padding: 0 var(--scheme-gap);
     }
+}
 
+// базовый breakpoint 1152px
+@media all and (max-width: 72em) {
     section {
-        grid-column: 1 / 3;
-    }
-
-    // базовый breakpoint 1152px
-    @media all and (max-width: 72em) {
-        h1 {
-            font-size: var(--scheme-m);
-            margin: 0;
+        div {
+            grid-column: 1 / 3;
         }
 
-        article,
-        ul {
+        aside {
             grid-column: 1 / 3;
         }
     }

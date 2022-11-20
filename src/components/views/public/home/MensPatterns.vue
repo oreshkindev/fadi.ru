@@ -6,37 +6,32 @@ import ButtonContext from '@/components/ui/ButtonContext.vue'
 import ProductItem from '@/components/ProductItem.vue'
 
 import { useStore } from 'vuex'
-import { onMounted, computed } from 'vue'
-// Определяем наше хранилище
+import { defineAsyncComponent, computed } from 'vue'
+// определяем наше хранилище
 const store = useStore()
+// покажем скелетон если сервер отвалился
+const PatternSkeleton = defineAsyncComponent(() => import('@/components/views/public/home/PatternSkeleton.vue'))
 
 // выводим ошибку
 // const error = computed(() => store.getters['products/error'])
 
-// TODO:
-// загрузить фотки на сервер
-const images = ['Rectangle89', 'Rectangle121', 'Rectangle451', 'Rectangle453', 'Rectangle90', 'Rectangle89']
-
 // получаем массив с товаром
-const products = computed(() => store.getters['products/data'])
-
-// отправляем форму
-const get = () => {
-    store.dispatch('products/get')
-}
-
-onMounted(() => {
-    get()
-})
+const products = computed(() => store.getters['products/data'].slice(0, 2))
 </script>
 
 <template>
     <section>
-        <h3>Женские выкройки</h3>
+        <h3>Мужские выкройки</h3>
 
-        <ProductItem v-for="item in products.slice(0, 2)" :id="item.id" :images="images[0]" :name="item.name" :category="item.category[0]" :sizes="item.sizes" />
+        <template v-if="!products[0]">
+            <PatternSkeleton />
+        </template>
 
-        <ButtonContext icon="icon-arrow-top-right" text="Посмотреть каталог" />
+        <template v-else>
+            <ProductItem v-for="item in products" :data="item" image="Rectangle89" />
+
+            <ButtonContext icon="icon-arrow-top-right" text="Посмотреть каталог" />
+        </template>
     </section>
 </template>
 
@@ -45,6 +40,8 @@ section {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0 var(--scheme-gap);
+    padding: var(--scheme-gap);
+    width: 100%;
 
     h3 {
         border-bottom: 1px solid var(--scheme-v3);

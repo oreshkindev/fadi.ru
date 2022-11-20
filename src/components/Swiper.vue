@@ -1,6 +1,6 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import Image from '@/components/image.vue'
+import Image from '@/components/Image.vue'
 
 import { ref } from 'vue'
 
@@ -61,7 +61,8 @@ const next = (index) => {
         }
     }
 
-    @media all and (max-width: 60em) {
+    // базовый breakpoint 1152px
+    @media all and (max-width: 72em) {
         display: flex;
         flex-wrap: wrap;
 

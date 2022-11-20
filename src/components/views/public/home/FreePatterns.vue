@@ -30,6 +30,8 @@ import ButtonContext from '@/components/ui/ButtonContext.vue'
 section {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    padding: var(--scheme-gap);
+    width: 100%;
 
     article {
         border: 1px solid var(--scheme-v3);

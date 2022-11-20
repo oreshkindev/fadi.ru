@@ -4,7 +4,7 @@
 
 <template>
     <figure>
-        <img src="@/assets/images/fadi-VI-logo.svg" alt="" />
+        <img src="@/assets/images/fadi.svg" alt="" />
     </figure>
 </template>
 

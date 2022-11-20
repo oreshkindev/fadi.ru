@@ -1,6 +1,5 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-// ui
 import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
 import Size from '@/components/ui/Size.vue'
 import Included from '@/components/ui/Included.vue'
@@ -9,7 +8,7 @@ import Swiper from '@/components/Swiper.vue'
 
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
-import { onMounted, computed, defineAsyncComponent } from 'vue'
+import { onMounted, computed, defineAsyncComponent, ref } from 'vue'
 
 // Список популярных товаров
 const PopularPatterns = defineAsyncComponent(() => import('@/components/PopularPatterns.vue'))
@@ -27,12 +26,35 @@ const store = useStore()
 // загрузить фотки на сервер
 const images = ['Rectangle452', 'Rectangle121', 'Rectangle451', 'Rectangle453', 'Rectangle90', 'Rectangle89']
 
+const cart = computed(() => store.getters['cart/data'])
 // получаем массив с товаром
-const product = computed(() => store.getters['products/data'])
+const data = computed(() => store.getters['products/item'])
 
-// отправляем форму
+// отправляем запрос на получение товара по его имени
 const get = () => {
-    store.dispatch('products/getOne', route.params.id)
+    store.dispatch('products/getOne', route.params.name)
+}
+
+const index = ref(0)
+// присваиваем индекс
+const setSize = (i) => {
+    index.value = i
+}
+
+const prepare = () => {
+    const t = data.value
+    // подготавливаем новый объект товара
+    const item = {
+        sku_product: t.sku_product[index.value],
+        product: {
+            id: t.product.id,
+            name: t.product.name,
+            price: t.product.price,
+            images: images[0],
+            size: t.size[index.value],
+        },
+    }
+    store.commit('cart/set', item)
 }
 
 onMounted(() => {
@@ -41,24 +63,22 @@ onMounted(() => {
 </script>
 
 <template>
+    <Breadcrumbs :array="['home', 'patterns']" />
+
     <section>
-        <Breadcrumbs :crumbs="['выкройки', 'для женщин', 'свитер']" />
-
-        <!-- TODO: получить фотки товара -->
-        <Swiper :images="images" />
-
         <article>
-            <h1>{{ product[0]?.name }}</h1>
+            <h1>{{ data.product?.name }}</h1>
 
             <!-- TODO: получить вот эту вот штуку снизу -->
             <Included :array="['Средняя сложность', 'Подробная инструкция', 'Плоттер 600']" />
 
-            <Size :array="product[0]?.sizes" />
+            <Size :array="data.size" @size="setSize" />
 
-            <!-- TODO: как получить стоимость? -->
-            <h4>150 р</h4>
+            <h4>{{ data.product?.price }} р</h4>
 
-            <ButtonContext icon="icon-arrow-top-right" text="Добавить в корзину" />
+            <!-- TODO: сделать по человечески -->
+            <ButtonContext v-if="!cart.find((i) => i.product.id == data.product?.id)" icon="icon-arrow-top-right" text="Добавить в корзину" @click="prepare" />
+            <ButtonContext v-else icon="icon-arrow-top-right" text="В корзине" @click="$router.push('/cart')" />
 
             <p>
                 <small>Ссылки на скачивание купленной выкройки будут отправлены на ваш электронный адрес, а также скачать выкройки можно в личном кабинете</small>
@@ -66,7 +86,7 @@ onMounted(() => {
 
             <h5>Описание</h5>
 
-            {{ product[0]?.descriptions }}
+            <p>{{ data.product?.descriptions }}</p>
 
             <!-- TODO: убрать когда будет наполнение -->
             <p>
@@ -89,41 +109,42 @@ onMounted(() => {
             <p>Высота воротника - 21,8 см, ширина воротника - 66,4 см.</p>
         </article>
 
-        <PopularPatterns text="С этим товаром так же смотрят" />
+        <aside>
+            <!-- TODO: получить фотки товара -->
+            <Swiper :images="images" />
+        </aside>
     </section>
+
+    <PopularPatterns text="С этим товаром так же смотрят" />
 </template>
 
 <style lang="scss" scoped>
+nav {
+    max-width: var(--scheme-max-width);
+    padding: 0 var(--scheme-gap);
+    width: 100%;
+}
+
 section {
     display: grid;
-    gap: var(--scheme-gap);
+    // gap: var(--scheme-gap);
+    width: 100%;
 
     h1 {
         font: 400 var(--scheme-xm) / 1.42 var(--scheme-font);
     }
 
-    section {
-        border-top: 1px solid var(--scheme-v3);
-        grid-column: 1 / 3;
-        padding: var(--scheme-gap) 0;
-        width: 100%;
-    }
-
-    div {
-        grid-column: 1 / 2;
-    }
-
     article {
+        grid-column: 2 / 3;
+        grid-row: 1;
+        padding: 0 var(--scheme-gap);
+
         p {
             small {
                 display: block;
                 margin: 20px 0;
                 opacity: 0.6;
             }
-        }
-
-        h5 {
-            margin: 40px 0;
         }
 
         ol {
@@ -150,17 +171,31 @@ section {
                 }
             }
         }
+
+        button {
+            background-color: var(--scheme-v2);
+            color: var(--scheme-v4);
+            margin: var(--scheme-gap) auto auto 0;
+        }
     }
 
-    button {
-        background-color: var(--scheme-v2);
-        color: var(--scheme-v4);
-        margin: var(--scheme-gap) auto auto 0;
+    aside {
+        grid-column: 1 / 2;
+        padding: 0 var(--scheme-gap);
     }
+}
 
-    @media all and (max-width: 60em) {
-        article,
-        div {
+// базовый breakpoint 1152px
+@media all and (max-width: 72em) {
+    section {
+        gap: var(--scheme-gap);
+
+        article {
+            grid-column: 1 / 3;
+            grid-row: 2;
+        }
+
+        aside {
             grid-column: 1 / 3;
         }
     }

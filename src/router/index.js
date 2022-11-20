@@ -14,7 +14,7 @@ router.beforeEach((to, from, next) => {
 
     // перенаправляем на авторизацию если еще гость
     if (to.meta.requireAuth && !isGuest) {
-        next('/login')
+        next('/signin')
     } else {
         next()
     }

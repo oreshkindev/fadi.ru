@@ -14,7 +14,7 @@ ul {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    margin: 40px 0;
+    margin: 0 0 40px;
     place-items: center;
 
     li {

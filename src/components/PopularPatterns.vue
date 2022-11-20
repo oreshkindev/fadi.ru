@@ -3,7 +3,9 @@
 import PatternItem from '@/components/PatternItem.vue'
 //
 import { useStore } from 'vuex'
-import { onMounted, computed } from 'vue'
+import { onMounted, defineAsyncComponent, computed } from 'vue'
+
+const PatternItemsSkeleton = defineAsyncComponent(() => import('../components/views/PatternItemsSkeleton.vue'))
 
 const props = defineProps({
     // заголовок
@@ -28,10 +30,11 @@ const images = ['Rectangle452', 'Rectangle121', 'Rectangle451', 'Rectangle453', 
 
 // получаем массив с товаром
 const products = computed(() => store.getters['products/data'])
+const category = computed(() => store.getters['category/id'])
 
 // отправляем форму
 const get = () => {
-    store.dispatch('products/get')
+    store.dispatch('products/getByCategory', category.value)
 }
 
 onMounted(() => {
@@ -43,8 +46,9 @@ onMounted(() => {
     <section>
         <h4 v-if="text" v-text="text"></h4>
 
+        <PatternItemsSkeleton v-if="!products[0]"></PatternItemsSkeleton>
         <!-- выводим категорию или полный список -->
-        <PatternItem v-for="item in products" :key="item.id" :images="images[5]" :name="item.name" />
+        <PatternItem v-else v-for="item in products" :key="item.id" :images="images[5]" :name="item.name" />
     </section>
 </template>
 
@@ -53,6 +57,8 @@ section {
     display: grid;
     gap: var(--scheme-gap);
     grid-template-columns: repeat(3, 1fr);
+    padding: 0 var(--scheme-gap);
+    width: 100%;
 
     h4 {
         grid-column: 1 / 4;

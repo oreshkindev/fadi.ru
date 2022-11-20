@@ -19,7 +19,9 @@ import ButtonContext from '@/components/ui/ButtonContext.vue'
 <style scoped lang="scss">
 section {
     display: grid;
+    padding: var(--scheme-gap);
     place-items: center;
+    width: 100%;
 
     h1 {
         font: 400 var(--scheme-s) / 1.2 var(--scheme-font);

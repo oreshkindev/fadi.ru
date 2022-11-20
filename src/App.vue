@@ -2,8 +2,8 @@
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import HeaderNavbar from '@/components/views/HeaderNavbar.vue'
-import FooterNavbar from '@/components/views/FooterNavbar.vue'
 import NavbarProfile from '@/components/views/NavbarProfile.vue'
+import FooterNavbar from '@/components/views/FooterNavbar.vue'
 //
 import { useRoute } from 'vue-router'
 // получаем доступ к параметрам роутера
@@ -35,10 +35,10 @@ const route = useRoute()
     font-family: 'fadi';
     font-style: normal;
     font-weight: 400;
-    src: url('@/assets/fonts/icons/ui/iconly.eot?1668537959308');
-    src: url('@/assets/fonts/icons/ui/iconly.eot?#iefix') format('embedded-opentype'), url('@/assets/fonts/icons/ui/iconly.woff2?1668537959308') format('woff2'),
-        url('@/assets/fonts/icons/ui/iconly.woff?1668537959308') format('woff'), url('@/assets/fonts/icons/ui/iconly.ttf?1668537959308') format('truetype'),
-        url('@/assets/fonts/icons/ui/iconly.svg?1668537959308#fadi') format('svg');
+    src: url('@/assets/fonts/icons/ui/iconly.eot?1668886999878');
+    src: url('@/assets/fonts/icons/ui/iconly.eot?#iefix') format('embedded-opentype'), url('@/assets/fonts/icons/ui/iconly.woff2?1668886999878') format('woff2'),
+        url('@/assets/fonts/icons/ui/iconly.woff?1668886999878') format('woff'), url('@/assets/fonts/icons/ui/iconly.ttf?1668886999878') format('truetype'),
+        url('@/assets/fonts/icons/ui/iconly.svg?1668886999878#fadi') format('svg');
 }
 
 [class='icon'],
@@ -84,11 +84,7 @@ const route = useRoute()
 }
 
 .icon-chevron:before {
-    content: '\e008';
-}
-
-.icon-eye:before {
-    content: '\e00a';
+    content: '\e007';
 }
 
 .icon-chat:before {
@@ -202,15 +198,24 @@ body {
     position: relative;
 }
 
+main {
+    align-content: baseline;
+    display: grid;
+    gap: var(--scheme-gap);
+    justify-items: center;
+    // samsung s10 height
+    min-height: 760px;
+    place-items: center;
+}
+
 header,
 section {
     margin: auto;
     max-width: var(--scheme-max-width);
-    padding: var(--scheme-gap);
 }
 
 header {
-    padding: 0 var(--scheme-gap);
+    padding: 0;
 }
 
 footer {

@@ -31,6 +31,7 @@
  * Import this instace and then call it // storage.get('name').key or  // storage.set('name', {'key':'value', etc...})
  **/
 
+// TODO: навести порядок
 export default {
     get: (name) => (localStorage.getItem(name) ? JSON.parse(localStorage.getItem(name)) : false),
 
@@ -40,4 +41,38 @@ export default {
             : localStorage.setItem(name, JSON.stringify(object)),
 
     remove: (name) => localStorage.removeItem(name),
+
+    put: (data) => {
+        // достаем корзину
+        const cart = localStorage.getItem('fadi.cart')
+        const n = JSON.parse(cart)
+
+        if (!cart) {
+            // если ее нет, то помещаем в хранилище массив
+            localStorage.setItem('fadi.cart', JSON.stringify([data]))
+        } else {
+            // если она есть, проверяем значения в массиве на совпадение
+            if (!n.find((i) => i.product.id == data.product.id)) {
+                // пушим
+                n.push(data)
+                // пишем
+                localStorage.setItem('fadi.cart', JSON.stringify(n))
+            }
+        }
+    },
+
+    update: (data) => {
+        console.log(data)
+        // достаем корзину
+        const cart = localStorage.getItem('fadi.cart')
+        const n = JSON.parse(cart)
+
+        if (n.find((i) => i.product.id == data)) {
+            const o = n.filter((v) => v.product.id != data)
+            // пишем
+            localStorage.setItem('fadi.cart', JSON.stringify(o))
+
+            return o
+        }
+    },
 }

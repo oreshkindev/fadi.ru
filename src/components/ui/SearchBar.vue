@@ -27,7 +27,7 @@ form {
         color: var(--scheme-v4);
         padding: 13px;
         position: absolute;
-        right: 7px;
+        right: 47px;
         top: 50%;
         transform: translate(0, -50%);
     }

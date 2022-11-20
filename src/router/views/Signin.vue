@@ -27,11 +27,10 @@ const send = () => {
 </script>
 
 <template>
+    <Breadcrumbs :array="['home', 'signin', 'signup']" />
+
+    <h1>Вход в личный кабинет</h1>
     <section>
-        <Breadcrumbs :crumbs="['Регистрация', 'Вход']" />
-
-        <h1>Вход в личный кабинет</h1>
-
         <p>{{ error?.non_field_errors }}</p>
 
         <Form-group :data="form" button="Продолжить" checkbox @prepared="send">
@@ -44,34 +43,39 @@ const send = () => {
 </template>
 
 <style lang="scss" scoped>
+nav,
+h1 {
+    max-width: var(--scheme-max-width);
+    padding: var(--scheme-gap);
+    width: 100%;
+}
+
+h1 {
+    font-size: 38px;
+    font-weight: 300;
+    text-align: center;
+}
+
+p {
+    text-align: center;
+}
+
 section {
     display: grid;
-    gap: var(--scheme-gap);
+    // gap: var(--scheme-gap);
+    width: 100%;
+}
 
-    h1 {
-        font-size: var(--scheme-s);
-        font-weight: 400;
-        grid-column: 1 / 3;
-        // text-transform: uppercase;
-        margin: 100px auto 0;
-    }
-
-    p {
-        grid-column: 1 / 3;
-        margin: auto;
-    }
-
-    :deep(form) {
-        grid-column: 1 / 3;
-        margin: 0 auto 100px;
-    }
-
-    // базовый breakpoint 1152px
-    @media all and (max-width: 72em) {
-    }
+form {
+    margin: 0 auto;
 }
 
 .error {
-    border-color: red;
+    border-color: #d21b1b;
+    color: #d21b1b;
+}
+
+// базовый breakpoint 1152px
+@media all and (max-width: 72em) {
 }
 </style>

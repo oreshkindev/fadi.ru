@@ -36,11 +36,10 @@ const send = () => {
 </script>
 
 <template>
+    <Breadcrumbs :array="['home', 'signin', 'signup']" />
+
+    <h1>Регистрация личного кабинета</h1>
     <section>
-        <Breadcrumbs :crumbs="['Регистрация', 'Вход']" />
-
-        <h1>Регистрация личного кабинета</h1>
-
         <p v-if="error?.email">{{ error.email }}</p>
 
         <Form-group :data="form" button="Продолжить" :checkbox="checked" @prepared="send" v-if="succesed.length == 0">
@@ -62,43 +61,47 @@ const send = () => {
 </template>
 
 <style lang="scss" scoped>
+nav,
+h1 {
+    max-width: var(--scheme-max-width);
+    padding: var(--scheme-gap);
+    width: 100%;
+}
+
+h1 {
+    font-size: 38px;
+    font-weight: 300;
+    text-align: center;
+}
+
+p {
+    text-align: center;
+}
+
 section {
     display: grid;
-    gap: var(--scheme-gap);
+    // gap: var(--scheme-gap);
+    width: 100%;
+}
 
-    h1 {
-        font-size: var(--scheme-s);
-        font-weight: 400;
-        grid-column: 1 / 3;
-        // text-transform: uppercase;
-        margin: 100px auto 0;
-    }
+form {
+    margin: 0 auto;
+}
 
-    p {
-        grid-column: 1 / 3;
-        margin: auto;
-    }
-
-    :deep(form) {
-        grid-column: 1 / 3;
-        margin: 0 auto 100px;
-    }
-
-    article {
-        border: 1px solid var(--scheme-v3);
-        border-radius: 25px;
-        grid-column: 1 / 3;
-        margin: 0 auto 100px;
-        padding: var(--scheme-gap);
-        text-align: center;
-    }
-
-    // базовый breakpoint 1152px
-    @media all and (max-width: 72em) {
-    }
+article {
+    background-color: rgba(214, 152, 40, 0.08);
+    border-radius: 25px;
+    padding: var(--scheme-gap);
+    margin: auto;
+    text-align: center;
 }
 
 .error {
-    border-color: red;
+    border-color: #d21b1b;
+    color: #d21b1b;
+}
+
+// базовый breakpoint 1152px
+@media all and (max-width: 72em) {
 }
 </style>

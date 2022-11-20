@@ -13,7 +13,7 @@ const PopularPatterns = defineAsyncComponent(() => import('@/components/PopularP
 <template>
     <Breadcrumbs :array="['home']" />
 
-    <h1>Выкройки на любой вкус</h1>
+    <h1>Мастер-классы <br />от опытного наставника</h1>
 
     <SearchBar />
 
@@ -25,7 +25,7 @@ const PopularPatterns = defineAsyncComponent(() => import('@/components/PopularP
     </section>
 
     <section>
-        <PopularPatterns />
+        <PopularPatterns :category="index" />
 
         <aside>
             <Categories />

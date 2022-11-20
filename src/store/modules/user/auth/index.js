@@ -66,7 +66,7 @@ const mutations = {
         // меняем состояние
         state.auth_token = null
         // перенаправляем на авторизацию
-        router.push('/login')
+        router.push('/')
     },
 }
 

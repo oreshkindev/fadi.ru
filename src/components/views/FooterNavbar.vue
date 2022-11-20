@@ -67,6 +67,7 @@ import Badge from '@/components/Badge.vue'
 section {
     padding: 0;
     position: relative;
+    margin: var(--scheme-gap) 0 0;
     max-width: 100%;
 
     .container {
@@ -156,14 +157,7 @@ section {
     @media all and (max-width: 42em) {
         .container {
             article {
-                p {
-                    &:last-child {
-                        text-align: center;
-                    }
-                }
                 ul {
-                    justify-content: center;
-
                     li {
                         a {
                             font-size: 32px;

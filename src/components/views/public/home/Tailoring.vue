@@ -26,7 +26,7 @@ import ButtonContext from '@/components/ui/ButtonContext.vue'
 
 <style scoped lang="scss">
 .container {
-    margin: auto;
+    margin: var(--scheme-gap) auto 0;
     max-width: var(--scheme-max-width);
     padding: 0 var(--scheme-gap);
 }

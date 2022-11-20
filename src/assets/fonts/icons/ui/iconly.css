@@ -7,8 +7,8 @@
   font-family: "fadi";
   font-style: normal;
   font-weight: 400;
-  src: url("./iconly.eot?1668537959308");
-  src: url("./iconly.eot?#iefix") format("embedded-opentype"), url("./iconly.woff2?1668537959308") format("woff2"), url("./iconly.woff?1668537959308") format("woff"), url("./iconly.ttf?1668537959308") format("truetype"), url("./iconly.svg?1668537959308#fadi") format("svg");
+  src: url("./iconly.eot?1668886999878");
+  src: url("./iconly.eot?#iefix") format("embedded-opentype"), url("./iconly.woff2?1668886999878") format("woff2"), url("./iconly.woff?1668886999878") format("woff"), url("./iconly.ttf?1668886999878") format("truetype"), url("./iconly.svg?1668886999878#fadi") format("svg");
 }
 
 [class="icon"], [class^="icon-"], [class*=" icon-"] {
@@ -52,11 +52,7 @@
 }
 
 .icon-chevron:before {
-  content: "\e008";
-}
-
-.icon-eye:before {
-  content: "\e00a";
+  content: "\e007";
 }
 
 .icon-chat:before {

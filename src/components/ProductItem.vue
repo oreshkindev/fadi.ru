@@ -1,44 +1,34 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import Image from '@/components/image.vue'
+import Image from '@/components/Image.vue'
 
 const props = defineProps({
-    // идентификатор товара
-    id: {
-        type: Number,
+    // объект товара
+    data: {
+        type: Object,
+        default: () => {},
     },
-    // заголовок изображения
-    images: {
+    // TODO: получать из объекта
+    image: {
         type: String,
-    },
-    // заголовок карточки
-    name: {
-        type: String,
-    },
-    // идентификатор категории
-    category: {
-        type: Number,
-    },
-    sizes: {
-        type: Array,
-        default: () => [],
     },
 })
 </script>
 
 <template>
     <article>
-        <Image :text="images" />
+        <Image :text="image" />
+
         <p>
-            {{ name }}
+            {{ data.product.name }}
         </p>
 
-        <ul v-if="sizes">
+        <ul>
             Размер
-            <li v-for="item in sizes">{{ item }}</li>
+            <li v-for="item in data.size">{{ item }}</li>
         </ul>
 
-        <router-link :to="`/patterns/${category}/${id}`">Перейти к товару</router-link>
+        <router-link :to="`/patterns/${data.product.sub_category[0].category.id}/${data.product.name}`">Перейти к товару</router-link>
     </article>
 </template>
 
@@ -56,7 +46,8 @@ ul {
 
     li {
         background-color: var(--scheme-v6);
-        padding: 6px 10px;
+        padding: 4px 0;
+        min-width: 35px;
         text-align: center;
     }
 }

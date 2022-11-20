@@ -11,7 +11,25 @@ const getters = {
 }
 
 // определяем методы
-const actions = {}
+const actions = {
+    async get({ commit }) {
+        try {
+            const response = await axios.get('/es-category/')
+
+            commit('set', concate(response.data.results))
+        } catch (error) {
+            if (error.response) {
+                // вернулась ошибка (5xx, 4xx)
+                commit('error', error.response.data)
+
+                // прячем ошибку через 5 секунд
+                setTimeout(() => {
+                    commit('error', [])
+                }, 5000)
+            }
+        }
+    },
+}
 
 // определяем мутации
 const mutations = {

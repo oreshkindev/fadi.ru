@@ -26,6 +26,7 @@ section {
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 0 var(--scheme-gap);
+    padding: var(--scheme-gap);
 
     h3 {
         border-bottom: 1px solid var(--scheme-v3);

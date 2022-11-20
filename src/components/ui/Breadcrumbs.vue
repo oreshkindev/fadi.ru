@@ -1,84 +1,68 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
+import { useRouter } from 'vue-router'
 
+// получаем доступ к параметрам роутера
+const router = useRouter()
+
+// получаем name из роутера
 const props = defineProps({
-    // TODO:
-    // массив
-    crumbs: {
+    array: {
         type: Array,
         default: () => [],
     },
 })
+
+// возвращаем meta данные
+const name = (item) => router.options.routes.find(({ name }) => name === item)
 </script>
 
 <template>
     <nav>
-        <ul>
-            <li>
-                <i class="icon-chevron"></i>
-                <router-link to="/">Назад</router-link>
-            </li>
-        </ul>
-
-        <ul v-if="crumbs">
-            <li v-for="item in crumbs" :key="item">
-                <router-link :to="item == 'Регистрация' ? '/register' : '/'">{{ item }}</router-link>
-            </li>
-        </ul>
+        <router-link v-for="item in array" :to="{ name: name(item)?.name }">{{ name(item)?.meta.breadcrumbs.name }}</router-link>
     </nav>
 </template>
 
 <style lang="scss" scoped>
 nav {
-    display: flex;
-    gap: 14px;
+    margin: 100px auto 0;
+    a {
+        border-bottom: 2px solid transparent;
+        font-size: clamp(16px, 4vw, 20px);
+        margin: 0 25px 0 0;
+        text-transform: uppercase;
 
-    ul {
-        li {
-            white-space: nowrap;
-            i {
-                font-size: 24px;
-                transform: rotate(180deg);
-                vertical-align: sub;
-            }
-
-            a {
-                border-bottom: 2px solid transparent;
+        &:first-child {
+            &::before {
                 display: inline-block;
+                font: 400 clamp(16px, 4vw, 22px) / 1.2 fadi;
+                content: '\e007';
 
-                font: 400 18px / 1.2 var(--scheme-font);
+                margin: 0 10px 2px 0;
+                vertical-align: middle;
+            }
 
-                margin: 0 10px 0;
-                text-transform: uppercase;
-
-                &:hover {
-                    border-bottom: 2px solid var(--scheme-v1);
-                }
+            &::after {
+                content: none;
             }
         }
 
-        &:nth-child(2) {
-            display: flex;
-            flex-wrap: wrap;
+        &::after {
+            content: '/';
 
-            li {
-                &::after {
-                    content: '/';
-                }
+            margin: 0 10px;
+            position: absolute;
+        }
 
-                &:last-child {
-                    color: var(--scheme-v2);
-
-                    &::after {
-                        content: '';
-                    }
-                }
+        &:last-child {
+            &::after {
+                content: none;
             }
         }
-    }
 
-    @media all and (max-width: 48em) {
-        flex-wrap: wrap;
+        &.router-link-exact-active {
+            border-bottom: 2px solid var(--scheme-v2);
+        }
     }
 }
 </style>
