@@ -52,6 +52,7 @@ const actions = {
     },
     async getByCategory({ commit }, data) {
         try {
+            
             const response = await axios.get(`/es-product/?category=${data}`)
             commit('set', response.data.results)
         } catch (error) {

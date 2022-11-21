@@ -20,6 +20,11 @@ const get = () => {
     store.dispatch('category/get')
 }
 
+const handleNavigate = (categoryId, currentIndex) => {
+    index.value = currentIndex;
+    push(categoryId);
+};
+
 onMounted(() => {
     get()
 })
@@ -27,7 +32,7 @@ onMounted(() => {
 
 <template>
     <ul>
-        <li v-for="(item, i) in category" :key="i" :class="{ active: index == i }" @click="push(item.id)">{{ item.name }}</li>
+        <li v-for="(item, i) in category" :key="i" :class="{ active: index == i }" @click="handleNavigate(item.id, i)">{{ item.name }}</li>
         <li>Бесплатные выкройки</li>
     </ul>
 </template>

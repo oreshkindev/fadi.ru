@@ -38,6 +38,16 @@ const mutations = {
     set: (state, data) => {
         state.data = data
     },
+    addCategory: (state, newCategory) => {
+        const categoriesCopy = JSON.parse(JSON.stringify(state.data));
+        categoriesCopy.push(newCategory);
+        state.data = categoriesCopy;
+    },
+    updateCategory: (state, updatedCategory) => {
+        const categoriesCopy = JSON.parse(JSON.stringify(state.data));
+        const updatedCategoryIndex = categoriesCopy.findIndex( categoryItem => categoryItem.id == updatedCategory.id);
+        
+    },
     push: (state, id) => {
         state.id = id
     },
