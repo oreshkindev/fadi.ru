@@ -4,6 +4,7 @@ import user from './modules/user'
 import products from './modules/es/products'
 import category from './modules/products/category'
 import cart from './modules/cart'
+import order from './modules/cart/order'
 
 const debug = import.meta.env.MODE !== 'production'
 
@@ -14,6 +15,7 @@ const Store = createStore({
         products,
         category,
         cart,
+        order,
     },
     strict: debug,
     plugins: debug ? [createLogger()] : [],

@@ -1,8 +1,23 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import { defineAsyncComponent } from 'vue'
+import { useStore } from 'vuex'
+import { defineAsyncComponent, onMounted, computed } from 'vue'
+
+const store = useStore()
 
 const Table = defineAsyncComponent(() => import('@/components/Table.vue'))
+
+// получаем массив с товаром
+const orders = computed(() => store.getters['order/get'])
+
+// отправляем форму
+const get = () => {
+    store.dispatch('order/get')
+}
+
+onMounted(() => {
+    get()
+})
 </script>
 
 <template>
@@ -23,7 +38,7 @@ const Table = defineAsyncComponent(() => import('@/components/Table.vue'))
         </form>
     </section>
 
-    <Table />
+    <Table :array="orders" />
 </template>
 
 <style lang="scss" scoped>
@@ -42,7 +57,7 @@ nav {
         gap: var(--scheme-gap);
 
         li {
-            padding: 0 0 40px;
+            padding: 0 0 var(--scheme-gap);
             &.active {
                 border-bottom: 2px solid var(--scheme-v2);
                 color: var(--scheme-v2);
@@ -52,13 +67,13 @@ nav {
 }
 
 form {
-    margin: 60px 0;
+    margin: var(--scheme-gap) 0;
 
     input {
-        background-color: #fafafa;
+        background-color: var(--scheme-v6);
         border: 1px solid var(--scheme-v3);
         border-radius: 50px;
-        padding: 0 40px;
+        padding: 0 var(--scheme-gap);
     }
 }
 </style>

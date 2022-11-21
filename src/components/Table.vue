@@ -1,29 +1,22 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
+import { useStore } from 'vuex'
 
-const table = [
-    {
-        image: 'src/assets/images/Rectangle451.avif',
-        name: 'Свитер, выкройка Fadi №1',
-        date: '11.11.2022',
-        price: '150',
-        pdf: '/',
+const store = useStore()
+
+const props = defineProps({
+    // массив заказов
+    array: {
+        type: Object,
+        default: () => [],
     },
-    {
-        image: 'src/assets/images/Rectangle451.avif',
-        name: 'Свитер, выкройка Fadi №1',
-        date: '11.11.2022',
-        price: '150',
-        pdf: '/',
-    },
-    {
-        image: 'src/assets/images/Rectangle451.avif',
-        name: 'Свитер, выкройка Fadi №1',
-        date: '11.11.2022',
-        price: '150',
-        pdf: '/',
-    },
-]
+})
+
+const get = (id) => {
+    const response = store.dispatch('products/getBy', id)
+    console.log(response)
+    return response
+}
 
 const download = () => {}
 </script>
@@ -38,15 +31,15 @@ const download = () => {}
             <li>Скачать</li>
         </ul>
 
-        <ul v-for="item in table" :key="item">
+        <ul v-for="item in array" :key="item">
             <li>
-                <img :src="item.image" :alt="item.name" />
+                <img src="@/assets/images/Rectangle451.avif" :alt="item.name" />
             </li>
-            <li>{{ item.name }}</li>
-            <li>{{ item.date }}</li>
-            <li>{{ item.price }}р</li>
+            <li>Имя товара</li>
+            <li>{{ item.created }}</li>
+            <li>{{ item.total_price }}р</li>
             <li>
-                <i class="icon-download-solid" @click="download(item.pdf)"></i>
+                <i class="icon-download-solid" @click="download()"></i>
             </li>
         </ul>
     </section>
@@ -92,8 +85,11 @@ section {
         }
     }
 
-    // базовый breakpoint 1152px
-    @media all and (max-width: 72em) {
+    // последний breakpoint для Samsung S10 360x760px
+    @media all and (max-width: 42em) {
+        ul {
+            width: fit-content;
+        }
     }
 }
 </style>

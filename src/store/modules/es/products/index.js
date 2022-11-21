@@ -37,7 +37,7 @@ const actions = {
     async getBy({ commit }, data) {
         try {
             const response = await axios.get(`/es-product/?sku_product__in=${data.toString().replace(/[,]/g, '__')}`)
-            commit('set', response.data.results)
+            // commit('set', response.data.results)
         } catch (error) {
             if (error.response) {
                 // вернулась ошибка (5xx, 4xx)
