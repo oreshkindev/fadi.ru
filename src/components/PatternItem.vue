@@ -1,6 +1,6 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import Image from '@/components/Image.vue'
+import Image from '@/components/image.vue'
 
 const props = defineProps({
     // заголовок изображения
