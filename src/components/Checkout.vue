@@ -1,8 +1,15 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import ButtonContext from '@/components/ui/ButtonContext.vue'
+import { useStore } from 'vuex'
+// Определяем наше хранилище
+const store = useStore()
 
 const props = defineProps({
+    id: {
+        type: Object,
+        default: () => {},
+    },
     // заголовок изображения
     array: {
         type: Array,
@@ -14,6 +21,21 @@ const price = () => {
     return props.array.reduce((acc, curr) => {
         return acc + curr.product.price
     }, 0)
+}
+const prepare = () => {
+    const sku_product = props.array.reduce((acc, item) => {
+        let key = acc.find((i) => i.sku_product)
+        if (key != null) {
+            key.sku_product.push(item.sku_product)
+        } else {
+            acc.push({
+                sku_product: [item.sku_product],
+            })
+        }
+        return acc
+    }, [])
+
+    store.dispatch('order/post', { user: props.id.user, product_size: sku_product[0].sku_product })
 }
 </script>
 
@@ -29,7 +51,7 @@ const price = () => {
             Оплата
             <span>Картой</span>
         </p>
-        <ButtonContext icon="icon-arrow-top-right" text="Оплатить заказ" size="20px" />
+        <ButtonContext icon="icon-arrow-top-right" text="Оплатить заказ" size="20px" @click="prepare" />
     </ul>
 </template>
 

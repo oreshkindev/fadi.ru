@@ -3,13 +3,13 @@ import axios from '@/common/axios'
 // определяем состояние
 const state = () => ({
     data: [],
-    id: 1,
+    name: '',
 })
 
 // определяем геттеры
 const getters = {
     data: (state) => state.data,
-    id: (state) => state.id,
+    name: (state) => state.name,
 }
 
 // определяем методы
@@ -38,8 +38,8 @@ const mutations = {
     set: (state, data) => {
         state.data = data
     },
-    push: (state, id) => {
-        state.id = id
+    push: (state, name) => {
+        state.name = name
     },
 }
 

@@ -12,8 +12,11 @@ const PopularPatterns = defineAsyncComponent(() => import('@/components/PopularP
 // Определяем наше хранилище
 const store = useStore()
 
+const get = store.dispatch('cart/get')
 // получаем массив с товаром
 const cart = computed(() => store.getters['cart/data'])
+// получаем массив с товаром
+const id = computed(() => store.getters['cart/id'][0])
 </script>
 
 <template>
@@ -33,7 +36,7 @@ const cart = computed(() => store.getters['cart/data'])
         </div>
 
         <aside>
-            <Checkout v-if="!!cart.length" :array="cart" />
+            <Checkout v-if="!!cart.length" :array="cart" :id="id" />
         </aside>
     </section>
 

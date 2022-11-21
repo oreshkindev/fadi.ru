@@ -1,19 +1,32 @@
 import axios from '@/common/axios'
 import storage from '@/common/storage'
-import store from '@/store'
 
 // определяем состояние
 const state = () => ({
+    id: [],
     data: storage.get('fadi.cart') || [],
 })
 
 // определяем геттеры
 const getters = {
+    id: (state) => state.id,
     data: (state) => state.data,
 }
 
 // определяем методы
-const actions = {}
+const actions = {
+    async get({ commit }) {
+        try {
+            const response = await axios.get('/cart/')
+            commit('id', response.data)
+        } catch (error) {
+            if (error.response) {
+                // вернулась ошибка (5xx, 4xx)
+                console.log(error.response.data)
+            }
+        }
+    },
+}
 
 // определяем мутации
 const mutations = {
@@ -24,6 +37,12 @@ const mutations = {
         if (!state.data.includes(data)) {
             state.data.push(data)
         }
+    },
+    id: (state, data) => {
+        state.id = data
+    },
+    clear: (state, data) => {
+        state.data = data
     },
     unset: (state, data) => {
         state.data = storage.update(data)

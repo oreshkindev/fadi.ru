@@ -1,4 +1,5 @@
 import axios from '@/common/axios'
+import storage from '@/common/storage'
 
 // определяем состояние
 const state = () => ({
@@ -27,6 +28,16 @@ const actions = {
                 }, 5000)
             }
         }
+    },
+    async post({ commit }, data) {
+        console.log(data)
+        try {
+            await axios.post('/order/', data)
+
+            commit('cart/clear', [], { root: true })
+
+            storage.remove('fadi.cart')
+        } catch (error) {}
     },
 }
 

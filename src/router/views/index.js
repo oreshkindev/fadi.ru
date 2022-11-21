@@ -44,7 +44,7 @@ const routes = [
         },
     },
     {
-        path: '/patterns/:category/:name',
+        path: '/patterns/:category',
         component: PatternsView,
     },
     {
