@@ -8,6 +8,8 @@ import Signin from './Signin.vue'
 import Signup from './Signup.vue'
 import NotFound from './404.vue'
 
+import TemporaryPage from './TemporaryPage.vue';
+
 // lazy-loaded
 const Cart = () => import('./Cart.vue')
 const AdminProfile = () => import('@/components/views/private/AdminProfile.vue')
@@ -28,6 +30,14 @@ const routes = [
         },
     },
     {
+        path: '/tmp',
+        component: TemporaryPage,
+        meta: {
+            title: 'TMP',
+        }
+    },
+    
+    {
         path: '/tailoring',
         name: 'tailoring',
         component: Tailoring,
@@ -44,7 +54,7 @@ const routes = [
         },
     },
     {
-        path: '/patterns/:category/:name',
+        path: '/patterns/:category',
         component: PatternsView,
     },
     {

@@ -16,7 +16,7 @@ const PatternSkeleton = defineAsyncComponent(() => import('@/components/views/pu
 // const error = computed(() => store.getters['products/error'])
 
 // получаем массив с товаром
-const products = computed(() => store.getters['products/data'].slice(0, 2))
+const products = computed(() => store.getters['products/data'].filter((e) => e.product.sub_category[0].category.name == 'Мужские'))
 </script>
 
 <template>
@@ -28,7 +28,7 @@ const products = computed(() => store.getters['products/data'].slice(0, 2))
         </template>
 
         <template v-else>
-            <ProductItem v-for="item in products" :data="item" image="Rectangle89" />
+            <ProductItem v-for="item in products.slice(0, 2)" :data="item" image="Rectangle90" />
 
             <ButtonContext icon="icon-arrow-top-right" text="Посмотреть каталог" />
         </template>

@@ -5,13 +5,13 @@ import concate from '@/common/helper/concate'
 const state = () => ({
     error: [],
     data: [],
-    item: [],
+    category: [],
 })
 
 // определяем геттеры
 const getters = {
     data: (state) => state.data,
-    item: (state) => state.item,
+    category: (state) => state.category,
     error: (state) => state.error,
 }
 
@@ -36,53 +36,14 @@ const actions = {
     },
     async getBy({ commit }, data) {
         try {
-            const response = await axios.get(`/es-product/?sku_product__in=${data.toString().replace(/[,]/g, '__')}`)
-            // commit('set', response.data.results)
-        } catch (error) {
-            if (error.response) {
-                // вернулась ошибка (5xx, 4xx)
-                commit('error', error.response.data)
+            const response = await axios.get(`/es-product/`, { params: data })
 
-                // прячем ошибку через 5 секунд
-                setTimeout(() => {
-                    commit('error', [])
-                }, 5000)
+            if (data.category ?? data.price) {
+                commit('category', concate(response.data.results))
+                return
             }
-        }
-    },
-    async getByCategory({ commit }, data) {
-        try {
-            
-            const response = await axios.get(`/es-product/?category=${data}`)
-            commit('set', response.data.results)
-        } catch (error) {
-            if (error.response) {
-                // вернулась ошибка (5xx, 4xx)
-                commit('error', error.response.data)
-
-                // прячем ошибку через 5 секунд
-                setTimeout(() => {
-                    commit('error', [])
-                }, 5000)
-            }
-        }
-    },
-    async getOne({ commit }, data) {
-        try {
-            const response = await axios.get(`/es-product/?name=${data}`)
-
-            commit('setOne', concate(response.data.results)[0])
-        } catch (error) {
-            if (error.response) {
-                // вернулась ошибка (5xx, 4xx)
-                commit('error', error.response.data)
-
-                // прячем ошибку через 5 секунд
-                setTimeout(() => {
-                    commit('error', [])
-                }, 5000)
-            }
-        }
+            commit('set', concate(response.data.results))
+        } catch (error) {}
     },
 }
 
@@ -91,8 +52,8 @@ const mutations = {
     set: (state, data) => {
         state.data = data
     },
-    setOne: (state, data) => {
-        state.item = data
+    category: (state, data) => {
+        state.category = data
     },
     error: (state, error) => {
         state.error = error

@@ -6,6 +6,10 @@ import category from './modules/products/category'
 import cart from './modules/cart'
 import order from './modules/cart/order'
 
+// admin
+
+import admin from "./modules/user/admin";
+
 const debug = import.meta.env.MODE !== 'production'
 
 const Store = createStore({
@@ -16,6 +20,9 @@ const Store = createStore({
         category,
         cart,
         order,
+
+        // admin
+        admin,
     },
     strict: debug,
     plugins: debug ? [createLogger()] : [],

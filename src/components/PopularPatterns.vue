@@ -12,9 +12,8 @@ const props = defineProps({
     text: {
         type: String,
     },
-    // заголовок
-    category: {
-        type: Number,
+    parent: {
+        type: String,
     },
 })
 
@@ -29,16 +28,16 @@ const store = useStore()
 const images = ['Rectangle452', 'Rectangle121', 'Rectangle451', 'Rectangle453', 'Rectangle90', 'Rectangle89']
 
 // получаем массив с товаром
-const products = computed(() => store.getters['products/data'])
-const category = computed(() => store.getters['category/id'])
-
-// отправляем форму
-const get = () => {
-    store.dispatch('products/getByCategory', category.value)
-}
+const products = computed(() => store.getters['products/category'])
 
 onMounted(() => {
-    get()
+    setTimeout(() => {
+        if (!!props.parent) {
+            store.dispatch('products/getBy', { category: props.parent })
+            return
+        }
+        store.dispatch('products/getBy', { price: '0.0' })
+    }, 1000)
 })
 </script>
 
@@ -48,7 +47,7 @@ onMounted(() => {
 
         <PatternItemsSkeleton v-if="!products[0]"></PatternItemsSkeleton>
         <!-- выводим категорию или полный список -->
-        <PatternItem v-else v-for="item in products" :key="item.id" :images="images[5]" :name="item.name" />
+        <PatternItem v-else v-for="item in products" :key="item.id" :images="images[5]" :data="item" />
     </section>
 </template>
 

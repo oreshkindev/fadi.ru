@@ -25,7 +25,7 @@ const PopularPatterns = defineAsyncComponent(() => import('@/components/PopularP
     </section>
 
     <section>
-        <PopularPatterns :category="index" />
+        <PopularPatterns />
 
         <aside>
             <Categories />

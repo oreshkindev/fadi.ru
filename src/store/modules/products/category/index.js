@@ -3,13 +3,13 @@ import axios from '@/common/axios'
 // определяем состояние
 const state = () => ({
     data: [],
-    id: 1,
+    name: '',
 })
 
 // определяем геттеры
 const getters = {
     data: (state) => state.data,
-    id: (state) => state.id,
+    name: (state) => state.name,
 }
 
 // определяем методы
@@ -46,7 +46,14 @@ const mutations = {
     updateCategory: (state, updatedCategory) => {
         const categoriesCopy = JSON.parse(JSON.stringify(state.data));
         const updatedCategoryIndex = categoriesCopy.findIndex( categoryItem => categoryItem.id == updatedCategory.id);
-        
+        updatedCategoryIndex != -1 ? categoriesCopy[updatedCategoryIndex] = updatedCategory : '';
+        state.data = categoriesCopy;
+    },
+    deleteCategory: (state, deletedCategoryId) => {
+        const categoriesCopy = JSON.parse(JSON.stringify(state.data));
+        const updatedCategories = categoriesCopy.filter( categoryItem => categoryItem.id !== deletedCategoryId);
+
+        state.data = updatedCategories;
     },
     push: (state, id) => {
         state.id = id

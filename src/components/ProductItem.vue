@@ -28,7 +28,7 @@ const props = defineProps({
             <li v-for="item in data.size">{{ item }}</li>
         </ul>
 
-        <router-link :to="`/patterns/${data.product.sub_category[0].category.id}/${data.product.name}`">Перейти к товару</router-link>
+        <router-link :to="`/patterns/${data.product.sub_category[0].category.slug}/?name=${data.product.name}`">Перейти к товару</router-link>
     </article>
 </template>
 

@@ -38,7 +38,7 @@ nav,
 h4,
 div,
 aside {
-    background-color: var(--scheme-v6);
+    background-color: var(--scheme-v3);
 }
 
 nav,

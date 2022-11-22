@@ -1,12 +1,22 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 
-const emit = defineEmits(['query'])
+import { ref, watchEffect } from 'vue'
+import { useStore } from 'vuex'
+// Определяем наше хранилище
+const store = useStore()
+
+const input = ref('')
+watchEffect(() => {
+    if (input.value.length > 4) {
+        store.dispatch('products/getBy', { category: input.value })
+    }
+})
 </script>
 
 <template>
     <form>
-        <input type="search" placeholder="Найти выкройку.." @keyup="emit('query', $event.target.value)" />
+        <input type="search" placeholder="Найти выкройку.." v-model="input" />
         <i class="icon-search"></i>
     </form>
 </template>

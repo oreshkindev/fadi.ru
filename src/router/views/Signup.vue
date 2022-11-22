@@ -40,7 +40,7 @@ const send = () => {
 
     <h1>Регистрация личного кабинета</h1>
     <section>
-        <p v-if="error?.email">{{ error.email }}</p>
+        <p v-if="error.email ?? error.password">{{ error.email ?? error.password }}</p>
 
         <Form-group :data="form" button="Продолжить" :checkbox="checked" @prepared="send" v-if="succesed.length == 0">
             <slot>
@@ -76,6 +76,8 @@ h1 {
 
 p {
     text-align: center;
+    margin: 0 auto var(--scheme-gap);
+    max-width: 600px;
 }
 
 section {

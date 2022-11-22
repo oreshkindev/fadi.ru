@@ -18,7 +18,6 @@ service.interceptors.request.use(
         if (key) {
             config.headers['Authorization'] = `token ${key}`
         }
-        config.headers['Content-Type'] = 'application/json'
 
         return config
     },

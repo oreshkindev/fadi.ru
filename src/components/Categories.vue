@@ -1,39 +1,31 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import { useStore } from 'vuex'
-import { onMounted, ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 
 // Определяем наше хранилище
 const store = useStore()
 
-let index = ref(0)
+const index = ref(3)
+
+// отправляем запрос на получение категорий
+const get = store.dispatch('category/get')
 
 // получаем массив с категориями
 const category = computed(() => store.getters['category/data'])
 
-const push = (id) => {
-    store.commit('category/push', id)
+const push = (name) => {
+    if (name == 'Бесплатные выкройки') {
+        store.dispatch('products/getBy', { price: '0.0' })
+        return
+    }
+    store.dispatch('products/getBy', { category: name })
 }
-
-// отправляем запрос на получение категорий
-const get = () => {
-    store.dispatch('category/get')
-}
-
-const handleNavigate = (categoryId, currentIndex) => {
-    index.value = currentIndex;
-    push(categoryId);
-};
-
-onMounted(() => {
-    get()
-})
 </script>
 
 <template>
     <ul>
-        <li v-for="(item, i) in category" :key="i" :class="{ active: index == i }" @click="handleNavigate(item.id, i)">{{ item.name }}</li>
-        <li>Бесплатные выкройки</li>
+        <li v-for="(item, i) in category" :key="i" :class="{ active: index == i }" @click="push(item.name), (index = i)">{{ item.name }}</li>
     </ul>
 </template>
 

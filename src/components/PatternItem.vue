@@ -8,8 +8,9 @@ const props = defineProps({
         type: String,
     },
     // заголовок карточки
-    name: {
-        type: String,
+    data: {
+        type: Object,
+        default: () => {},
     },
 })
 </script>
@@ -19,7 +20,7 @@ const props = defineProps({
         <Image :text="images" />
 
         <p>
-            {{ name }}
+            {{ data.product?.name }}
             <a href="/">Смотреть выкройку</a>
         </p>
     </article>

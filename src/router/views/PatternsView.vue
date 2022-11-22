@@ -8,7 +8,7 @@ import Swiper from '@/components/Swiper.vue'
 
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
-import { onMounted, computed, defineAsyncComponent, ref } from 'vue'
+import { onMounted, defineAsyncComponent, computed, ref } from 'vue'
 
 // Список популярных товаров
 const PopularPatterns = defineAsyncComponent(() => import('@/components/PopularPatterns.vue'))
@@ -28,12 +28,10 @@ const images = ['Rectangle452', 'Rectangle121', 'Rectangle451', 'Rectangle453', 
 
 const cart = computed(() => store.getters['cart/data'])
 // получаем массив с товаром
-const data = computed(() => store.getters['products/item'])
+const data = computed(() => store.getters['products/data'][0])
 
 // отправляем запрос на получение товара по его имени
-const get = () => {
-    store.dispatch('products/getOne', route.params.name)
-}
+const get = store.dispatch('products/getBy', route.query)
 
 const index = ref(0)
 // присваиваем индекс
@@ -58,26 +56,26 @@ const prepare = () => {
 }
 
 onMounted(() => {
-    get()
+    store.commit[('products/set', [])]
 })
 </script>
 
 <template>
     <Breadcrumbs :array="['home', 'patterns']" />
 
-    <section>
+    <section v-if="data">
         <article>
-            <h1>{{ data.product?.name }}</h1>
+            <h1>{{ data.product.name }}</h1>
 
             <!-- TODO: получить вот эту вот штуку снизу -->
             <Included :array="['Средняя сложность', 'Подробная инструкция', 'Плоттер 600']" />
 
             <Size :array="data.size" @size="setSize" />
 
-            <h4>{{ data.product?.price }} р</h4>
+            <h4>{{ data.product.price }} р</h4>
 
             <!-- TODO: сделать по человечески -->
-            <ButtonContext v-if="!cart.find((i) => i.product.id == data.product?.id)" icon="icon-arrow-top-right" text="Добавить в корзину" @click="prepare" />
+            <ButtonContext v-if="!cart.find((i) => i.product.id == data.product.id)" icon="icon-arrow-top-right" text="Добавить в корзину" @click="prepare" />
             <ButtonContext v-else icon="icon-arrow-top-right" text="В корзине" @click="$router.push('/cart')" />
 
             <p>
@@ -86,7 +84,7 @@ onMounted(() => {
 
             <h5>Описание</h5>
 
-            <p>{{ data.product?.descriptions }}</p>
+            <p>{{ data.product.descriptions }}</p>
 
             <!-- TODO: убрать когда будет наполнение -->
             <p>
@@ -115,7 +113,7 @@ onMounted(() => {
         </aside>
     </section>
 
-    <PopularPatterns text="С этим товаром так же смотрят" />
+    <PopularPatterns v-if="data" text="С этим товаром так же смотрят" :parent="data.product.sub_category[0].category.name" />
 </template>
 
 <style lang="scss" scoped>

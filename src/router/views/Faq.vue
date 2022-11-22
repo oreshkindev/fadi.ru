@@ -4,6 +4,9 @@
 import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
 import DropdownItem from '@/components/DropdownItem.vue'
 import { defineAsyncComponent, ref } from 'vue'
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const FormGroup = defineAsyncComponent(() => import('@/components/forms/FormGroup.vue'))
 const Checkbox = defineAsyncComponent(() => import('@/components/ui/Checkbox.vue'))
@@ -87,6 +90,7 @@ const send = () => {
                 <Checkbox text="Я согласен с политикой конфиденциальности и даю согласие на обработку моих персональных данных" @checked="checked = !checked" />
             </slot>
         </Form-group>
+        <button @click="router.push('/tmp')" >tmp</button>
     </section>
 </template>
 
