@@ -4,12 +4,15 @@ import axios from '@/common/axios'
 const state = () => ({
     error: [],
     data: [],
+    sizes: [],
+
 })
 
 // определяем геттеры
 const getters = {
     data: (state) => state.data,
     error: (state) => state.error,
+    sizes: (state) => state.sizes,
 }
 
 // определяем методы
@@ -170,10 +173,10 @@ const actions = {
     Модель описывает размер
     Затем эти размеры нужно добавлять для создания модели product
      */
-    async fetchSizes() {
+    async fetchSizes({ commit }) {
         try {
             const response = await axios.get('/sizes')
-            return response.data
+            commit('sizes', response.data);
         } catch (error) {
             console.log(error)
         }
@@ -336,6 +339,9 @@ const mutations = {
     },
     error: (state, error) => {
         state.error = error
+    },
+    sizes: (state, sizes) => {
+        state.sizes = sizes;
     },
 }
 

@@ -10,6 +10,10 @@ const state = () => ({
 const getters = {
     data: (state) => state.data,
     name: (state) => state.name,
+    categoryByName: (state) => (categoryName) => {
+        const matchedCategory = state.data.find( ({ name }) => name == categoryName);
+        return matchedCategory;
+    },
 }
 
 // определяем методы

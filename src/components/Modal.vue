@@ -1,6 +1,5 @@
 <script setup>
 import useFocusTrap from '@/common/helper/useFocusTrap'
-import DialogContainer from '@/components/DialogContainer.vue'
 
 defineEmits(['close'])
 defineProps({
@@ -33,8 +32,7 @@ const { trapRef } = useFocusTrap()
                 <slot name="modal-sidebar"></slot>
             </aside>
             <nav>
-                <button>Далее</button>
-                <p>1 / 4</p>
+                <slot name="modal-navigation"></slot>
             </nav>
         </dialog>
     </transition>

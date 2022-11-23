@@ -27,16 +27,19 @@ const useFocusTrap = () => {
         if (!isTabPressed) return
 
         if (e.shiftKey) {
+            
             if (document.activeElement === $firstFocusable) {
                 $lastFocusable.focus()
                 e.preventDefault()
             }
         } else {
             if (document.activeElement === $lastFocusable) {
+                
                 $firstFocusable.focus()
                 e.preventDefault()
             }
         }
+        console.log('end')
     }
 
     function initTrapFocus() {

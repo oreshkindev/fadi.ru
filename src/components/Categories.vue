@@ -1,8 +1,9 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import { useStore } from 'vuex'
-import { computed, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import Modal from '@/components/Modal.vue'
+import Checkbox from '@/components/ui/Checkbox.vue'
 
 // Определяем наше хранилище
 const store = useStore()
@@ -23,6 +24,37 @@ const push = (name) => {
         return
     }
     store.dispatch('products/getBy', { category: name })
+}
+
+// работа с модальными окнами
+const sizes = store.getters['admin/sizes']
+
+const modalSteps = ref(1)
+
+const newProduct = reactive({
+    name: '',
+    category: null,
+    price: null,
+    descriptions: '',
+    sizes: [],
+})
+
+const categoryData = reactive({
+    name: '',
+    slug: '',
+})
+
+const createCategory = async () => {
+    await store.dispatch('admin/createCategory', categoryData)
+    const createdCategory = store.getters[('admin/categoryByName', categoryData.name)]
+    console.log(createdCategory)
+}
+
+const handleSubmitStep = async () => {
+    switch (modalSteps.value) {
+        case 1:
+            await createCategory();
+    }
 }
 </script>
 
@@ -48,10 +80,16 @@ const push = (name) => {
             @close="visible = false"
         >
             <template #modal-content>
-                <form class="modal__content" action="">
+                <form v-if="modalSteps == 1" class="modal__content" action="">
                     <input type="text" placeholder="Название категории" required />
-                    <input type="text" placeholder="Заголовок" required />
+                    <input type="text" placeholder="Короткое имя на латинице" required />
+                </form>
+                <form v-if="modalSteps == 2" class="modal__content" action="">
+                    <input type="text" placeholder="Название товара" required />
                     <textarea placeholder="Описание" cols="10" rows="5"></textarea>
+                    <ul>
+                        <Checkbox v-for="size in sizes" :key="size.id" />
+                    </ul>
                 </form>
             </template>
             <template #modal-sidebar>
@@ -64,6 +102,10 @@ const push = (name) => {
                         loading="lazy"
                     />
                 </picture>
+            </template>
+            <template #modal-navigation>
+                <button @click="handleSubmitStep">Далее</button>
+                <p>{{ modalSteps }} / 4</p>
             </template>
         </Modal>
     </Teleport>
@@ -105,7 +147,6 @@ ul {
         }
     }
 }
-
 // базовый breakpoint 1152px
 @media all and (max-width: 72em) {
 }
