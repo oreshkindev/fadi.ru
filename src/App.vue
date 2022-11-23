@@ -316,7 +316,7 @@ button {
     font: 100 var(--scheme-s) / 3 var(--scheme-font);
 
     margin: 0;
-    outline: none;
+    // outline: none;
 }
 
 button {
