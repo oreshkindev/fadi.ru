@@ -9,7 +9,7 @@ import ButtonContext from '@/components/ui/ButtonContext.vue'
         <article>
             <picture>
                 <!-- <source srcset="@/assets/images/nobody-cloth.webp" type="image/webp" /> -->
-                <img src="@/assets/images/nobody-cloth.avif" decoding="async" alt="Мастер классы" loading="lazy" />
+                <img src="@/assets/images/nobody-cloth.webp" type="image/webp" decoding="async" alt="Мастер классы" loading="lazy" />
             </picture>
             <p>
                 На мастер-классах в режиме онлайн обучаю, как строить выкройки и создавать по ним одежду. Жду всех, кто хочет воплощать свои идеи в жизнь под чутким руководством

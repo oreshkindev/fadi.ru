@@ -12,7 +12,7 @@ import ButtonContext from '@/components/ui/ButtonContext.vue'
         <article>
             <picture>
                 <!-- <source srcset="@/assets/images/sewing-machines-h.webp" type="image/webp" /> -->
-                <img src="@/assets/images/sewing-machines-h.avif" decoding="async" alt="Цех" loading="lazy" />
+                <img src="@/assets/images/sewing-machines-h.webp" type="image/webp" decoding="async" alt="Цех" loading="lazy" />
             </picture>
 
             <ButtonContext icon="icon-arrow-top-right" text="Работа цеха" />

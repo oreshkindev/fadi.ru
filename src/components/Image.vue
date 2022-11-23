@@ -5,11 +5,11 @@ const props = defineProps({
     text: { type: String },
 })
 
-const avif = ref()
+const webp = ref()
 
 watchEffect(async () => {
     if (props.text) {
-        avif.value = (await import(/* @vite-ignore */ `@/assets/images/${props.text}.avif`)).default
+        webp.value = (await import(/* @vite-ignore */ `@/assets/images/${props.text}.webp`)).default
     }
 })
 </script>
@@ -17,7 +17,7 @@ watchEffect(async () => {
 <template>
     <picture>
         <!-- <source :srcset="webp" type="image/webp" /> -->
-        <img :src="avif" decoding="async" :alt="text" loading="lazy" />
+        <img :src="webp" type="image/webp" decoding="async" :alt="text" loading="lazy" />
     </picture>
 </template>
 

@@ -1,6 +1,27 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import ButtonContext from '@/components/ui/ButtonContext.vue'
+import Checkbox from '@/components/ui/Checkbox.vue'
+// components/forms
+import FormGroup from '@/components/forms/FormGroup.vue'
+import { computed, ref } from 'vue'
+import { useStore } from 'vuex'
+import { prettyDate } from '@/common/helper/processStrings'
+
+const id = computed(() => store.getters['auth/id'])
+
+const issues = computed(() => store.getters['support/data'])
+// Определяем наше хранилище
+const store = useStore()
+let form = ref({
+    email: '',
+    text: '',
+})
+
+const checked = ref(false)
+store.dispatch('support/get')
+const send = () => {
+    store.dispatch('auth/me').then(store.dispatch('support/create', { ...form.value, formtype_ticket: '1', user: id.value }))
+}
 </script>
 
 <template>
@@ -21,72 +42,31 @@ import ButtonContext from '@/components/ui/ButtonContext.vue'
 
             <p>Задайте вопрос который вас интерисует</p>
 
-            <form action="" @submit.prevent>
-                <input type="text" placeholder="Опишите проблему" />
-                <input type="text" placeholder="С чем она связанна" />
-                <input type="text" placeholder="Укажите ваш номер" />
+            <Form-group :data="form" button="Отправить заявку" :checkbox="checked" @prepared="send">
+                <slot>
+                    <input v-model="form.email" type="text" placeholder="Укажите причину обращения" required />
+                    <textarea v-model="form.text" id="" cols="30" rows="10"></textarea>
 
-                <ButtonContext text="Отправить" />
-            </form>
+                    <Checkbox text="Я согласен с политикой конфиденциальности и даю согласие на обработку моих персональных данных" @checked="checked = !checked" />
+                </slot>
+            </Form-group>
         </div>
 
-        <div>
+        <aside>
             <h5>Мои обращения</h5>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Статус</th>
-                        <th>Дата обращения</th>
-                        <th>Причина</th>
-                        <th>Ответ</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Идет проверка</td>
-                        <td>09.11.2022</td>
-                        <td>Покупка товара</td>
-                        <td>Отправлен</td>
-                    </tr>
-                    <tr>
-                        <td>Идет проверка</td>
-                        <td>09.11.2022</td>
-                        <td>Покупка товара</td>
-                        <td>Отправлен</td>
-                    </tr>
-                    <tr>
-                        <td>Идет проверка</td>
-                        <td>09.11.2022</td>
-                        <td>Покупка товара</td>
-                        <td>Отправлен</td>
-                    </tr>
-                    <tr>
-                        <td>Идет проверка</td>
-                        <td>09.11.2022</td>
-                        <td>Покупка товара</td>
-                        <td>Отправлен</td>
-                    </tr>
-                    <tr>
-                        <td>Идет проверка</td>
-                        <td>09.11.2022</td>
-                        <td>Покупка товара</td>
-                        <td>Отправлен</td>
-                    </tr>
-                    <tr>
-                        <td>Идет проверка</td>
-                        <td>09.11.2022</td>
-                        <td>Покупка товара</td>
-                        <td>Отправлен</td>
-                    </tr>
-                    <tr>
-                        <td>Идет проверка</td>
-                        <td>09.11.2022</td>
-                        <td>Покупка товара</td>
-                        <td>Отправлен</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+
+            <div>
+                <ul>
+                    <li>Дата обращения</li>
+                    <li>Причина</li>
+                </ul>
+
+                <ul v-for="item in issues">
+                    <li>{{ prettyDate(item.created_at) }}</li>
+                    <li>{{ item.text }}</li>
+                </ul>
+            </div>
+        </aside>
     </section>
 </template>
 
@@ -94,6 +74,7 @@ import ButtonContext from '@/components/ui/ButtonContext.vue'
 section {
     display: grid;
     gap: 40px;
+    grid-template-columns: auto 1fr;
     padding: var(--scheme-gap);
     width: 100%;
     nav {
@@ -122,60 +103,51 @@ nav {
 }
 
 h5 {
+    font-size: 24px;
     margin: 0 0 40px;
 }
 
 form {
     display: grid;
-    gap: 20px;
-    margin: 20px 0 0;
-
-    a {
-        color: var(--scheme-v5);
-        justify-self: flex-start;
-    }
 
     input {
-        border: 1px solid var(--scheme-v3);
-        border-radius: 50px;
-        padding: 4px 40px;
+        grid-column: 1 / 3;
     }
 
-    button {
-        background-color: var(--scheme-v2);
-        color: var(--scheme-v4);
-        margin: 40px auto 40px 0;
-        padding: 4px 40px;
+    textarea {
+        border: 1px solid var(--scheme-v2);
+        border-radius: 10px;
+
+        font: inherit;
+
+        grid-column: 1 / 3;
+        outline: none;
+        padding: 20px 40px;
+    }
+
+    fieldset {
+        grid-column: 1 / 3;
+        margin: 0;
+        max-width: 600px;
     }
 }
 
-table {
-    border: 1px solid var(--scheme-v3);
-    border-radius: 25px;
-    border-spacing: 0;
-    width: 100%;
-    padding: 20px;
+aside {
+    div {
+        border: 1px solid var(--scheme-v3);
+        border-radius: 25px;
+        padding: 20px var(--scheme-gap) var(--scheme-gap);
 
-    thead {
-        tr {
-            th {
-                font: inherit;
-                opacity: 0.6;
-                padding: 20px;
-                text-align: left;
-            }
-        }
-    }
-    tbody {
-        tr {
-            border-bottom: 1px solid var(--scheme-v3);
+        ul {
+            border: 1px solid var(--scheme-v3);
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            margin: 20px 0 0;
+            padding: 10px 20px;
 
-            &:nth-child(-n + 1) {
-                background-color: #fafafa;
-            }
-
-            td {
-                padding: 20px;
+            &:first-child {
+                border: none;
             }
         }
     }

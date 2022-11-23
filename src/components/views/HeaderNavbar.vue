@@ -65,7 +65,7 @@ const logout = () => {
 
             <router-link to="/user" custom v-slot="{ navigate }">
                 <picture @click="navigate" @keypress.enter="navigate" role="link">
-                    <img src="@/assets/images/Rectangle452.avif" decoding="async" alt="Аватар" loading="lazy" />
+                    <img src="@/assets/images/Rectangle452.webp" type="image/webp" decoding="async" alt="Аватар" loading="lazy" />
                 </picture>
             </router-link>
         </template>

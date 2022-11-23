@@ -1,7 +1,7 @@
 <template>
     <article>
         <picture>
-            <img src="@/assets/images/skeleton.avif" decoding="async" alt="fadi" loading="lazy" />
+            <img src="@/assets/images/skeleton.webp" type="image/webp" decoding="async" alt="fadi" loading="lazy" />
         </picture>
 
         <p>Свитер Новогодний</p>
@@ -17,7 +17,7 @@
 
     <article>
         <picture>
-            <img src="@/assets/images/skeleton.avif" decoding="async" alt="fadi" loading="lazy" />
+            <img src="@/assets/images/skeleton.webp" type="image/webp" decoding="async" alt="fadi" loading="lazy" />
         </picture>
         <p>Свитер Новогодний</p>
         <ul>
@@ -32,7 +32,7 @@
 
     <article>
         <picture>
-            <img src="@/assets/images/skeleton.avif" decoding="async" alt="fadi" loading="lazy" />
+            <img src="@/assets/images/skeleton.webp" type="image/webp" decoding="async" alt="fadi" loading="lazy" />
         </picture>
         <p>Свитер Новогодний</p>
         <ul>

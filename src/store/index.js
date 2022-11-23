@@ -5,6 +5,7 @@ import products from './modules/es/products'
 import category from './modules/products/category'
 import cart from './modules/cart'
 import order from './modules/cart/order'
+import support from './modules/support'
 
 const debug = import.meta.env.MODE !== 'production'
 
@@ -16,6 +17,7 @@ const Store = createStore({
         category,
         cart,
         order,
+        support,
     },
     strict: debug,
     plugins: debug ? [createLogger()] : [],

@@ -56,7 +56,7 @@ import Badge from '@/components/Badge.vue'
 
         <picture>
             <!-- <source srcset="@/assets/images/Rectangle118.webp" type="image/webp" /> -->
-            <img src="@/assets/images/Rectangle118.avif" decoding="async" alt="" loading="lazy" />
+            <img src="@/assets/images/Rectangle118.webp" type="image/webp" decoding="async" alt="" loading="lazy" />
         </picture>
 
         <Badge />
