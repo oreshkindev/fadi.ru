@@ -1,7 +1,4 @@
 import axios from '@/common/axios'
-import axiosOriginal from 'axios'
-
-
 
 // определяем состояние
 const state = () => ({
@@ -68,7 +65,6 @@ const actions = {
             } */
 
         try {
-            
             await axios.put(`/category/${updatedCategory.id}/`, {
                 name: updatedCategory.name,
                 slug: updatedCategory.slug,
@@ -109,44 +105,133 @@ const actions = {
         }
     },
 
-    async createProductsFromFile({ commit }, fileData) {
-        /* fileData
+    /*
+    Экшены для работы с моделью image 
+    Модель описывает фотографию для выкройки 
+     */
+
+    async createImage({}, productImage) {
+        /* productImage
             это объект класса FormData
             https://developer.mozilla.org/en-US/docs/Web/API/FormData
+            этот объект имеет поля
+            image: File;
+            File - https://developer.mozilla.org/en-US/docs/Web/API/File
+
+            product?: string;
+            идентификатор продукта
          */
         try {
-            await fetch(`${import.meta.env.VITE_API}/fadi/upload_products`, {
-                method: 'POST',
-                body: fileData,
-            })
-        } catch (error) {
-            if (error.response) {
-                // вернулась ошибка (5xx, 4xx)
-                commit('error', error.response.data)
-
-                // прячем ошибку через 5 секунд
-                setTimeout(() => {
-                    commit('error', [])
-                }, 5000)
-            }
-        }
-    },
-
-    async addImage({}, productImage) {
-        try {
-            await axiosOriginal.post(`${import.meta.env.VITE_API}/image/`, {
-                image: productImage.image,
-                product: productImage?.product ? productImage.product : null,
-            }, {
-                headers: { "Content-Type": "multipart/form-data", Authorization: `token ${storage.get('fadi.auth_token')}` }
+            await axios.post('/image/', productImage, {
+                headers: { 'Content-Type': 'multipart/form-data' },
             })
         } catch (error) {
             console.log(error)
         }
     },
 
-    async addProduct({ commit }, addedProduct) {
-        /* addedProduct = {
+    async updateImage({}, { imageData, updatedImageId }) {
+        /* imageData
+            это объект класса FormData
+            https://developer.mozilla.org/en-US/docs/Web/API/FormData
+            этот объект имеет поля
+            image?: File;
+            File - https://developer.mozilla.org/en-US/docs/Web/API/File
+
+            product?: string;
+            идентификатор продукта
+
+            updatedImageId: number;
+            идентификатор обновляемой картинки
+         */
+        try {
+            await axios.patch(`/image/${updatedImageId}/`, imageData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
+    async deleteImage({}, deletedImageId) {
+        /*
+           deletedImageId: number;
+           идентификатор удаляемой картинки
+        */
+        try {
+            await axios.delete(`/image/${deletedImageId}/`)
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
+    /*
+    Экшены для работы с моделью sizes 
+    Модель описывает размер
+    Затем эти размеры нужно добавлять для создания модели product
+     */
+    async fetchSizes() {
+        try {
+            const response = await axios.get('/sizes')
+            return response.data
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
+    async createSize({}, sizeValue) {
+        /*
+        sizeValue: string;
+        размер выкройки
+        */
+
+        try {
+            await axios.post('/sizes/', {
+                name: sizeValue,
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
+    async updateSize({}, { sizeValue, sizeId }) {
+        /*
+        sizeValue: string;
+        размер выкройки
+
+        sizeId: number;
+        идентификатор обновляемого размера
+        */
+
+        try {
+            await axios.patch(`/sizes/${sizeId}/`, {
+                name: sizeValue,
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
+    async deleteSize({}, sizeId) {
+        /*
+        sizeId: number;
+        идентификатор удаляемого размера
+        */
+
+        try {
+            await axios.delete(`/sizes/${sizeId}/`)
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    /*
+    Экшены для работы с моделью product 
+    Является одной из вспомогательных сущностей в этом бизнес-домене
+    Описывает выкройку без привязки к pdf-файлу
+    
+     */
+    async createProduct({ commit }, createdProduct) {
+        /* createdProduct = {
             name: string;
             имя выкройки
 
@@ -165,15 +250,81 @@ const actions = {
         } */
         try {
             await axios.post('/products/', {
-                name: addedProduct.name,
-                category: addedProduct.categoryId,
-                price: addedProduct.price,
-                description: addedProduct.description,
-                sizes: addedProduct.sizes,
-            });
-            
+                name: createdProduct.name,
+                category: createdProduct.categoryId,
+                price: createdProduct.price,
+                description: createdProduct.description,
+                sizes: createdProduct.sizes,
+            })
         } catch (error) {
             console.log(error)
+        }
+    },
+
+    /*
+    Экшены для работы с моделью product-size 
+    Является одной из главных сущностей в этом бизнес-домене
+    Описывает выкройку для продажи, с конкретным размером и артикулом
+     */
+    async createProductWithSize({}, createdProduct) {
+        /* createdProduct = {
+            sku_product: string;
+            артикул создаваемой выкройки с pdf
+
+            product: number;
+            идентификатор выкройки из модели product
+
+            size: number;
+            идентификатор размера для создаваемой выкройки с pdf
+        } */
+
+        try {
+            await axios.post('/product-size/', createdProduct);
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    async updateProductWithSize({}, updatedProduct) {
+        /* createdProduct = {
+            sku_product: string;
+            артикул создаваемой выкройки с pdf
+
+            product: number;
+            идентификатор выкройки из модели product
+
+            size: number;
+            идентификатор размера для создаваемой выкройки с pdf
+        } */
+
+        try {
+            await axios.put('/product-size/', updatedProduct);
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    async createProductsWithSizeFromFile({ commit }, fileData) {
+        /* fileData
+            это объект класса FormData
+            https://developer.mozilla.org/en-US/docs/Web/API/FormData
+         */
+        try {
+            await axios.post('/fadi/upload_products', fileData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+        } catch (error) {
+            console.log(error)
+            if (error.response) {
+                // вернулась ошибка (5xx, 4xx)
+                commit('error', error.response.data)
+                // прячем ошибку через 5 секунд
+                setTimeout(() => {
+                    commit('error', [])
+                }, 5000)
+            }
         }
     },
 }

@@ -7,12 +7,14 @@ const state = () => ({
     error: [],
     data: [],
     auth_token: storage.get('fadi.auth_token') || null,
+    id: null,
 })
 
 // определяем геттеры
 const getters = {
     error: (state) => state.error,
     data: (state) => state.data,
+    id: (state) => state.id,
     auth_token: (state) => state.auth_token,
 }
 
@@ -32,6 +34,17 @@ const actions = {
                     commit('error', [])
                 }, 5000)
             }
+        }
+    },
+    async me({ commit, state }) {
+        try {
+            if (state.auth_token) {
+                const response = await axios.get('/auth/users/me/')
+                commit('setId', response.data.id)
+                return
+            }
+        } catch (error) {
+            commit('setId', null)
         }
     },
     async logout({ commit }) {
@@ -56,10 +69,14 @@ const mutations = {
         state.data = data
         // помещаем токен в стейт
         state.auth_token = data.auth_token
+        console.log(JSON.stringify(data.auth_token));
         // пишем токен в хранилище
         storage.set('fadi.auth_token', data.auth_token)
         // перенаправляем на главную
         router.push('/')
+    },
+    setId: (state, data) => {
+        state.id = data
     },
     remove: (state) => {
         storage.remove('fadi.auth_token')

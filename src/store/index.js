@@ -5,6 +5,7 @@ import products from './modules/es/products'
 import category from './modules/products/category'
 import cart from './modules/cart'
 import order from './modules/cart/order'
+import support from './modules/support'
 
 // admin
 
@@ -23,6 +24,7 @@ const Store = createStore({
 
         // admin
         admin,
+        support,
     },
     strict: debug,
     plugins: debug ? [createLogger()] : [],

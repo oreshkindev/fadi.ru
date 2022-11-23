@@ -1,58 +1,43 @@
 <script setup>
 import FormGroup from '../../components/forms/FormGroup.vue'
 
-import {  ref, computed, } from 'vue'
+import {  ref, } from 'vue'
 
 import { useStore } from 'vuex'
 
-const store = useStore()
-
-const categories = computed(() => store.getters['category/data'])
+const store = useStore();
 
 const form = ref(null);
-const filePicker = ref(null);
-const isFilePicked = ref(false);
 
-const currentCategory = ref(null)
+const size = ref('');
 
-const mutationType = ref('create')
+const sizes = ref([]);
 
-const handleUpdateCategory = async (type) => {
-    switch (type) {
-        case 'create':
-            await store.dispatch('admin/createCategory', categoryData)
-            break
-        case 'update':
-            await store.dispatch('admin/updateCategory', { ...categoryData, id: currentCategory.value })
-            break
-        case 'delete':
-            await store.dispatch('admin/deleteCategory', currentCategory.value)
-            break
-    }
-}
+const currentSize = ref(null);
 
-const buttonText = computed(() => (mutationType.value === 'update' ? 'Изменить' : 'Создать'))
+store.dispatch('admin/fetchSizes').then( (fetchedSizes) => {
+   
+    sizes.value = fetchedSizes;
+});
 
 
-const handleSendFile = () => {
-  const fileData = new FormData(form.value.$el);
-  store.dispatch('admin/createProductsFromFile', fileData);
+const handleCreateSize = () => {
+ 
+  store.dispatch('admin/deleteSize', currentSize.value);
 };
-const handleChangeFile = () => {
-  isFilePicked.value = filePicker.value.files.length !== 0;
-}
+
 
 </script>
 
 <template>
     <section>
         <FormGroup
-            @prepared="handleSendFile"
-            :button="buttonText"
-            :checkbox="isFilePicked"
+            @prepared="handleCreateSize"
+            button="Создать"
+            :checkbox="Boolean(size.length)"
             ref="form"
         >
-            <input type="file"  name="file" ref="filePicker" @change="handleChangeFile"/>
+            <input type="text" v-model="size"/>
         </FormGroup>
 
         <!-- <div class="controls">
@@ -66,11 +51,11 @@ const handleChangeFile = () => {
 
         <ul>
             <li
-                v-for="category in categories"
-                :key="category.id"
-                @click="currentCategory = category.id"
+                v-for="size in sizes"
+                :key="size.id"
+                @click="currentSize = size.id"
             >
-                {{ category.name }}
+                {{ size.name }}
             </li>
         </ul>
     </section>
@@ -87,6 +72,9 @@ section {
     ul {
         grid-column: 1/2;
         grid-row: 1;
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 300px;
         li {
             background-color: var(--scheme-v2);
             border-radius: 30px;

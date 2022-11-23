@@ -29,15 +29,15 @@ const logout = () => {
 
         <i class="icon-dots"></i>
 
-        <router-link to="/workshop">Информация</router-link>
+        <router-link to="/user">Информация</router-link>
 
-        <router-link to="/patterns">Настройки</router-link>
+        <router-link to="/user/settings">Настройки</router-link>
 
         <router-link to="/" @click.native="logout">Выйти</router-link>
 
         <router-link to="/user" custom v-slot="{ navigate }">
             <picture @click="navigate" @keypress.enter="navigate" role="link">
-                <img src="@/assets/images/Rectangle452.avif" decoding="async" alt="Аватар" loading="lazy" />
+                <img src="@/assets/images/Rectangle452.webp" type="image/webp" decoding="async" alt="Аватар" loading="lazy" />
             </picture>
         </router-link>
 

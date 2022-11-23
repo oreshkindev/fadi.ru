@@ -11,7 +11,7 @@ import ButtonContext from '@/components/ui/ButtonContext.vue'
 
             <picture>
                 <!-- <source srcset="@/assets/images/Ellipse24.webp" type="image/webp" /> -->
-                <img src="@/assets/images/Ellipse24.avif" decoding="async" alt="Ольга Наташкина" loading="lazy" />
+                <img src="@/assets/images/Ellipse24.webp" type="image/webp" decoding="async" alt="Ольга Наташкина" loading="lazy" />
             </picture>
             <p>
                 <span>Ольга Наташкина</span>

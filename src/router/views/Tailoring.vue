@@ -6,19 +6,24 @@ import Checkbox from '@/components/ui/Checkbox.vue'
 // components/forms
 import FormGroup from '@/components/forms/FormGroup.vue'
 //
-import { defineAsyncComponent, ref } from 'vue'
+import { defineAsyncComponent, computed, ref } from 'vue'
+import { useStore } from 'vuex'
+const id = computed(() => store.getters['auth/id'])
+
+// Определяем наше хранилище
+const store = useStore()
 
 const PopularPatterns = defineAsyncComponent(() => import('@/components/PopularPatterns.vue'))
 
-const form = ref({
-    name: '',
-    phone: '',
+let form = ref({
+    email: '',
+    text: '',
 })
 
 const checked = ref(false)
 
-const send = (r) => {
-    console.log(r)
+const send = () => {
+    store.dispatch('auth/me').then(store.dispatch('support/create', { ...form.value, formtype_ticket: '1', user: id.value }))
 }
 </script>
 
@@ -50,8 +55,8 @@ const send = (r) => {
 
             <Form-group :data="form" button="Отправить заявку" :checkbox="checked" @prepared="send">
                 <slot>
-                    <input v-model="form.name" type="text" placeholder="Ваше имя" required />
-                    <input v-model="form.phone" type="text" placeholder="Ваш телефон" required />
+                    <input v-model="form.email" type="text" placeholder="Ваш email" required />
+                    <input v-model="form.text" type="text" placeholder="Ваш телефон" required />
 
                     <Checkbox text="Я согласен с политикой конфиденциальности и даю согласие на обработку моих персональных данных" @checked="checked = !checked" />
                 </slot>
@@ -60,7 +65,7 @@ const send = (r) => {
 
         <picture>
             <!-- <source srcset="@/assets/images/sewing-machines.webp" type="image/webp" /> -->
-            <img src="@/assets/images/sewing-machines.avif" decoding="async" alt="Услуги швейного цеха" loading="lazy" />
+            <img src="@/assets/images/sewing-machines.webp" type="image/webp" decoding="async" alt="Услуги швейного цеха" loading="lazy" />
         </picture>
     </section>
 
