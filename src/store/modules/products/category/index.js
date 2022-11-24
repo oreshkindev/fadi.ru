@@ -45,6 +45,10 @@ const mutations = {
     },
     addCategory: (state, newCategory) => {
         const categoriesCopy = JSON.parse(JSON.stringify(state.data));
+        if (newCategory.parent) {
+            const parentCategory = categoriesCopy.find( ({ id }) => id == newCategory.id);
+            
+        }
         categoriesCopy.push(newCategory);
         state.data = categoriesCopy;
     },

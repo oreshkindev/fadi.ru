@@ -1,24 +1,23 @@
-import axios from '@/common/axios'
+import axios from "@/common/axios";
 
 // определяем состояние
 const state = () => ({
-    error: [],
-    data: [],
-    sizes: [],
-
-})
+	error: [],
+	data: [],
+	sizes: [],
+});
 
 // определяем геттеры
 const getters = {
-    data: (state) => state.data,
-    error: (state) => state.error,
-    sizes: (state) => state.sizes,
-}
+	data: (state) => state.data,
+	error: (state) => state.error,
+	sizes: (state) => state.sizes,
+};
 
 // определяем методы
 const actions = {
-    async createCategory({ commit }, categoryData) {
-        /*
+	async createCategory({ commit }, categoryData) {
+		/*
       categoryData = {
       name: string;
       название созаваемой категории
@@ -26,37 +25,35 @@ const actions = {
       slug: string;
       короткое имя, создаваемой категории, на латинице
 
+      parent?: number;
       }
       */
+		try {
+			const response = await axios.post("/category/", categoryData);
+			const newCategory = {
+				id: response.data.id,
+				name: response.data.name,
+				slug: response.data.slug,
+                parent: response.data.parent,
+				children: [],
+			};
+            
+			commit("category/addCategory", newCategory, { root: true });
+		} catch (error) {
+			if (error.response) {
+				// вернулась ошибка (5xx, 4xx)
+				commit("error", error.response.data);
 
-        try {
-            const response = await axios.post('/category/', {
-                name: categoryData.name,
-                slug: categoryData.slug,
-            })
-            const newCategory = {
-                id: response.data.id,
-                name: response.data.name,
-                slug: response.data.slug,
-                children: [],
-            }
+				// прячем ошибку через 5 секунд
+				setTimeout(() => {
+					commit("error", []);
+				}, 5000);
+			}
+		}
+	},
 
-            commit('category/addCategory', newCategory, { root: true })
-        } catch (error) {
-            if (error.response) {
-                // вернулась ошибка (5xx, 4xx)
-                commit('error', error.response.data)
-
-                // прячем ошибку через 5 секунд
-                setTimeout(() => {
-                    commit('error', [])
-                }, 5000)
-            }
-        }
-    },
-
-    async updateCategory({ commit }, updatedCategory) {
-        /* updatedCategory = {
+	async updateCategory({ commit }, updatedCategory) {
+		/* updatedCategory = {
             id: number;
             идентификатор обновляемой категории
             
@@ -67,54 +64,58 @@ const actions = {
             короткое имя, создаваемой категории, на латинице
             } */
 
-        try {
-            await axios.put(`/category/${updatedCategory.id}/`, {
-                name: updatedCategory.name,
-                slug: updatedCategory.slug,
-                children: updatedCategory?.children?.length ? updatedCategory.children : [],
-            })
+		try {
+			await axios.put(`/category/${updatedCategory.id}/`, {
+				name: updatedCategory.name,
+				slug: updatedCategory.slug,
+				children: updatedCategory?.children?.length
+					? updatedCategory.children
+					: [],
+			});
 
-            commit('category/updateCategory', updatedCategory, { root: true })
-        } catch (error) {
-            if (error.response) {
-                // вернулась ошибка (5xx, 4xx)
-                commit('error', error.response.data)
+			commit("category/updateCategory", updatedCategory, { root: true });
+		} catch (error) {
+			if (error.response) {
+				// вернулась ошибка (5xx, 4xx)
+				commit("error", error.response.data);
 
-                // прячем ошибку через 5 секунд
-                setTimeout(() => {
-                    commit('error', [])
-                }, 5000)
-            }
-        }
-    },
+				// прячем ошибку через 5 секунд
+				setTimeout(() => {
+					commit("error", []);
+				}, 5000);
+			}
+		}
+	},
 
-    async deleteCategory({ commit }, deletedCategoryId) {
-        /* deletedCategoryId: number;
+	async deleteCategory({ commit }, deletedCategoryId) {
+		/* deletedCategoryId: number;
             идентификатор удаляемой категории
          */
-        try {
-            await axios.delete(`/category/${deletedCategoryId}/`)
-            commit('category/deleteCategory', deletedCategoryId, { root: true })
-        } catch (error) {
-            if (error.response) {
-                // вернулась ошибка (5xx, 4xx)
-                commit('error', error.response.data)
+		try {
+			await axios.delete(`/category/${deletedCategoryId}/`);
+			commit("category/deleteCategory", deletedCategoryId, {
+				root: true,
+			});
+		} catch (error) {
+			if (error.response) {
+				// вернулась ошибка (5xx, 4xx)
+				commit("error", error.response.data);
 
-                // прячем ошибку через 5 секунд
-                setTimeout(() => {
-                    commit('error', [])
-                }, 5000)
-            }
-        }
-    },
+				// прячем ошибку через 5 секунд
+				setTimeout(() => {
+					commit("error", []);
+				}, 5000);
+			}
+		}
+	},
 
-    /*
+	/*
     Экшены для работы с моделью image 
     Модель описывает фотографию для выкройки 
      */
 
-    async createImage({}, productImage) {
-        /* productImage
+	async createImage({}, productImage) {
+		/* productImage
             это объект класса FormData
             https://developer.mozilla.org/en-US/docs/Web/API/FormData
             этот объект имеет поля
@@ -124,17 +125,17 @@ const actions = {
             product?: string;
             идентификатор продукта
          */
-        try {
-            await axios.post('/image/', productImage, {
-                headers: { 'Content-Type': 'multipart/form-data' },
-            })
-        } catch (error) {
-            console.log(error)
-        }
-    },
+		try {
+			await axios.post("/image/", productImage, {
+				headers: { "Content-Type": "multipart/form-data" },
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	},
 
-    async updateImage({}, { imageData, updatedImageId }) {
-        /* imageData
+	async updateImage({}, { imageData, updatedImageId }) {
+		/* imageData
             это объект класса FormData
             https://developer.mozilla.org/en-US/docs/Web/API/FormData
             этот объект имеет поля
@@ -147,58 +148,58 @@ const actions = {
             updatedImageId: number;
             идентификатор обновляемой картинки
          */
-        try {
-            await axios.patch(`/image/${updatedImageId}/`, imageData, {
-                headers: { 'Content-Type': 'multipart/form-data' },
-            })
-        } catch (error) {
-            console.log(error)
-        }
-    },
+		try {
+			await axios.patch(`/image/${updatedImageId}/`, imageData, {
+				headers: { "Content-Type": "multipart/form-data" },
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	},
 
-    async deleteImage({}, deletedImageId) {
-        /*
+	async deleteImage({}, deletedImageId) {
+		/*
            deletedImageId: number;
            идентификатор удаляемой картинки
         */
-        try {
-            await axios.delete(`/image/${deletedImageId}/`)
-        } catch (error) {
-            console.log(error)
-        }
-    },
+		try {
+			await axios.delete(`/image/${deletedImageId}/`);
+		} catch (error) {
+			console.log(error);
+		}
+	},
 
-    /*
+	/*
     Экшены для работы с моделью sizes 
     Модель описывает размер
     Затем эти размеры нужно добавлять для создания модели product
      */
-    async fetchSizes({ commit }) {
-        try {
-            const response = await axios.get('/sizes')
-            commit('sizes', response.data);
-        } catch (error) {
-            console.log(error)
-        }
-    },
+	async fetchSizes({ commit }) {
+		try {
+			const response = await axios.get("/sizes");
+			commit("sizes", response.data);
+		} catch (error) {
+			console.log(error);
+		}
+	},
 
-    async createSize({}, sizeValue) {
-        /*
+	async createSize({}, sizeValue) {
+		/*
         sizeValue: string;
         размер выкройки
         */
 
-        try {
-            await axios.post('/sizes/', {
-                name: sizeValue,
-            })
-        } catch (error) {
-            console.log(error)
-        }
-    },
+		try {
+			await axios.post("/sizes/", {
+				name: sizeValue,
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	},
 
-    async updateSize({}, { sizeValue, sizeId }) {
-        /*
+	async updateSize({}, { sizeValue, sizeId }) {
+		/*
         sizeValue: string;
         размер выкройки
 
@@ -206,40 +207,40 @@ const actions = {
         идентификатор обновляемого размера
         */
 
-        try {
-            await axios.patch(`/sizes/${sizeId}/`, {
-                name: sizeValue,
-            })
-        } catch (error) {
-            console.log(error)
-        }
-    },
+		try {
+			await axios.patch(`/sizes/${sizeId}/`, {
+				name: sizeValue,
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	},
 
-    async deleteSize({}, sizeId) {
-        /*
+	async deleteSize({}, sizeId) {
+		/*
         sizeId: number;
         идентификатор удаляемого размера
         */
 
-        try {
-            await axios.delete(`/sizes/${sizeId}/`)
-        } catch (error) {
-            console.log(error)
-        }
-    },
-    /*
+		try {
+			await axios.delete(`/sizes/${sizeId}/`);
+		} catch (error) {
+			console.log(error);
+		}
+	},
+	/*
     Экшены для работы с моделью product 
     Является одной из вспомогательных сущностей в этом бизнес-домене
     Описывает выкройку без привязки к pdf-файлу
     
      */
-    async createProduct({ commit }, createdProduct) {
-        /* createdProduct = {
+	async createProduct({ commit }, createdProduct) {
+		/* createdProduct = {
             name: string;
             имя выкройки
 
-            category: number;
-            идентификатор категории для которой мы добавляем выкройку
+            category: number[];
+            массив идентификаторов категорий для которых мы добавляем выкройку
 
             price: string;
             цена выкройки
@@ -251,26 +252,29 @@ const actions = {
             массив идентификаторов в таблице размеров
             размеры можно получить по запросу: GET http?s://backendHost/sizes
         } */
-        try {
-            await axios.post('/products/', {
-                name: createdProduct.name,
-                category: createdProduct.categoryId,
-                price: createdProduct.price,
-                description: createdProduct.description,
-                sizes: createdProduct.sizes,
-            })
-        } catch (error) {
-            console.log(error)
-        }
-    },
+		try {
+			const { data } = await axios.post("/products/", createdProduct);
+			return data;
+		} catch (error) {
+			console.log(error);
+			if (error.response) {
+				// вернулась ошибка (5xx, 4xx)
+				commit("error", error.response.data);
+				// прячем ошибку через 5 секунд
+				setTimeout(() => {
+					commit("error", []);
+				}, 5000);
+			}
+		}
+	},
 
-    /*
+	/*
     Экшены для работы с моделью product-size 
     Является одной из главных сущностей в этом бизнес-домене
     Описывает выкройку для продажи, с конкретным размером и артикулом
      */
-    async createProductWithSize({}, createdProduct) {
-        /* createdProduct = {
+	async createProductWithSize({}, createdProduct) {
+		/* createdProduct = {
             sku_product: string;
             артикул создаваемой выкройки с pdf
 
@@ -281,15 +285,15 @@ const actions = {
             идентификатор размера для создаваемой выкройки с pdf
         } */
 
-        try {
-            await axios.post('/product-size/', createdProduct);
-        } catch (error) {
-            console.log(error);
-        }
-    },
+		try {
+			await axios.post("/product-size/", createdProduct);
+		} catch (error) {
+			console.log(error);
+		}
+	},
 
-    async updateProductWithSize({}, updatedProduct) {
-        /* createdProduct = {
+	async updateProductWithSize({}, updatedProduct) {
+		/* createdProduct = {
             sku_product: string;
             артикул создаваемой выкройки с pdf
 
@@ -300,55 +304,55 @@ const actions = {
             идентификатор размера для создаваемой выкройки с pdf
         } */
 
-        try {
-            await axios.put('/product-size/', updatedProduct);
-        } catch (error) {
-            console.log(error);
-        }
-    },
+		try {
+			await axios.put("/product-size/", updatedProduct);
+		} catch (error) {
+			console.log(error);
+		}
+	},
 
-    async createProductsWithSizeFromFile({ commit }, fileData) {
-        /* fileData
+	async createProductsWithSizeFromFile({ commit }, fileData) {
+		/* fileData
             это объект класса FormData
             https://developer.mozilla.org/en-US/docs/Web/API/FormData
          */
-        try {
-            await axios.post('/fadi/upload_products', fileData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            })
-        } catch (error) {
-            console.log(error)
-            if (error.response) {
-                // вернулась ошибка (5xx, 4xx)
-                commit('error', error.response.data)
-                // прячем ошибку через 5 секунд
-                setTimeout(() => {
-                    commit('error', [])
-                }, 5000)
-            }
-        }
-    },
-}
+		try {
+			await axios.post("/fadi/upload_products", fileData, {
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+			});
+		} catch (error) {
+			console.log(error);
+			if (error.response) {
+				// вернулась ошибка (5xx, 4xx)
+				commit("error", error.response.data);
+				// прячем ошибку через 5 секунд
+				setTimeout(() => {
+					commit("error", []);
+				}, 5000);
+			}
+		}
+	},
+};
 
 // определяем мутации
 const mutations = {
-    set: (state, data) => {
-        state.data = data
-    },
-    error: (state, error) => {
-        state.error = error
-    },
-    sizes: (state, sizes) => {
-        state.sizes = sizes;
-    },
-}
+	set: (state, data) => {
+		state.data = data;
+	},
+	error: (state, error) => {
+		state.error = error;
+	},
+	sizes: (state, sizes) => {
+		state.sizes = sizes;
+	},
+};
 
 export default {
-    namespaced: true,
-    state,
-    getters,
-    actions,
-    mutations,
-}
+	namespaced: true,
+	state,
+	getters,
+	actions,
+	mutations,
+};

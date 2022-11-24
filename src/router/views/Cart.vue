@@ -5,14 +5,26 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
 import CartItem from '@/components/CartItem.vue'
 import Checkout from '@/components/Checkout.vue'
 import { useStore } from 'vuex'
-import { defineAsyncComponent, computed } from 'vue'
+import { defineAsyncComponent, computed, ref } from 'vue'
 
 const PopularPatterns = defineAsyncComponent(() => import('@/components/PopularPatterns.vue'))
 
 // Определяем наше хранилище
 const store = useStore()
 
-const get = store.dispatch('cart/get')
+store.dispatch('cart/get');
+
+const isOrdersLoaded = ref(false);
+
+store.dispatch('order/get').then(() => {
+    isOrdersLoaded.value = true;
+});
+
+const orders = computed( () => store.getters['order/get'] );
+const lastOrder = computed( () => {
+    const ordersCount = orders.value.length;
+    return orders.value[ordersCount - 1];
+})
 // получаем массив с товаром
 const cart = computed(() => store.getters['cart/data'])
 // получаем массив с товаром
@@ -36,7 +48,7 @@ const id = computed(() => store.getters['cart/id'][0])
         </div>
 
         <aside>
-            <Checkout v-if="!!cart.length" :array="cart" :id="id" />
+            <Checkout v-if="!!cart.length && isOrdersLoaded" :lastOrder="lastOrder" :array="cart" :id="id" />
         </aside>
     </section>
 
