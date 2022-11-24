@@ -24,6 +24,7 @@ const actions = {
 
             commit('set', response.data)
         } catch (error) {
+            console.log(error)
             if (error.response) {
                 // вернулась ошибка (5xx, 4xx)
                 commit('error', error.response.data)

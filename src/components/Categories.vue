@@ -26,10 +26,19 @@ const push = (name) => {
     store.dispatch('products/getBy', { category: name })
 }
 
+const error = computed(() => store.getters['admin/error'])
+
 // работа с модальными окнами
-const sizes = store.getters['admin/sizes']
+const sizes = computed( () => store.getters['admin/sizes']);
 
 const modalSteps = ref(1)
+
+const nextStep = () => {
+    console.log('nextStep')
+    if (modalSteps.value < 4) {
+        modalSteps.value += 1
+    }
+}
 
 const newProduct = reactive({
     name: '',
@@ -39,21 +48,31 @@ const newProduct = reactive({
     sizes: [],
 })
 
+const handleChangeSizes = (changedSizeId) => {
+    if (newProduct.sizes.includes(changedSizeId)) {
+        newProduct.sizes = newProduct.sizes.filter( id => id !== changedSizeId );
+    } else {
+        newProduct.sizes.push(changedSizeId);
+    }
+}
+
 const categoryData = reactive({
     name: '',
     slug: '',
 })
-
-const createCategory = async () => {
-    await store.dispatch('admin/createCategory', categoryData)
-    const createdCategory = store.getters[('admin/categoryByName', categoryData.name)]
-    console.log(createdCategory)
-}
+let createdCategory = null
 
 const handleSubmitStep = async () => {
     switch (modalSteps.value) {
         case 1:
-            await createCategory();
+            await store.dispatch('admin/createCategory', categoryData)
+            newProduct.category = (store.getters['category/categoryByName'](categoryData.name))?.id
+
+            if (error.value.length == 0) {
+                await store.dispatch('admin/fetchSizes');
+                nextStep();
+            }
+            break
     }
 }
 </script>
@@ -81,15 +100,26 @@ const handleSubmitStep = async () => {
         >
             <template #modal-content>
                 <form v-if="modalSteps == 1" class="modal__content" action="">
-                    <input type="text" placeholder="Название категории" required />
-                    <input type="text" placeholder="Короткое имя на латинице" required />
+                    <input
+                        v-model="categoryData.name"
+                        type="text"
+                        placeholder="Название категории"
+                        required
+                    />
+                    <input
+                        v-model="categoryData.slug"
+                        type="text"
+                        placeholder="Короткое имя на латинице"
+                        required
+                    />
                 </form>
                 <form v-if="modalSteps == 2" class="modal__content" action="">
                     <input type="text" placeholder="Название товара" required />
                     <textarea placeholder="Описание" cols="10" rows="5"></textarea>
                     <ul>
-                        <Checkbox v-for="size in sizes" :key="size.id" />
+                        <Checkbox v-for="size in sizes" :key="size.id" :text="size.name" @checked="handleChangeSizes(size.id)"/>
                     </ul>
+                    <input type="text" placeholder="Цена товара" required />
                 </form>
             </template>
             <template #modal-sidebar>

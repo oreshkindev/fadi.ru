@@ -14,7 +14,7 @@ service.interceptors.request.use(
     (config) => {
         // что-нибудь делаем перед отправкой запроса
         // const key = import.meta.env.VITE_API_KEY // достаем токен их хранилища
-        const key = storage.get('fadi.auth_token').replace(/\"/g, '');
+        const key = storage.get('fadi.auth_token') ? storage.get('fadi.auth_token').replace(/\"/g, '') : storage.get('fadi.auth_token');
         if (key) {
             config.headers['Authorization'] = `token ${key}`
         }

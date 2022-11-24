@@ -1,8 +1,7 @@
 import { customRef } from 'vue'
+import { createFocusTrap } from 'focus-trap'
 
-const focusableElementsSelector = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-
-const useFocusTrap = () => {
+const useFocusTrap = (focusTrapArgs) => {
     const trapRef = customRef((track, trigger) => {
         let $trapEl = null
         return {
@@ -12,53 +11,28 @@ const useFocusTrap = () => {
             },
             set(value) {
                 $trapEl = value
-                value ? initTrapFocus() : clearTrapFocus()
+                value ? initFocusTrap(focusTrapArgs) : clearFocusTrap()
                 trigger()
             },
         }
     })
-    let focusableElements = []
-    let $firstFocusable
-    let $lastFocusable
 
-    function keyHandler(e) {
-        const isTabPressed = e.key === 'Tab'
-
-        if (!isTabPressed) return
-
-        if (e.shiftKey) {
-            
-            if (document.activeElement === $firstFocusable) {
-                $lastFocusable.focus()
-                e.preventDefault()
-            }
-        } else {
-            if (document.activeElement === $lastFocusable) {
-                
-                $firstFocusable.focus()
-                e.preventDefault()
-            }
-        }
-        console.log('end')
-    }
-
-    function initTrapFocus() {
+    let trap = null
+    const initFocusTrap = (focusTrapArgs) => {
         if (!trapRef.value) return
-        focusableElements = trapRef.value.querySelectorAll(focusableElementsSelector)
-        $firstFocusable = focusableElements[0]
-        $lastFocusable = focusableElements[focusableElements.length - 1]
-        document.addEventListener('keydown', keyHandler)
-        $firstFocusable.focus()
+        trap = createFocusTrap(trapRef.value, focusTrapArgs)
+        trap.activate()
     }
 
-    function clearTrapFocus() {
-        document.removeEventListener('keydown', keyHandler)
+    const clearFocusTrap = () => {
+        trap?.deactivate()
+        trap = null
     }
 
     return {
         trapRef,
-        initTrapFocus,
-        clearTrapFocus,
+        initFocusTrap,
+        clearFocusTrap,
     }
 }
 

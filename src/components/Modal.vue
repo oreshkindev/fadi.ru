@@ -9,7 +9,7 @@ defineProps({
 })
 
 // обязательно должно быть более 1 элемента
-const { trapRef } = useFocusTrap()
+//const { trapRef } = useFocusTrap()
 </script>
 
 <template>
