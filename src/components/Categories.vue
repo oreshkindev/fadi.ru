@@ -2,13 +2,14 @@
 	// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 	import { useStore } from "vuex";
 	import { computed, reactive, ref } from "vue";
+	import { useRouter } from "vue-router";
 	import Modal from "@/components/Modal.vue";
-	import Checkbox from "@/components/ui/Checkbox.vue";
-
-	import FilePicker from "@/components/ui/FilePicker.vue";
 
 	// Определяем наше хранилище
 	const store = useStore();
+
+	// Определяем  роутер
+	const router = useRouter();
 
 	const index = ref(3);
 
@@ -36,7 +37,7 @@
 
 	const nextStep = () => {
 		console.log("nextStep");
-		if (modalSteps.value < 5) {
+		if (modalSteps.value < 3) {
 			modalSteps.value += 1;
 		}
 	};
@@ -46,40 +47,11 @@
 		slug: "",
 	});
 	let createdCategory = null;
+
+	let subCategory = null;
 	// новый продукт
-	const newProduct = reactive({
-		name: "",
-		category: [],
-		price: null,
-		descriptions: "",
-		sizes: [],
-	});
-	let createdProduct = null;
 
-	// размеры
-	const sizes = computed(() => store.getters["admin/sizes"]);
 
-	const handleChangeSizes = (changedSizeId) => {
-		if (newProduct.sizes.includes(changedSizeId)) {
-			newProduct.sizes = newProduct.sizes.filter(
-				(id) => id !== changedSizeId
-			);
-		} else {
-			newProduct.sizes.push(changedSizeId);
-		}
-	};
-	// работа с фотографиями
-	const images = ref([]);
-
-	const handleAddImageFromPicker = (fileInfo) => {
-		images.value.push({ name: fileInfo.name, image: fileInfo.file });
-	};
-
-	const handleDeleteImageFromPicker = (fileInfo) => {
-		images.value = images.value.filter(
-			({ name }) => name !== fileInfo.name
-		);
-	};
 
 	const handleUploadImages = async () => {
 		const uploadQueue = images.value.map((imageObj) => {
@@ -100,9 +72,7 @@
 				createdCategory = store.getters["category/categoryByName"](
 					categoryData.name
 				);
-
 				if (error.value.length == 0) {
-					await store.dispatch("admin/fetchSizes");
 					nextStep();
 				}
 				break;
@@ -113,40 +83,12 @@
 					parent: createdCategory.id,
 				});
 				if (error.value.length == 0) {
-					const subCategory = store.getters["category/categoryByName"](createdCategory.name).children[0];
-                    newProduct.category = [subCategory.id];
-					nextStep();
-				}
-			case 3:
-				createdProduct = await store.dispatch("admin/createProduct", {
-					...newProduct,
-				});
-				const productsWithSize = createdProduct.sizes.map((sizeId) => {
-					return {
-						sku_product: `sku${createdProduct.id}${sizeId}`,
-						product: createdProduct.id,
-						size: sizeId,
-					};
-				});
-				const productsWithSizeQueue = productsWithSize.map(
-					(product) => {
-						return store.dispatch(
-							"admin/createProductWithSize",
-							product
-						);
-					}
-				);
-				await Promise.allSettled(productsWithSizeQueue);
-
-				if (error.value.length == 0) {
+					createdCategory = store.getters["category/categoryByName"](createdCategory.name).children[0];
 					nextStep();
 				}
 				break;
-			case 4:
-				await handleUploadImages();
-				if (error.value.length == 0) {
-					nextStep();
-				}
+			case 3:
+				router.push({ path: '/tmp', query: { category: createdCategory.slug } });
 		}
 	};
 </script>
@@ -190,85 +132,9 @@
 
 				<form v-if="modalSteps == 2" class="modal__content" action="">
 					<input
-						v-model="newProduct.name"
-						type="text"
-						placeholder="Название товара"
-						required
-					/>
-					<textarea
-						v-model="newProduct.descriptions"
-						placeholder="Описание"
-						cols="10"
-						rows="5"
-					></textarea>
-					<ul>
-						<Checkbox
-							v-for="size in sizes"
-							:key="size.id"
-							:text="size.name"
-							@checked="handleChangeSizes(size.id)"
-						/>
-					</ul>
-					<input
-						v-model="newProduct.price"
-						type="text"
-						placeholder="Цена товара"
-						required
-					/>
-				</form>
-
-				<form v-if="modalSteps == 3" class="modal__content" action="">
-					<FilePicker
-						name="firstPicker"
-						accept=".jpg"
-						:renderPreview="true"
-						@file-picked="handleAddImageFromPicker"
-						@file-removed="handleDeleteImageFromPicker"
-					>
-						<template #picker-icon>
-							<i class="icon-add-a-photo"></i>
-						</template>
-					</FilePicker>
-					<FilePicker
-						name="secondPicker"
-						accept=".jpg"
-						:renderPreview="true"
-						@file-picked="handleAddImageFromPicker"
-						@file-removed="handleDeleteImageFromPicker"
-					>
-						<template #picker-icon>
-							<i class="icon-add-a-photo"></i>
-						</template>
-					</FilePicker>
-					<FilePicker
-						name="thirdPicker"
-						accept=".jpg"
-						:renderPreview="true"
-						@file-picked="handleAddImageFromPicker"
-						@file-removed="handleDeleteImageFromPicker"
-					>
-						<template #picker-icon>
-							<i class="icon-add-a-photo"></i>
-						</template>
-					</FilePicker>
-					<FilePicker
-						name="fourthPicker"
-						accept=".jpg"
-						:renderPreview="true"
-						@file-picked="handleAddImageFromPicker"
-						@file-removed="handleDeleteImageFromPicker"
-					>
-						<template #picker-icon>
-							<i class="icon-add-a-photo"></i>
-						</template>
-					</FilePicker>
-				</form>
-
-				<form v-if="modalSteps == 4" class="modal__content" action="">
-					<input
 						v-model="categoryData.name"
 						type="text"
-						placeholder="Название категории"
+						placeholder="Название подкатегории"
 						required
 					/>
 					<input
@@ -294,8 +160,9 @@
 				</picture>
 			</template>
 			<template #modal-navigation>
-				<button @click="handleSubmitStep">Далее</button>
-				<p>{{ modalSteps }} / 4</p>
+				<button @click="handleSubmitStep">{{ modalSteps == 3 ? 'Перейти к созданию выкройки' : 'Далее' }}</button>
+				<button @click="nextStep" v-if="modalSteps == 2">Пропустить</button>
+				<p>{{ modalSteps }} / 3</p>
 			</template>
 		</Modal>
 	</Teleport>

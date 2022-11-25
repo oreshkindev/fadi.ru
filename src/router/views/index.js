@@ -8,7 +8,8 @@ import Signin from './Signin.vue'
 import Signup from './Signup.vue'
 import NotFound from './404.vue'
 
-import TemporaryPage from './TemporaryPage.vue';
+import TemporaryPage from '../../components/views/private/AdminCRM.vue';
+
 
 // lazy-loaded
 const Cart = () => import('./Cart.vue')

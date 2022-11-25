@@ -15,7 +15,7 @@ import ButtonContext from '@/components/ui/ButtonContext.vue'
                 <img src="@/assets/images/sewing-machines-h.webp" type="image/webp" decoding="async" alt="Цех" loading="lazy" />
             </picture>
 
-            <ButtonContext icon="icon-arrow-top-right" text="Работа цеха" />
+            <ButtonContext @click="$router.push('/tailoring')" icon="icon-arrow-top-right" text="Работа цеха" />
             <p>
                 Умеренноый объём, прямой силуэт, длина — до линии бёдер. Плечо спущено на 7 см от естественной точки плеча. Перед и спинка с рельефами, образующими V-образную
                 линию.

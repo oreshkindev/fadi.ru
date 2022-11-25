@@ -11,6 +11,7 @@
 	const emit = defineEmits({
 		"file-picked": null,
 		"file-removed": null,
+		"preview-changed": null,
 	});
 
 	const pickerRef = ref(null);
@@ -24,6 +25,7 @@
 
 		ImageReader.addEventListener("load", () => {
 			preview.value = ImageReader.result;
+			emit('preview-changed', { name: props.name, url: preview.value });
 		});
 
 		ImageReader.readAsDataURL(file.value);
@@ -41,6 +43,7 @@
 		preview.value = null;
 		file.value = null;
 		emit("file-removed", { name: props.name });
+		emit('preview-changed', { name: props.name, url: preview.value });
 	};
 </script>
 

@@ -26,7 +26,7 @@ const next = (index) => {
 
 <template>
     <div class="swiper">
-        <Image v-for="(item, index) in swiper" :key="index" :text="item" @click="next(index)" />
+        <Image v-for="(item, index) in swiper" :key="index" :srcPath="item" @click="next(index)" />
     </div>
 </template>
 

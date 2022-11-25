@@ -6,7 +6,7 @@ import ButtonContext from '@/components/ui/ButtonContext.vue'
 <template>
     <section>
         <h3>Бесплатные выкройки</h3>
-        <router-link to="/patterns" custom v-slot="{ navigate }">
+        <router-link to="/workshops" custom v-slot="{ navigate }">
             <article @click="navigate" @keypress.enter="navigate" role="link">
                 <i class="icon-arrow-top-right"></i>
                 <h4>120+</h4>
@@ -22,7 +22,7 @@ import ButtonContext from '@/components/ui/ButtonContext.vue'
             </article>
         </router-link>
 
-        <ButtonContext icon="icon-arrow-top-right" text="Посмотреть каталог" />
+        <ButtonContext @click="$router.push('/patterns')" icon="icon-arrow-top-right" text="Посмотреть каталог" />
     </section>
 </template>
 

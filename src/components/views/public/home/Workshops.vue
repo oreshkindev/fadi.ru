@@ -17,7 +17,7 @@ import ButtonContext from '@/components/ui/ButtonContext.vue'
             </p>
         </article>
 
-        <ButtonContext icon="icon-arrow-top-right" text="Мастер-классы" />
+        <ButtonContext @click="$router.push('/workshops')" icon="icon-arrow-top-right" text="Мастер-классы" />
     </section>
 </template>
 

@@ -1,23 +1,15 @@
 <script setup>
-import { ref, watchEffect } from 'vue'
 
 const props = defineProps({
-    text: { type: String },
-})
-
-const webp = ref()
-
-watchEffect(async () => {
-    if (props.text) {
-        webp.value = (await import(/* @vite-ignore */ `@/assets/images/${props.text}.webp`)).default
-    }
+    srcPath: { type: String },
+    text: { type: String, default: 'картинка' }
 })
 </script>
 
 <template>
     <picture>
         <!-- <source :srcset="webp" type="image/webp" /> -->
-        <img :src="webp" type="image/webp" decoding="async" :alt="text" loading="lazy" />
+        <img :src="srcPath" type="image/jpg" decoding="async" :alt="text" loading="lazy" />
     </picture>
 </template>
 
