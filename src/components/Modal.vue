@@ -104,6 +104,7 @@ dialog {
     padding: var(--scheme-gap);
     z-index: 10;
     max-width: 90vw;
+    position: fixed;
 
     article {
         grid-column: 1 / 2;

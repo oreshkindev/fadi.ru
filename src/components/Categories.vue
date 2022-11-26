@@ -47,8 +47,6 @@
 		slug: "",
 	});
 	let createdCategory = null;
-
-	let subCategory = null;
 	// новый продукт
 
 
@@ -84,10 +82,12 @@
 				});
 				if (error.value.length == 0) {
 					createdCategory = store.getters["category/categoryByName"](createdCategory.name).children[0];
+
 					nextStep();
 				}
 				break;
 			case 3:
+				store.commit('products/set', )
 				router.push({ path: '/tmp', query: { category: createdCategory.slug } });
 		}
 	};

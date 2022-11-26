@@ -29,7 +29,7 @@ const unset = (item) => {
             <span>{{ data.product.price || 0 }}р</span>
         </h4>
 
-        <p>Размер {{ data.size }}</p>
+        <p>Размер {{ data.product.size }}</p>
 
         <i class="icon-plus" @click="unset(data.product.id)"></i>
     </article>

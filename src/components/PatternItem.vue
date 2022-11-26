@@ -17,7 +17,7 @@ const props = defineProps({
 
 <template>
     <article>
-        <Image :text="images" />
+        <Image :srcPath="images" :text="`Картинка ${data.product?.name}`" />
 
         <p>
             {{ data.product?.name }}

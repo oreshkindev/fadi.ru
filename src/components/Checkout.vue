@@ -1,9 +1,13 @@
 <script setup>
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import ButtonContext from '@/components/ui/ButtonContext.vue'
+import ButtonContext from '@/components/ui/ButtonContext.vue';
+import Modal from "@/components/Modal.vue";
 
 import { computed, ref } from "vue";
-import { useStore } from 'vuex'
+import { useStore } from 'vuex';
+
+import { getProcessedErrorMessage } from "@/common/helper/paymentErrorMapping";
+
 // Определяем наше хранилище
 const store = useStore()
 
@@ -24,6 +28,8 @@ const props = defineProps({
 })
 
 const errors = computed( () => store.getters['order/error'] );
+
+const paymentError = ref(null);
 
 const isLastOrderPendingOrReject = computed( () => props.lastOrder?.status !== 'Успешно');
 const lastOrderRejected = computed( () => props.lastOrder?.status == 'Отменен');
@@ -57,8 +63,9 @@ const prepare = async () => {
     if (errors.value.length == 0) {
         try {
             const paymentObject = JSON.parse(paymentRequest.replace(/\g/, ''));
-            if ('errorMessage' in paymentObject) {
-                console.error(paymentObject);
+            console.log(paymentObject)
+            if ('errorCode' in paymentObject) {
+                paymentError.value = getProcessedErrorMessage(paymentObject.errorMessae);
             } else {
                 window.open(paymentObject.formUrl, '_blank');
                 await store.dispatch('order/get');
@@ -91,6 +98,16 @@ const prepare = async () => {
             {{ lastOrder?.status }}
         </span>
     </ul>
+    <Teleport to="body">
+        <Modal :visible="Boolean(paymentError)" title="Ошибка оплаты" @close="paymentError = null">
+            <template #modal-content>
+                <span>{{ paymentError }}</span>
+            </template>
+            <template #modal-navigation>
+                <button @click="paymentError = null">Понятно</button>
+            </template>
+        </Modal>
+    </Teleport>
 </template>
 
 <style lang="scss" scoped>
@@ -150,6 +167,14 @@ button {
         color: var(--scheme-v3);
         background-color: transparent;
 		cursor: default;
+    }
+}
+
+:deep(dialog) {
+    nav {
+        button {
+            border-radius: 30px;
+        }
     }
 }
 </style>

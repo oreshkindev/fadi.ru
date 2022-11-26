@@ -10,6 +10,21 @@ const Table = defineAsyncComponent(() => import('@/components/Table.vue'))
 // получаем массив с товаром
 const orders = computed(() => store.getters['order/get'])
 
+const proccesedOrders = computed( () => {
+    const res = orders.value.reduce( (previosArray, currentOrder, currentIndex) => {
+        const modyfiedOrder = currentOrder.info_order.map( productInfo => {
+            return { ...productInfo,  created: currentOrder.created, status: currentOrder.status };
+        } );
+        if ((orders.value.length - 1) === currentIndex) {
+           
+            return [...previosArray, ...modyfiedOrder];
+        }
+        const orderStatus = currentOrder.status;
+        return orderStatus === 'Успешно' ? [...previosArray, ...modyfiedOrder] : [...previosArray];
+    }, []);
+    return res.reverse();
+} )
+
 // отправляем форму
 const get = () => {
     store.dispatch('order/get')
@@ -38,7 +53,7 @@ onMounted(() => {
         </form>
     </section>
 
-    <Table :array="orders" />
+    <Table :array="proccesedOrders" />
 </template>
 
 <style lang="scss" scoped>

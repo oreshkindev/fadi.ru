@@ -268,6 +268,40 @@ const actions = {
 		}
 	},
 
+	async updateProduct({ commit }, updatedProduct) {
+		/* updatedProduct = {
+            name: string;
+            имя выкройки
+
+            category: number[];
+            массив идентификаторов категорий для которых мы добавляем выкройку
+
+            price: string;
+            цена выкройки
+
+            descriptions: string;
+            описание товара
+
+            sizes: number[];
+            массив идентификаторов в таблице размеров
+            размеры можно получить по запросу: GET http?s://backendHost/sizes
+        } */
+		try {
+			const { data } = await axios.put("/products/", updatedProduct);
+			commit('products/set', data);
+		} catch (error) {
+			console.log(error);
+			if (error.response) {
+				// вернулась ошибка (5xx, 4xx)
+				commit("error", error.response.data);
+				// прячем ошибку через 5 секунд
+				setTimeout(() => {
+					commit("error", []);
+				}, 5000);
+			}
+		}
+	},
+
 	/*
     Экшены для работы с моделью product-size 
     Является одной из главных сущностей в этом бизнес-домене

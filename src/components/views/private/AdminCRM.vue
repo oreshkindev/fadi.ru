@@ -19,17 +19,14 @@
 		reactive,
 	} from "vue";
 
-	// Список популярных товаров
-	const PopularPatterns = defineAsyncComponent(() =>
-		import("@/components/PopularPatterns.vue")
-	);
+	// Определяем наше хранилище
+	const store = useStore();
 
 	// получаем доступ к параметрам роутера
 	const route = useRoute();
 
-	// Определяем наше хранилище
-	const store = useStore();
-
+	const categories = computed(() => store.getters["category/data"]);
+	
 	// модель товара без pdf
 	const newProduct = reactive({
 		name: "",

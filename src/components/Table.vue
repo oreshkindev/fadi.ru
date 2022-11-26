@@ -13,6 +13,8 @@ const props = defineProps({
     },
 })
 
+console.log(props.array);
+
 const get = (id) => {
     const response = store.dispatch('products/getBy', id)
     console.log(response)
@@ -37,9 +39,9 @@ const download = () => {}
             <li>
                 <img src="@/assets/images/Rectangle451.webp" type="image/webp" decoding="async" loading="lazy" :alt="item.name" />
             </li>
-            <li>{{ item.info_order[0].name }}</li>
+            <li>{{ item.name }}</li>
             <li>{{ prettyDate(item.created) }}</li>
-            <li>{{ item.info_order[0].price }}р</li>
+            <li>{{ item.price }}р</li>
             <li>{{ item.status }}</li>
             <li>
                 <i class="icon-download-solid" @click="download()"></i>

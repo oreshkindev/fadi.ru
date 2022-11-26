@@ -50,7 +50,7 @@ const actions = {
 			}
 		}
 	},
-	async createPaymentRequest({}, orderId) {
+	async createPaymentRequest({ commit }, orderId) {
 		try {
 			const response = await axios.get(`/api/pay/${orderId}/`);
 			return response.data;
