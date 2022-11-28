@@ -5,7 +5,7 @@ import router from '@/router'
 // определяем состояние
 const state = () => ({
     error: [],
-    data: [],
+    userData: null,
     auth_token: storage.get('fadi.auth_token') || null,
     id: null,
 })
@@ -13,7 +13,7 @@ const state = () => ({
 // определяем геттеры
 const getters = {
     error: (state) => state.error,
-    data: (state) => state.data,
+    userData: (state) => state.userData,
     id: (state) => state.id,
     auth_token: (state) => state.auth_token,
 }
@@ -41,6 +41,8 @@ const actions = {
             if (state.auth_token) {
                 const response = await axios.get('/auth/users/me/')
                 commit('setId', response.data.id)
+                console.log
+                commit('setUserData', response.data);
                 return
             }
         } catch (error) {
@@ -77,6 +79,9 @@ const mutations = {
     },
     setId: (state, data) => {
         state.id = data
+    },
+    setUserData: (state, userData) => {
+        state.userData = userData;
     },
     remove: (state) => {
         storage.remove('fadi.auth_token')

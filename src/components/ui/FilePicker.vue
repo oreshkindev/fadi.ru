@@ -7,6 +7,7 @@
 		multiple: { type: Boolean, default: false },
 		// свойство для картинок
 		renderPreview: { type: Boolean, default: false },
+		previewSrc: { type: String, default: null },
 	});
 	const emit = defineEmits({
 		"file-picked": null,
@@ -19,7 +20,7 @@
 
 	// TODO: написать регулярку для определения формата
 
-	const preview = ref(null);
+	const preview = ref(props.previewSrc);
 	const handleRenderPreview = () => {
 		const ImageReader = new FileReader();
 
@@ -60,12 +61,12 @@
 		/>
 		<label :for="`${name}Id`">
       <!-- пока слот будет рендерится по условию, не смог в стили -->
-			<slot v-if="!file" name="picker-icon"></slot>
+			<slot v-if="!preview" name="picker-icon"></slot>
 			<picture v-if="preview">
 				<img :src="preview" alt="загружаемое фото" />
 			</picture>
 		</label>
-		<button v-if="file" type="button" @click="handleClearFileFromPicker">
+		<button v-if="preview" type="button" @click="handleClearFileFromPicker">
 			X
 		</button>
 	</div>

@@ -48,6 +48,7 @@
 			store.dispatch("products/getBy", { price: "0.0" });
 		}, 1000);
 	});
+	const pathPart = `${import.meta.env.VITE_IMAGE_DIR}`;
 </script>
 
 <template>
@@ -60,7 +61,7 @@
 			v-else
 			v-for="item in products"
 			:key="item.id"
-			:images="images[5]"
+			:images="`${pathPart}/${item.product.images[0]}`"
 			:data="item"
 		/>
 	</section>

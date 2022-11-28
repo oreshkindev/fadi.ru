@@ -2,7 +2,7 @@
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import Image from '@/components/Image.vue'
 
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 
 const props = defineProps({
     // заголовок изображения
@@ -13,7 +13,11 @@ const props = defineProps({
 })
 
 // создаем реактивный экземпляр массива
-const swiper = ref(props.images)
+let swiper = ref()
+ watchEffect( () => {
+    console.log('swiper')
+    swiper.value = JSON.parse(JSON.stringify(props.images))
+ })
 
 const next = (index) => {
     if (index != 0) {

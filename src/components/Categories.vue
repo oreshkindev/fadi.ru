@@ -41,12 +41,41 @@
 			modalSteps.value += 1;
 		}
 	};
+
+	const popupTitle = computed( () => {
+		switch(modalSteps.value) {
+			case 1:
+				return 'Добавление новой категории товаров';
+			case 2:
+				return `Добавление новой подкатегории товаров в категории ${createdCategory.name}`;
+			case 3:
+				return 'Финальный шаг';
+			default:
+				return 'Добавление новой категории товаров';
+		}
+	});
+	const popupSubTitle = computed( () => {
+		switch(modalSteps.value) {
+			case 1:
+				return 'Для добавления новой категории укажите название категории и короткое имя на латинице';
+			case 2:
+				return `Для добавления новой подкатегории в категории ${createdCategory.name} укажите название подкатегории и короткое имя на латинице`;
+			case 3:
+				return `Нажмите на кнопку ниже для перехода к созданию выкройки для категории ${createdCategory.name}`;
+			default:
+				return '';
+		}
+	});
 	// новая категория
 	const categoryData = reactive({
 		name: "",
 		slug: "",
 	});
 	let createdCategory = null;
+	/* переменная для хранения родительской категории, если захотят создать дочернюю категорию
+		т.к. мы перезаписываем категорию ниже
+	 */
+	let parentCategory = null;
 	// новый продукт
 
 
@@ -70,6 +99,9 @@
 				createdCategory = store.getters["category/categoryByName"](
 					categoryData.name
 				);
+				categoryData.name = '';
+				categoryData.slug = '';
+
 				if (error.value.length == 0) {
 					nextStep();
 				}
@@ -81,14 +113,33 @@
 					parent: createdCategory.id,
 				});
 				if (error.value.length == 0) {
+					parentCategory = createdCategory;
 					createdCategory = store.getters["category/categoryByName"](createdCategory.name).children[0];
 
 					nextStep();
 				}
 				break;
 			case 3:
-				store.commit('products/set', )
-				router.push({ path: '/tmp', query: { category: createdCategory.slug } });
+				const sub_category = {
+					id: createdCategory.id,
+					name: createdCategory.name,
+					slug: createdCategory.slug,
+				};
+				parentCategory ? sub_category.category = [parentCategory] : '';
+				const productModel = {};
+				productModel.product = {
+					descriptions: '',
+					images: [],
+					name: '',
+					price: '',
+					sub_category: [
+						sub_category
+					]
+				};
+				productModel.size = [];
+				productModel.sku_product = [];
+				store.commit('products/set', [productModel]);
+				router.push({ name: 'tmp', params: { categoryName: createdCategory.slug } });
 		}
 	};
 </script>
@@ -109,9 +160,8 @@
 	<Teleport to="body">
 		<Modal
 			:visible="visible"
-			title="Добавление новой категории товаров"
-			subTitle="Вы хотите добавить новую категорию товаров, для этого вам необходимо ввести название категории, придумать заголовок и описание, а так-же добавить товары в
-                        соответсвующие разделы"
+			:title="popupTitle"
+			:subTitle="popupSubTitle"
 			@close="visible = false"
 		>
 			<template #modal-content>

@@ -17,39 +17,130 @@
 		computed,
 		ref,
 		reactive,
+		watchEffect,
 	} from "vue";
+
+	// вспомогательная функции для этой страницы
+	const getPositionInSwiper = (filePickerName) => {
+		switch (filePickerName) {
+			case "firstPicker":
+				return 0;
+			case "secondPicker":
+				return 1;
+			case "thirdPicker":
+				return 2;
+			case "fourthPicker":
+				return 3;
+		}
+	};
 
 	// Определяем наше хранилище
 	const store = useStore();
 
 	// получаем доступ к параметрам роутера
 	const route = useRoute();
-
-	const categories = computed(() => store.getters["category/data"]);
-	
-	// модель товара без pdf
-	const newProduct = reactive({
-		name: "",
-		category: [],
-		price: null,
-		descriptions: "",
-		sizes: [],
-	});
-	// размеры для превью на странице
-	const demoSizes = ref([]);
-	const demoProductName = computed(() => {
-		return newProduct.name ? newProduct.name : "[ Название ]";
-	});
-	const demoProductPrice = computed(() => {
-		return newProduct.price ? newProduct.price : "[Цена]";
-	});
-
-	const demoDescription = computed(() => newProduct.descriptions);
-
+	if (route.query?.name) {
+		store.dispatch("products/getBy", route.query);
+	}
 	// все существующие размеры из базы
 	store.dispatch("admin/fetchSizes");
 
 	const sizes = computed(() => store.getters["admin/sizes"]);
+
+	const categories = computed(() => store.getters["category/data"]);
+	const currentProduct = computed(() => store.getters["products/data"][0]);
+
+	const demoSizes = ref([]);
+	const demoImages = ref([]);
+	const demoProductName = computed(() => {
+		return newProduct.name ? newProduct.name : "[ Название ]";
+	});
+	const demoProductPrice = computed(() => {
+		return newProduct.price ? newProduct.price : "[ Цена ]";
+	});
+
+	const demoDescription = computed(() => newProduct.descriptions);
+
+	// модель товара без pdf
+	const newProduct = reactive({
+		name: "",
+		category: [],
+		price: "",
+		descriptions: "",
+		sizes: [],
+	});
+
+	const pdfFiles = ref([]);
+	const images = ref([
+		//"@/assets/images/mannequin.jpg",
+	]);
+	if (currentProduct.value && sizes.value.length) {
+		console.log("sizes and product");
+		newProduct.name = currentProduct.value.product.name;
+		newProduct.descriptions = currentProduct.value.product.descriptions;
+		newProduct.price = currentProduct.value.product.price;
+		if (currentProduct.value.product.sub_category[0]?.id) {
+			newProduct.category = [
+				currentProduct.value.product.sub_category[0].id,
+			];
+		}
+		if (currentProduct.value.product.images.length) {
+			images.value = [...currentProduct.value.images];
+		} else {
+			for (let counter = 0; counter < 4; counter++) {
+				images.value.push("/src/assets/images/mannequin.jpg");
+			}
+		}
+		if (currentProduct.value.size.length) {
+			newProduct.sizes = currentProduct.value.size.map((sizeName) => {
+				const matchedSize = sizes.value.find(
+					({ name }) => name === sizeName
+				);
+				if (matchedSize) {
+					return matchedSize.id;
+				}
+			});
+			demoSizes.value = [...currentProduct.value.size];
+		}
+	} else {
+		const watchForNecessaryData = watchEffect(() => {
+			if (currentProduct.value && sizes.value.length) {
+				console.log("watch");
+				console.log(currentProduct.value);
+				newProduct.name = currentProduct.value.product.name;
+				newProduct.descriptions =
+					currentProduct.value.product.descriptions;
+				newProduct.price = currentProduct.value.product.price;
+				if (currentProduct.value.product.sub_category[0]?.id) {
+					newProduct.category = [
+						currentProduct.value.product.sub_category[0].id,
+					];
+				}
+				if (currentProduct.value.product.images.length) {
+					images.value = currentProduct.value.product.images.map( pathPart => `${import.meta.env.VITE_IMAGE_DIR}/${pathPart}`);
+				} else {
+					for (let counter = 0; counter < 4; counter++) {
+						images.value.push(`/src/assets/images/mannequin.jpg`);
+					}
+				}
+				if (currentProduct.value.size.length) {
+					newProduct.sizes = currentProduct.value.size.map(
+						(sizeName) => {
+							const matchedSize = sizes.value.find(
+								({ name }) => name === sizeName
+							);
+							if (matchedSize) {
+								return matchedSize.id;
+							}
+						}
+					);
+					demoSizes.value = [...currentProduct.value.size];
+				}
+			}
+		});
+	}
+
+	// размеры для превью на странице
 
 	const handleChangeSizes = (choosenSize) => {
 		if (newProduct.sizes.includes(choosenSize.id)) {
@@ -65,20 +156,51 @@
 		}
 	};
 
-	const demoImages = ref([]);
-
 	const handleAddImageFromPicker = (fileInfo) => {
 		demoImages.value.push({ name: fileInfo.name, image: fileInfo.file });
 	};
 
 	const handleDeleteImageFromPicker = (fileInfo) => {
-		demoImages.value = images.value.filter(
+		demoImages.value = demoImages.value.filter(
 			({ name }) => name !== fileInfo.name
 		);
 	};
 
 	const handleChangePreview = (previewInfo) => {
-		images.value[0] = previewInfo.url;
+		const imageIndexInSwiper = getPositionInSwiper(previewInfo.name);
+		if (previewInfo.url == null) {
+			return (images.value[imageIndexInSwiper] =
+				"/src/assets/images/mannequin.jpg");
+		}
+		images.value[imageIndexInSwiper] = previewInfo.url;
+	};
+
+	const handleAddFileFromPicker = (fileInfo) => {
+		pdfFiles.value.push({ name: fileInfo.name, file_pdf: fileInfo.file });
+	};
+	const handleDeleteFileFromPicker = (fileInfo) => {
+		pdfFiles.value = pdfFiles.value.filter( ({ name }) => name !== fileInfo.name );
+	};
+
+	const handleUploadImages = async (productId) => {
+		const uploadQueue = demoImages.value.map((imageObj) => {
+			const ImageData = new FormData();
+			ImageData.append("image", imageObj.image);
+			ImageData.append("product", productId);
+
+			return store.dispatch("admin/createImage", ImageData);
+		});
+
+		await Promise.allSettled(uploadQueue);
+	};
+
+	const handleCreateProductSizes = async (productId) => {
+		const productSizeQueue = newProduct.sizes.map((sizeId) => {
+			const sku_product = `sku${productId}${sizeId}`;
+			return store.dispatch("admin/createProductWithSize", { sku_product, product: productId, size: sizeId });
+		});
+
+		await Promise.allSettled(productSizeQueue);
 	};
 
 	// выводим ошибку
@@ -94,14 +216,16 @@
 		"Rectangle90",
 		"Rectangle89",
 	]); */
-	const images = ref([
-		//"@/assets/images/mannequin.jpg",
-		"https://compas.oreshkin.dev/images/images/Rectangle452.jpg",
-		"https://compas.oreshkin.dev/images/images/Rectangle452.jpg",
-		"https://compas.oreshkin.dev/images/images/Rectangle452.jpg",
-		"https://compas.oreshkin.dev/images/images/Rectangle452.jpg",
-	]);
-	// получаем массив с товаром
+	const handleSubmit = async () => {
+		try {
+			const createdProduct = await store.dispatch('admin/createProduct', newProduct);
+			await handleUploadImages(createdProduct.id);
+			await handleCreateProductSizes(createdProduct.id);
+
+		} catch (error) {
+			console.log(error);
+		}
+	}
 </script>
 
 <template>
@@ -144,7 +268,7 @@
 
 		<aside>
 			<!-- TODO: получить фотки товара -->
-			<Swiper :images="images" />
+			<Swiper v-if="images.length" :images="images" />
 			<input
 				v-model="newProduct.name"
 				type="text"
@@ -155,6 +279,7 @@
 					v-for="size in sizes"
 					:key="size.id"
 					:text="size.name"
+					:state-checked="demoSizes.includes(size.name)"
 					@checked="handleChangeSizes(size)"
 				/>
 			</ul>
@@ -166,15 +291,15 @@
 
 			<HtmlEditor class="editor" v-model="newProduct.descriptions" />
 
-			<div>
+			<div v-if="images.length">
 				<FilePicker
 					name="firstPicker"
 					accept=".jpg"
 					:renderPreview="true"
+					:previewSrc="images[0]"
 					@file-picked="handleAddImageFromPicker"
 					@file-removed="handleDeleteImageFromPicker"
 					@preview-changed="handleChangePreview"
-					ref="firstPicker"
 				>
 					<template #picker-icon>
 						<i class="icon-add-a-photo"></i>
@@ -184,6 +309,7 @@
 					name="secondPicker"
 					accept=".jpg"
 					:renderPreview="true"
+					:previewSrc="images[1]"
 					@file-picked="handleAddImageFromPicker"
 					@file-removed="handleDeleteImageFromPicker"
 					@preview-changed="handleChangePreview"
@@ -196,6 +322,7 @@
 					name="thirdPicker"
 					accept=".jpg"
 					:renderPreview="true"
+					:previewSrc="images[2]"
 					@file-picked="handleAddImageFromPicker"
 					@file-removed="handleDeleteImageFromPicker"
 					@preview-changed="handleChangePreview"
@@ -208,6 +335,7 @@
 					name="fourthPicker"
 					accept=".jpg"
 					:renderPreview="true"
+					:previewSrc="images[3]"
 					@file-picked="handleAddImageFromPicker"
 					@file-removed="handleDeleteImageFromPicker"
 					@preview-changed="handleChangePreview"
@@ -216,7 +344,24 @@
 						<i class="icon-add-a-photo"></i>
 					</template>
 				</FilePicker>
+
+				<h4>Pdf-файлы к выкройкам</h4>
+
+				<div v-for="sizeName in demoSizes">
+					<h5>{{ `Размер ${sizeName}` }}</h5>
+					<FilePicker
+						:name="`${sizeName}Pdf`"
+						accept=".pdf"
+						@file-picked="handleAddFileFromPicker"
+						@file-removed="handleDeleteFileFromPicker"
+					>
+						<template #picker-icon>
+							<i class="icon-download-solid" :class="{ picked: pdfFiles.find( ({ name }) => name === `${sizeName}Pdf` ) }"></i>
+						</template>
+					</FilePicker>
+				</div>
 			</div>
+			<button @click="handleSubmit">Сохранить изменения</button>
 		</aside>
 	</section>
 </template>
@@ -314,6 +459,10 @@
 				gap: 10px;
 
 				margin: 20px 0 0 0;
+
+				h4 {
+					grid-column: 1/3;
+				}
 			}
 
 			div.editor {
@@ -321,6 +470,21 @@
 				width: 80%;
 
 				margin: 20px 0 0 0;
+			}
+			button {
+				margin: 30px 0 0 0;
+				background-color: var(--scheme-v2);
+				color: var(--scheme-v4);
+				border-radius: 50px;
+				padding: 4px 20px;
+			}
+			:deep(i.icon-download-solid) {
+				font-size: 32px;
+				top: calc(50% - 15px);
+				left: calc(50% - 15px);
+				&.picked {
+					color: var(--scheme-v2);
+				}
 			}
 		}
 	}

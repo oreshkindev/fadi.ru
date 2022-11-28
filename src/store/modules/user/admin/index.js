@@ -5,6 +5,7 @@ const state = () => ({
 	error: [],
 	data: [],
 	sizes: [],
+	
 });
 
 // определяем геттеры
@@ -34,7 +35,7 @@ const actions = {
 				id: response.data.id,
 				name: response.data.name,
 				slug: response.data.slug,
-                parent: response.data.parent,
+        parent: response.data.parent,
 				children: [],
 			};
             
@@ -167,6 +168,32 @@ const actions = {
 		} catch (error) {
 			console.log(error);
 		}
+	},
+
+	/*
+	Экшены для работы с пдф-файлами для выкроек
+	*/
+
+	async createPdf({}, pdfData) {
+		/* pdfData
+		это объект класса FormData
+    https://developer.mozilla.org/en-US/docs/Web/API/FormData
+    этот объект имеет поля
+    file_pdf: File;
+    File - https://developer.mozilla.org/en-US/docs/Web/API/File
+
+    product_size: string;
+    артикул продукта
+    */
+	 try {
+		await axios.post('/product_size/pdf/', pdfData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		})
+	 } catch (error) {
+		
+	 }
 	},
 
 	/*

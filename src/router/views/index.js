@@ -37,6 +37,14 @@ const routes = [
             title: 'TMP',
         }
     },
+    {
+        path: '/tmp/:categoryName',
+        component: TemporaryPage,
+        name: 'tmp',
+        meta: {
+            title: 'TMP',
+        }
+    },
     
     {
         path: '/tailoring',

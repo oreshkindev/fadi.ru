@@ -2,6 +2,9 @@
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import Image from '@/components/Image.vue'
 
+import { computed } from "vue";
+import { useStore } from "vuex";
+
 const props = defineProps({
     // объект товара
     data: {
@@ -12,6 +15,16 @@ const props = defineProps({
     image: {
         type: String,
     },
+})
+const store = useStore();
+
+const user = computed( () => store.getters['auth/userData'] );
+
+const productLink = computed(() => {
+    if (user.value.role == 'DefaultUser') {
+        return `/patterns/${props.data.product.sub_category[0].category.slug}/?name=${props.data.product.name}`
+    }
+    return `/tmp/${props.data.product.sub_category[0].category.slug}/?name=${props.data.product.name}`
 })
 </script>
 
@@ -28,7 +41,7 @@ const props = defineProps({
             <li v-for="item in data.size">{{ item }}</li>
         </ul>
 
-        <router-link :to="`/patterns/${data.product.sub_category[0].category.slug}/?name=${data.product.name}`">Перейти к товару</router-link>
+        <router-link :to="productLink">Перейти к товару</router-link>
     </article>
 </template>
 

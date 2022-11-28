@@ -6,8 +6,12 @@ import NavbarProfile from '@/components/views/NavbarProfile.vue'
 import FooterNavbar from '@/components/views/FooterNavbar.vue'
 //
 import { useRoute } from 'vue-router'
+import { useStore } from "vuex"
 // получаем доступ к параметрам роутера
 const route = useRoute()
+const store = useStore();
+
+store.dispatch('auth/me');
 </script>
 
 <template>

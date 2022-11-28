@@ -104,7 +104,7 @@ const prepare = async () => {
                 <span>{{ paymentError }}</span>
             </template>
             <template #modal-navigation>
-                <button @click="paymentError = null">Понятно</button>
+                <button class="agree" @click="paymentError = null">Понятно</button>
             </template>
         </Modal>
     </Teleport>
@@ -169,12 +169,8 @@ button {
 		cursor: default;
     }
 }
-
-:deep(dialog) {
-    nav {
-        button {
-            border-radius: 30px;
-        }
+.agree {
+        border-radius: 50px;
+        padding: 4px 40px;
     }
-}
 </style>

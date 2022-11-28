@@ -24,7 +24,9 @@ const store = useStore()
 
 // TODO:
 // загрузить фотки на сервер
-const images = ['Rectangle452', 'Rectangle121', 'Rectangle451', 'Rectangle453', 'Rectangle90', 'Rectangle89']
+const images = computed( () => {
+    return data.value.product.images.map( partPath => `${import.meta.env.VITE_IMAGE_DIR}/${partPath}` )
+} )
 
 const cart = computed(() => store.getters['cart/data'])
 // получаем массив с товаром
@@ -84,7 +86,7 @@ onMounted(() => {
 
             <h5>Описание</h5>
 
-            <p>{{ data.product.descriptions }}</p>
+            <p v-html="data.product.descriptions"></p>
 
             <!-- TODO: убрать когда будет наполнение -->
             <p>

@@ -8,9 +8,10 @@ const props = defineProps({
     text: {
         type: String,
     },
+    stateChecked: { type: Boolean, default: false },
 })
 
-const check = ref(false)
+const check = ref(props.stateChecked)
 
 // возвращаем подготовленную схему
 const checked = () => {
@@ -22,7 +23,7 @@ const checked = () => {
 
 <template>
     <fieldset>
-        <input type="checkbox" @click="checked" />
+        <input type="checkbox" :checked="stateChecked" @click="checked" />
         <svg width="32" height="32" viewBox="-6 -6 39 39" aria-hidden="true" focusable="false">
             <!-- Галка-->
             <polyline points="1,14 12,23 27,5" stroke-width="3"></polyline>
