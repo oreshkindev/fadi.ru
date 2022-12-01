@@ -1,60 +1,34 @@
 import axios from '@/common/axios'
 
-// определяем состояние
 const state = () => ({
-    error: [],
     data: [],
 })
 
-// определяем геттеры
 const getters = {
-    data: (state) => state.data,
-    error: (state) => state.error,
+    data: (state) => state.data.flat().reverse(),
 }
 
-// определяем методы
 const actions = {
-    async create({ commit }, data) {
+    async createTicket({ commit }, data) {
         try {
             const response = await axios.post('/support-ticket/', data)
-            commit('set', response.data)
-        } catch (error) {
-            if (error.response) {
-                // вернулась ошибка (5xx, 4xx)
-                commit('error', error.response.data)
-
-                // прячем ошибку через 5 секунд
-                setTimeout(() => {
-                    commit('error', [])
-                }, 5000)
-            }
-        }
+            console.log(response.data)
+            commit('setTicket', response.data)
+        } catch (error) {}
     },
-    async get({ commit }) {
+    async getTicket({ commit }) {
         try {
             const response = await axios.get('/support-ticket/')
-            commit('set', response.data)
-        } catch (error) {
-            if (error.response) {
-                // вернулась ошибка (5xx, 4xx)
-                commit('error', error.response.data)
 
-                // прячем ошибку через 5 секунд
-                setTimeout(() => {
-                    commit('error', [])
-                }, 5000)
-            }
-        }
+            commit('setTicket', response.data)
+        } catch (error) {}
     },
 }
 
 // определяем мутации
 const mutations = {
-    set: (state, data) => {
-        state.data = data
-    },
-    error: (state, error) => {
-        state.error = error
+    setTicket: (state, data) => {
+        state.data.push(data)
     },
 }
 

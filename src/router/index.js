@@ -10,12 +10,15 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    const isGuest = localStorage.getItem('fadi.auth_token')
+    const person = JSON.parse(sessionStorage.getItem('fadi.pub_data')) ?? false
 
-    // перенаправляем на авторизацию если еще гость
-    if (to.meta.requireAuth && !isGuest) {
-        next('/signin')
+    if (to.meta.secure && person.role != 'Admin' && person.role != 'Manager') {
+        next('/')
     } else {
+        if (to.meta.protected & !person) {
+            next('/signin')
+            return
+        }
         next()
     }
 })

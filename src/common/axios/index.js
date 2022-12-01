@@ -1,5 +1,4 @@
 import axios from 'axios'
-import storage from '../storage'
 
 // создаем новый инстанс
 const service = axios.create({
@@ -14,11 +13,10 @@ service.interceptors.request.use(
     (config) => {
         // что-нибудь делаем перед отправкой запроса
         // const key = import.meta.env.VITE_API_KEY // достаем токен их хранилища
-        const key = storage.get('fadi.auth_token')
-        if (key) {
-            config.headers['Authorization'] = `token ${key}`
+        const storage = JSON.parse(sessionStorage.getItem('fadi.pub_data'))
+        if (storage) {
+            config.headers['Authorization'] = `token ${storage.token}`
         }
-        config.headers['Content-Type'] = 'application/json'
 
         return config
     },

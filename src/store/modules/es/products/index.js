@@ -1,62 +1,40 @@
 import axios from '@/common/axios'
 import concate from '@/common/helper/concate'
 
-// определяем состояние
 const state = () => ({
-    error: [],
-    data: [],
-    category: [],
+    data: JSON.parse(sessionStorage.getItem('fadi.products')) ?? [],
 })
 
-// определяем геттеры
 const getters = {
     data: (state) => state.data,
-    category: (state) => state.category,
-    error: (state) => state.error,
+    category: (state) => (args) =>
+        state.data.filter((i) => i.product.sub_category[0][args.k] == args.v || i.product.sub_category.some((c) => c.category[args.k] == args.v)),
+    // subcategory: (state) => (args) => state.data.filter((i) => i.product.sub_category.some((c) => c[args.k] == args.v)),
+    product: (state) => (args) => state.data.filter((i) => i.product[args.k] == args.v),
 }
 
-// определяем методы
 const actions = {
     async get({ commit }) {
         try {
             const response = await axios.get('/es-product/')
 
             commit('set', concate(response.data.results))
-        } catch (error) {
-            if (error.response) {
-                // вернулась ошибка (5xx, 4xx)
-                commit('error', error.response.data)
-
-                // прячем ошибку через 5 секунд
-                setTimeout(() => {
-                    commit('error', [])
-                }, 5000)
-            }
-        }
+        } catch (error) {}
     },
-    async getBy({ commit }, data) {
+    async create({ commit, dispatch }, data) {
         try {
-            const response = await axios.get(`/es-product/`, { params: data })
+            const response = await axios.post('/products/', data)
 
-            if (data.category ?? data.price) {
-                commit('category', concate(response.data.results))
-                return
-            }
-            commit('set', concate(response.data.results))
+            dispatch('get')
         } catch (error) {}
     },
 }
 
-// определяем мутации
 const mutations = {
     set: (state, data) => {
         state.data = data
-    },
-    category: (state, data) => {
-        state.category = data
-    },
-    error: (state, error) => {
-        state.error = error
+
+        sessionStorage.setItem('fadi.products', JSON.stringify(data))
     },
 }
 

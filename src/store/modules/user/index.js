@@ -1,44 +1,46 @@
 import axios from '@/common/axios'
 
-// определяем состояние
 const state = () => ({
-    error: [],
     data: [],
+    users: [],
 })
 
-// определяем геттеры
 const getters = {
     data: (state) => state.data,
-    error: (state) => state.error,
+    getUsers: (state) => state.users,
 }
 
-// определяем методы
 const actions = {
-    async create({ commit }, data) {
+    async createUser({ commit }, data) {
         try {
             const response = await axios.post('/user/', data)
-            commit('set', response.data)
-        } catch (error) {
-            if (error.response) {
-                // вернулась ошибка (5xx, 4xx)
-                commit('error', error.response.data)
 
-                // прячем ошибку через 5 секунд
-                setTimeout(() => {
-                    commit('error', [])
-                }, 5000)
-            }
-        }
+            commit('setUser', response.data)
+        } catch (error) {}
+    },
+
+    /* 
+    crm
+*/
+    async secureGetUsers({ commit }) {
+        try {
+            const response = await axios.get('/user/')
+
+            commit('setUsers', response.data.results)
+        } catch (error) {}
     },
 }
 
-// определяем мутации
 const mutations = {
-    set: (state, data) => {
+    setUser: (state, data) => {
         state.data = data
     },
-    error: (state, error) => {
-        state.error = error
+
+    /* 
+    crm
+*/
+    setUsers: (state, data) => {
+        state.users = data
     },
 }
 

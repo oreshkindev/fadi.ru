@@ -1,51 +1,53 @@
 import axios from '@/common/axios'
-import storage from '@/common/storage'
 
-// определяем состояние
 const state = () => ({
-    id: [],
-    data: storage.get('fadi.cart') || [],
+    data: JSON.parse(sessionStorage.getItem('fadi.cart')) ?? [],
 })
 
-// определяем геттеры
 const getters = {
-    id: (state) => state.id,
     data: (state) => state.data,
+    product: (state) => (args) => state.data.filter((i) => i.product[args.k] == args.v),
 }
 
-// определяем методы
-const actions = {
-    async get({ commit }) {
-        try {
-            const response = await axios.get('/cart/')
-            commit('id', response.data)
-        } catch (error) {
-            if (error.response) {
-                // вернулась ошибка (5xx, 4xx)
-                console.log(error.response.data)
+const actions = {}
+
+const mutations = {
+    pushToCart: (state, data) => {
+        // достаем корзину
+        const cart = JSON.parse(sessionStorage.getItem('fadi.cart'))
+        if (!cart) {
+            // изменяем состояние
+            state.data = [data]
+            // если ее нет, то помещаем в хранилище массив
+            sessionStorage.setItem('fadi.cart', JSON.stringify([data]))
+        } else {
+            // если она есть, проверяем значения в массиве на совпадение
+            if (!cart.find((i) => i.product.id == data.product.id)) {
+                // подготавливаем
+                cart.push(data)
+                // обновляем состояние
+                state.data = cart
+                // пишем
+                sessionStorage.setItem('fadi.cart', JSON.stringify(cart))
             }
         }
     },
-}
+    removeFromCart: (state, data) => {
+        // достаем корзину
+        const cart = JSON.parse(sessionStorage.getItem('fadi.cart'))
 
-// определяем мутации
-const mutations = {
-    set: (state, data) => {
-        // пишем
-        storage.put(data)
-        // если нет => пушим
-        if (!state.data.includes(data)) {
-            state.data.push(data)
+        if (cart.find((i) => i.product.id == data)) {
+            const o = cart.filter((v) => v.product.id != data)
+            // обновляем состояние
+            state.data = o
+            // пишем
+            sessionStorage.setItem('fadi.cart', JSON.stringify(o))
+
+            return o
         }
     },
-    id: (state, data) => {
-        state.id = data
-    },
-    clear: (state, data) => {
+    clearCart: (state, data) => {
         state.data = data
-    },
-    unset: (state, data) => {
-        state.data = storage.update(data)
     },
 }
 

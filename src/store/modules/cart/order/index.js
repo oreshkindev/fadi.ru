@@ -1,49 +1,59 @@
 import axios from '@/common/axios'
-import storage from '@/common/storage'
+// import concate from '@/common/helper/concate'
 
-// определяем состояние
 const state = () => ({
     data: [],
 })
 
-// определяем геттеры
 const getters = {
-    get: (state) => state.data,
+    data: (state) => state.data,
 }
 
-// определяем методы
 const actions = {
-    async get({ commit, dispatch }) {
-        try {
-            const response = await axios.get('/order/')
-            commit('set', response.data)
-        } catch (error) {
-            if (error.response) {
-                // вернулась ошибка (5xx, 4xx)
-                commit('error', error.response.data)
-
-                // прячем ошибку через 5 секунд
-                setTimeout(() => {
-                    commit('error', [])
-                }, 5000)
-            }
-        }
-    },
-    async post({ commit }, data) {
-        console.log(data)
+    async createOrder({ commit }, data) {
         try {
             await axios.post('/order/', data)
+            /* 
+    response.data
+    {
+        "id": 1,
+        "user": 8,
+        "product_size": ["337"],
+        "status": "Ожидает оплаты",
+        "total_price": 150.0,
+        "created": "2022-11-29T05:57:13.753287+03:00"
+    }
+ */
+            commit('cart/clearCart', [], { root: true })
 
-            commit('cart/clear', [], { root: true })
+            sessionStorage.removeItem('fadi.cart')
+        } catch (error) {}
+    },
 
-            storage.remove('fadi.cart')
+    async getOrders({ commit }) {
+        /*         
+        Проблема с заказами
+        При отправке 1 заказа прилетает response.data
+        Если товаров было несколько в 1 заказе, то
+        Прилетает response.data.results
+        Если заказов было несколько, то
+        Прилетает только первый заказа
+        Если его удалить на сервере, то
+        Прилетает этот же первый заказ, но
+        Пустой
+ */
+
+        try {
+            const response = await axios.get('/order/')
+
+            // commit('setOrders', response.data ?? concate(response.data.results))
+            commit('setOrders', response.data)
         } catch (error) {}
     },
 }
 
-// определяем мутации
 const mutations = {
-    set: (state, data) => {
+    setOrders: (state, data) => {
         state.data = data
     },
 }

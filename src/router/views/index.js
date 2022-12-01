@@ -1,157 +1,175 @@
-import Home from './Home.vue'
-import Tailoring from './Tailoring.vue'
-import Patterns from './Patterns.vue'
-import Workshops from './Workshops.vue'
-import PatternsView from './PatternsView.vue'
-import Faq from './Faq.vue'
-import Signin from './Signin.vue'
-import Signup from './Signup.vue'
-import NotFound from './404.vue'
-
-// lazy-loaded
-const Cart = () => import('./Cart.vue')
-const AdminProfile = () => import('@/components/views/private/AdminProfile.vue')
-const AdminHistory = () => import('@/components/views/private/AdminHistory.vue')
-const AdminIssues = () => import('@/components/views/private/AdminIssues.vue')
-// const BoardModerator = () => import("./components/BoardModerator.vue")
-const UserProfile = () => import('@/components/views/private/UserProfile.vue')
-const UserSettings = () => import('@/components/views/private/UserSettings.vue')
-const UserIssues = () => import('@/components/views/private/UserIssues.vue')
+import store from '@/store'
 
 const routes = [
     {
         path: '/',
-        name: 'home',
-        component: Home,
-        meta: {
-            breadcrumbs: { name: 'Назад' },
-        },
-    },
-    {
-        path: '/tailoring',
-        name: 'tailoring',
-        component: Tailoring,
-        meta: {
-            breadcrumbs: { name: 'Швейный цех' },
-        },
-    },
-    {
-        path: '/patterns',
-        name: 'patterns',
-        component: Patterns,
-        meta: {
-            breadcrumbs: { name: 'Выкройки' },
-        },
-    },
-    {
-        path: '/patterns/:category',
-        component: PatternsView,
-    },
-    {
-        path: '/workshops',
-        name: 'workshops',
-        component: Workshops,
-        meta: {
-            breadcrumbs: { name: 'Мастер-классы' },
-        },
-    },
-    {
-        path: '/faq',
-        name: 'faq',
-        component: Faq,
-        meta: {
-            breadcrumbs: { name: 'Частые вопросы' },
-        },
-    },
-    {
-        path: '/cart',
-        name: 'cart',
-        // lazy-loaded
-        component: Cart,
-        meta: {
-            breadcrumbs: { name: 'Корзина' },
-        },
-    },
-    {
-        path: '/signin',
-        name: 'signin',
-        component: Signin,
-        meta: {
-            breadcrumbs: { name: 'Войти' },
-        },
-    },
-    {
-        path: '/signup',
-        name: 'signup',
-        component: Signup,
-        meta: {
-            breadcrumbs: { name: 'Регистрация' },
-        },
-    },
-    {
-        path: '/admin',
-        name: 'admin',
-        // только для авторизованных пользователей
-        meta: {
-            breadcrumbs: { name: 'Персональный кабинет' },
-            requireAuth: true,
-        },
-        // lazy-loaded
-        component: AdminProfile,
-    },
-    {
-        path: '/admin/history',
-        name: 'admin-history',
-        // только для авторизованных пользователей
-        meta: {
-            breadcrumbs: { name: 'История' },
-            requireAuth: true,
-        },
-        // lazy-loaded
-        component: AdminHistory,
-    },
-    {
-        path: '/admin/issues',
-        name: 'admin-issues',
-        // только для авторизованных пользователей
-        meta: {
-            breadcrumbs: { name: 'Обращения' },
-            requireAuth: true,
-        },
-        // lazy-loaded
-        component: AdminIssues,
+        component: () => import('./public/Layout.vue'),
+        children: [
+            {
+                path: '',
+                name: 'home',
+                component: () => import('./public/Home.vue'),
+                meta: {
+                    bcrumb: { name: 'Назад' },
+                },
+            },
+            {
+                path: 'tailoring',
+                name: 'tailoring',
+                component: () => import('./public/Tailoring.vue'),
+                meta: {
+                    bcrumb: { name: 'Швейный цех' },
+                },
+            },
+            {
+                path: 'patterns/',
+                name: 'patterns',
+                component: () => import('./public/Patterns.vue'),
+                meta: {
+                    bcrumb: { name: 'Выкройки' },
+                },
+            },
+            {
+                path: 'patterns/:category/',
+                name: 'category',
+                component: () => import('./public/sections/patterns/Category.vue'),
+                children: [
+                    {
+                        path: ':product',
+                        name: 'product',
+                        component: () => import('./public/sections/patterns/View.vue'),
+                    },
+                ],
+            },
+            {
+                path: 'workshops',
+                name: 'workshops',
+                component: () => import('./public/Workshops.vue'),
+                meta: {
+                    bcrumb: { name: 'Мастер-классы' },
+                },
+            },
+            {
+                path: 'faq',
+                name: 'faq',
+                component: () => import('./public/Faq.vue'),
+                meta: {
+                    bcrumb: { name: 'Частые вопросы' },
+                },
+            },
+            {
+                path: 'cart',
+                name: 'cart',
+                component: () => import('./public/Cart.vue'),
+                meta: {
+                    bcrumb: { name: 'Корзина' },
+                },
+            },
+            {
+                path: 'signin',
+                name: 'signin',
+                component: () => import('./public/Signin.vue'),
+                meta: {
+                    bcrumb: { name: 'Войти' },
+                },
+            },
+            {
+                path: 'signup',
+                name: 'signup',
+                component: () => import('./public/Signup.vue'),
+                meta: {
+                    bcrumb: { name: 'Регистрация' },
+                },
+            },
+            {
+                path: '/logout',
+                name: 'logout',
+                component: {
+                    beforeRouteEnter(to, from, next) {
+                        store.dispatch('auth/logoutUser')
+                        next('/')
+                    },
+                },
+            },
+            { path: ':catchAll(.*)', component: () => import('./404.vue') },
+        ],
     },
     {
         path: '/user',
-        name: 'user',
-        // только для авторизованных пользователей
+        component: () => import('./private/Layout.vue'),
         meta: {
-            breadcrumbs: { name: 'Персональный кабинет' },
-            requireAuth: true,
+            protected: true,
         },
-        // lazy-loaded
-        component: UserProfile,
+        children: [
+            {
+                path: 'history',
+                name: 'history',
+                component: () => import('./private/History.vue'),
+                children: [
+                    {
+                        path: 'issues',
+                        component: () => import('./private/Issues.vue'),
+                    },
+                ],
+            },
+            {
+                path: 'settings',
+                name: 'settings',
+                component: () => import('./private/Settings.vue'),
+            },
+        ],
     },
     {
-        path: '/user/settings',
-        name: 'user-settings',
-        // только для авторизованных пользователей
+        path: '/secure',
+        component: () => import('./private/secure/Layout.vue'),
         meta: {
-            breadcrumbs: { name: 'Настройки' },
-            requireAuth: true,
+            secure: true,
         },
-        // lazy-loaded
-        component: UserSettings,
+        children: [
+            {
+                path: 'users',
+                name: 'users',
+                component: () => import('./private/secure/Database.vue'),
+                children: [
+                    {
+                        path: 'history',
+                        component: () => import('./private/secure/History.vue'),
+                    },
+                    {
+                        path: 'issues',
+                        component: () => import('./private/secure/Issues.vue'),
+                    },
+                ],
+            },
+            {
+                path: 'settings',
+                component: () => import('./private/secure/Settings.vue'),
+            },
+            {
+                path: 'redactor',
+                name: 'redactor',
+                component: () => import('./private/secure/Redactor.vue'),
+                meta: {
+                    bcrumb: { name: 'Редактор' },
+                },
+                children: [
+                    {
+                        path: 'patterns',
+                        component: () => import('./private/secure/Patterns.vue'),
+                    },
+                    {
+                        path: 'category',
+                        component: () => import('./private/secure/Category.vue'),
+                    },
+                    {
+                        path: ':category/:product',
+                        name: 'product/edit',
+                        component: () => import('./private/secure/View.vue'),
+                    },
+                ],
+            },
+        ],
     },
-    {
-        path: '/user/issues',
-        name: 'user-issues',
-        // только для авторизованных пользователей
-        meta: { breadcrumbs: { name: 'Обращения' }, requireAuth: true },
-        // lazy-loaded
-        component: UserIssues,
-    },
-    { path: '/:catchAll(.*)', component: NotFound },
 ]
 
 export default routes

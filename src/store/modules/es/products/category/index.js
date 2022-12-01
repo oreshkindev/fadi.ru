@@ -1,40 +1,43 @@
 import axios from '@/common/axios'
 
-// определяем состояние
 const state = () => ({
-    data: [],
+    data: JSON.parse(sessionStorage.getItem('fadi.category')) ?? [],
 })
 
-// определяем геттеры
 const getters = {
-    get: (state) => state.data,
+    data: (state) => state.data,
+    get: (state) => (args) => state.data.filter((i) => i[args.k] == args.v),
 }
 
-// определяем методы
 const actions = {
-    async get({ commit }) {
+    async get({ commit, dispatch }) {
         try {
             const response = await axios.get('/es-category/')
 
-            commit('set', concate(response.data.results))
-        } catch (error) {
-            if (error.response) {
-                // вернулась ошибка (5xx, 4xx)
-                commit('error', error.response.data)
+            dispatch('products/get', [], { root: true })
+            commit(
+                'set',
+                response.data.results.reduce((acc, item) => {
+                    acc.push((({ products, ...o }) => o)(item))
+                    return acc
+                }, [])
+            )
+        } catch (error) {}
+    },
+    async create({ commit, dispatch }, data) {
+        try {
+            const response = await axios.post('/category/', data)
 
-                // прячем ошибку через 5 секунд
-                setTimeout(() => {
-                    commit('error', [])
-                }, 5000)
-            }
-        }
+            dispatch('get')
+        } catch (error) {}
     },
 }
 
-// определяем мутации
 const mutations = {
     set: (state, data) => {
         state.data = data
+
+        sessionStorage.setItem('fadi.category', JSON.stringify(data))
     },
 }
 

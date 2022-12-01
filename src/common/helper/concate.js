@@ -2,9 +2,13 @@
 // возвращаем новый массив
 // TODO: сделать универсальным
 
+import generateUrl from './generateUrl'
+
 export default (array) => {
     return array
-        .sort((a, b) => (a.product.id != b.product.id ? a.product.id - b.product.id : a.sku_product != b.sku_product ? a.sku_product - b.sku_product : a.size - b.size))
+        .sort((a, b) =>
+            a.product.id != b.product.id ? a.product.id - b.product.id : a.sku_product != b.sku_product ? a.sku_product - b.sku_product : a.size - b.size
+        )
         .reduce((acc, item) => {
             let key = acc.find((i) => i.product.id == item.product.id)
             if (key != null) {
@@ -13,7 +17,8 @@ export default (array) => {
             } else {
                 acc.push({
                     sku_product: [item.sku_product],
-                    product: item.product,
+                    // product: (({ sub_category, ...o }) => o)(item.product),
+                    product: { ...item.product, slug: generateUrl(item.product.name) },
                     size: [item.size],
                 })
             }

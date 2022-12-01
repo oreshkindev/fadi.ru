@@ -7,8 +7,8 @@
   font-family: "fadi";
   font-style: normal;
   font-weight: 400;
-  src: url("./iconly.eot?1668886999878");
-  src: url("./iconly.eot?#iefix") format("embedded-opentype"), url("./iconly.woff2?1668886999878") format("woff2"), url("./iconly.woff?1668886999878") format("woff"), url("./iconly.ttf?1668886999878") format("truetype"), url("./iconly.svg?1668886999878#fadi") format("svg");
+  src: url("./iconly.eot?1669828414609");
+  src: url("./iconly.eot?#iefix") format("embedded-opentype"), url("./iconly.woff2?1669828414609") format("woff2"), url("./iconly.woff?1669828414609") format("woff"), url("./iconly.ttf?1669828414609") format("truetype"), url("./iconly.svg?1669828414609#fadi") format("svg");
 }
 
 [class="icon"], [class^="icon-"], [class*=" icon-"] {
@@ -55,12 +55,24 @@
   content: "\e007";
 }
 
+.icon-delete:before {
+  content: "\e008";
+}
+
+.icon-format-list-bulleted-2:before {
+  content: "\e00b";
+}
+
 .icon-chat:before {
   content: "\e00c";
 }
 
 .icon-arrow-top-right:before {
   content: "\e00d";
+}
+
+.icon-format-list-numbered-2:before {
+  content: "\e00e";
 }
 
 .icon-download-solid:before {

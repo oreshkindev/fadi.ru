@@ -1,22 +1,31 @@
 import axios from '@/common/axios'
 
-// определяем состояние
 const state = () => ({
     data: [],
 })
 
-// определяем геттеры
 const getters = {
-    get: (state) => state.data,
+    data: (state) => state.data,
 }
 
-// определяем методы
-const actions = {}
+const actions = {
+    async get({ commit }) {
+        try {
+            const response = await axios.get('/sizes/')
 
-// определяем мутации
+            commit('set', response.data)
+        } catch (error) {}
+    },
+}
+
 const mutations = {
     set: (state, data) => {
         state.data = data
+        // при переходе на главную получим товары и запишем их в хранилище
+        // sessionStorage.setItem('products', JSON.stringify(data))
+    },
+    error: (state, error) => {
+        state.error = error
     },
 }
 
